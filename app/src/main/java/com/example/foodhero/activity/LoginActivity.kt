@@ -1,29 +1,25 @@
-package com.example.foodhero
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+package com.example.foodhero.activity
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
-import com.example.foodhero.activity.LoginActivity
-import com.example.foodhero.databinding.ActivityMainBinding
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.example.foodhero.R
+import com.example.foodhero.databinding.ActivityLoginBinding
+import com.example.foodhero.fragment.LoginMainFragment
+import com.example.foodhero.global.FragmentInstance
 import com.example.foodhero.global.logMessage
-import com.example.foodhero.global.moveToActivity
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
-class MainActivity : AppCompatActivity() {
+class LoginActivity: AppCompatActivity() {
     private lateinit var onBackPressedCallback: OnBackPressedCallback
-    private var _binding: ActivityMainBinding? = null
+    private var _binding: ActivityLoginBinding? = null
     private val binding get() = _binding!!
-    override fun onCreate(savedInstanceState: Bundle?) {
+    public override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-        if(userIsLoggedIn()){
-            setContentView(R.layout.activity_main)
-            setDataBinding()
-            setOnBackNavigation()
-
-        }
+        setContentView(R.layout.activity_login)
+        setDataBinding()
+        setOnBackNavigation()
+        navigateToFragment(FragmentInstance.FRAGMENT_LOGIN_HOME)
     }
-
 
     /*
     *   ##########################################################################
@@ -32,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     */
 
     private fun setDataBinding(){
-        _binding = ActivityMainBinding.inflate(layoutInflater)
+        _binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
 
@@ -44,7 +40,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setOnBackNavigation(){
         onBackPressedCallback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed(){navigateOnBackPressed()}
+            override fun handleOnBackPressed(){
+                navigateOnBackPressed()
+            }
         }
         onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
     }
@@ -55,31 +53,21 @@ class MainActivity : AppCompatActivity() {
 
     /*
     *   ##########################################################################
-    *               NAVIGATE BASED ON CURRENT USER STATUS
+    *               NAVIGATE BETWEEN FRAGMENTS
     *   ##########################################################################
     */
 
-    private fun navigateOnResume(){
-        if(!userIsLoggedIn()){
-            moveToActivity(Intent(this,LoginActivity::class.java))
+   fun navigateToFragment(fragment: FragmentInstance){
+        when(fragment){
+            FragmentInstance.FRAGMENT_LOGIN_HOME->applyTransaction(LoginMainFragment())
+            FragmentInstance.FRAGMENT_LOGIN_OPTIONS->{}
         }
-
-
     }
 
-    /*
-    *   ##########################################################################
-    *               USER SIGNED IN USER SIGN OUT
-    *   ##########################################################################
-    */
-
-    private fun userIsLoggedIn():Boolean{
-        return Firebase.auth.currentUser!=null
-
-    }
-
-    fun signUserOut(){
-        Firebase.auth.signOut()
+    private fun applyTransaction(frag: Fragment){
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.loginActivityLayout,frag).commit()
+        }
     }
 
     /*
@@ -89,20 +77,19 @@ class MainActivity : AppCompatActivity() {
     */
     override fun onResume(){
         super.onResume()
-        navigateOnResume()
-        logMessage("on resume main")
+        logMessage("on resume login")
 
     }
 
     override fun onPause(){
         super.onPause()
-        logMessage("on pause main")
+        logMessage("on pause login")
 
     }
 
     override fun onStop(){
         super.onStop()
-        logMessage("on stop main")
+        logMessage("on stop login")
 
     }
 }
