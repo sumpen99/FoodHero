@@ -4,16 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.foodhero.activity.LoginActivity
+import com.example.foodhero.R
 import com.example.foodhero.databinding.FragmentLoginmainBinding
 import com.example.foodhero.global.FragmentInstance
-import com.example.foodhero.global.templateFunctionAny
+
 
 class LoginMainFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setEventListener(view)
+        setBottomSheetDialog(R.layout.bottom_sheet_dialog)
    }
 
     /*
@@ -53,8 +54,9 @@ class LoginMainFragment: BaseFragment() {
     private fun setEventListener(view: View?){
         val userEnterButton = loginMainBinding().userEnterButton
         userEnterButton.setOnClickListener{
-            updateMessageDialog("To Be Implemented",::templateFunctionAny)
-            showMessage()
+            //updateMessageDialog("To Be Implemented",::templateFunctionAny)
+            //showMessage()
+            bottomSheetDialog.show()
             //(parentActivity as LoginActivity).navigateToFragment(FragmentInstance.FRAGMENT_LOGIN_OPTIONS)
         }
     }
