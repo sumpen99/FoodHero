@@ -57,7 +57,9 @@ abstract class BaseFragment: Fragment(), IFragment {
         bottomSheetDialog.window?:return
         bottomSheetDialog.window!!.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         bottomSheetDialog.window!!.setGravity(Gravity.BOTTOM)
-   }
+    }
+
+
 
     /*
     *   ##########################################################################

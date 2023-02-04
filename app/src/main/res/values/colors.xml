@@ -10,6 +10,7 @@
     <color name="red">#FFFF0000</color>
     <color name="green">#FF00FF00</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
     <color name="background_dark">#121212</color>
     <color name="background_medium_dark">#424242</color>
 </resources>

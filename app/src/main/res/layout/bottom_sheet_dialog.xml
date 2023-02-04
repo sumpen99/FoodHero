@@ -68,7 +68,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
             <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/signUpButton"
+                android:id="@+id/userSignUpButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center_vertical"
