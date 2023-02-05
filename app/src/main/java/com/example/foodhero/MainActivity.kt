@@ -4,22 +4,28 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.example.foodhero.activity.LoginActivity
+import com.example.foodhero.database.FirestoreViewModel
 import com.example.foodhero.databinding.ActivityMainBinding
-import com.example.foodhero.global.logMessage
-import com.example.foodhero.global.moveToActivity
-import com.example.foodhero.global.showPermissionDialog
+import com.example.foodhero.fragment.HomeFragment
+import com.example.foodhero.global.*
+import com.example.foodhero.struct.Restaurant
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var firestoreViewModel: FirestoreViewModel
     private lateinit var onBackPressedCallback: OnBackPressedCallback
     private lateinit var permissionsList: ArrayList<String>
     private var permissionDialogIsOpen:Boolean = false
@@ -28,6 +34,20 @@ class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
 
+
+    private var restaurantObserver = Observer<List<Restaurant>?>{ it->
+        if(it!=null){
+            var i = 0
+            while(i<it.size){
+                val restaurant = it[i]
+                firestoreViewModel.getMenuItems(restaurant.restaurantId!!)
+                firestoreViewModel.getDrinkList(restaurant.restaurantId)
+                logMessage(restaurant.toString())
+                i++
+            }
+            //logMessage(it.toString())
+        }
+    }
 
     private var permissionsStr = arrayOf<String>(
         android.Manifest.permission.ACCESS_FINE_LOCATION,
@@ -51,8 +71,14 @@ class MainActivity : AppCompatActivity() {
                     askForPermissions(permissionsList)
                 } else if (permissionsCount > 0) {
                     showPermissionDialog()
+                    // sort restaurants by some default
+                    // or let the user pick a city
+                    logMessage("We have not permission")
                 }else{
-                    // we have permission to sort restaurants on user location
+                    // sort restaurants by user location
+                    // and geofire
+                    logMessage("We have permission")
+                    setObservableRestaurantData()
                 }
             })
 
@@ -62,14 +88,17 @@ class MainActivity : AppCompatActivity() {
             //signUserOut()
             //return
             setContentView(R.layout.activity_main)
+            setViewModel()
             setDataBinding()
             setBottomNavigationMenu()
             setOnBackNavigation()
             launchPermissionRequest()
-
+            navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
+        }
+        else{
+            moveToActivity(Intent(this,LoginActivity::class.java))
         }
     }
-
 
     /*
     *   ##########################################################################
@@ -82,19 +111,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
+    private fun setViewModel(){
+        firestoreViewModel = ViewModelProviders.of(this).get(FirestoreViewModel::class.java)
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private fun setBottomNavigationMenu(){
         bottomNavMenu = binding.bottomNavigationView
-        //centerMenuIcons()
-        /*bottomNavMenu.setOnItemSelectedListener {it: MenuItem ->
+        bottomNavMenu.setOnItemSelectedListener {it: MenuItem ->
             when(it.itemId){
-                R.id.navigateHome->navigateFragment(FragmentInstance.FRAGMENT_HOME)
-                R.id.navigateSearch->SEARCH BOX
-                R.id.navigateCart->navigateFragment(FragmentInstance.FRAGMENT_CART)
-                R.id.navigateProfile->navigateFragment(FragmentInstance.FRAGMENT_PROFILE)
+                R.id.navigateHome->navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
+                //R.id.navigateSearch->SEARCH BOX
+                //R.id.navigateCart->navigateFragment(FragmentInstance.FRAGMENT_MAIN_CART)
+                //R.id.navigateProfile->navigateFragment(FragmentInstance.FRAGMENT_MAIN_PROFILE)
             }
             true
-        }*/
+        }
     }
 
     /*
@@ -145,6 +177,25 @@ class MainActivity : AppCompatActivity() {
 
     /*
     *   ##########################################################################
+    *               NAVIGATE BETWEEN FRAGMENTS
+    *   ##########################################################################
+    */
+
+    private fun navigateToFragment(fragment: FragmentInstance){
+        when(fragment){
+            FragmentInstance.FRAGMENT_MAIN_HOME->applyTransaction(HomeFragment())
+            else -> {}
+        }
+    }
+
+    private fun applyTransaction(frag: Fragment){
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.homeLayout,frag).commit()
+        }
+    }
+
+    /*
+    *   ##########################################################################
     *               NAVIGATE BASED ON CURRENT USER STATUS
     *   ##########################################################################
     */
@@ -152,6 +203,9 @@ class MainActivity : AppCompatActivity() {
     private fun navigateOnResume(){
         if(!userIsLoggedIn()){
             moveToActivity(Intent(this,LoginActivity::class.java))
+        }
+        else{
+            navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
         }
 
 
@@ -174,12 +228,26 @@ class MainActivity : AppCompatActivity() {
 
     /*
     *   ##########################################################################
+    *               TALK TO FIREBASE
+    *   ##########################################################################
+    */
+
+    private fun setObservableRestaurantData(){
+        firestoreViewModel.getRestaurants().observe(this,restaurantObserver)
+    }
+
+    private fun cancelObservablePublicData(){
+        firestoreViewModel.getRestaurants().removeObserver(restaurantObserver)
+    }
+
+    /*
+    *   ##########################################################################
     *               ON RESUME ON PAUSE ON STOP
     *   ##########################################################################
     */
     override fun onResume(){
         super.onResume()
-        navigateOnResume()
+        //navigateOnResume()
         logMessage("on resume main")
 
     }

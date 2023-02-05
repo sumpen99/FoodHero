@@ -65,14 +65,15 @@ class LoginActivity: AppCompatActivity() {
     *   ##########################################################################
     */
 
-   fun navigateToFragment(fragment: FragmentInstance){
+   private fun navigateToFragment(fragment: FragmentInstance){
         when(fragment){
             FragmentInstance.FRAGMENT_LOGIN_HOME->applyTransaction(LoginMainFragment())
             FragmentInstance.FRAGMENT_LOGIN_OPTIONS->{}
+            else -> {}
         }
     }
 
-    fun navigateOnLogin(){
+    private fun navigateOnLogin(){
         moveToActivity(Intent(this, MainActivity::class.java))
     }
 

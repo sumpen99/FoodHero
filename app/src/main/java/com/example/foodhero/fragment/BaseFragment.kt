@@ -77,4 +77,22 @@ abstract class BaseFragment: Fragment(), IFragment {
     open fun showMessage(){
         messageToUser.showMessage()
     }
+
+    /*
+    *   ##########################################################################
+    *               ON RESUME ON PAUSE ON STOP
+    *   ##########################################################################
+    */
+
+    /*override fun onResume(){
+        super.onResume()
+    }
+
+    override fun onPause(){
+        super.onPause()
+    }
+
+    override fun onStop(){
+        super.onStop()
+    }*/
 }

@@ -82,6 +82,24 @@ class LoginMainFragment: BaseFragment() {
         }
     }
 
+    /*
+    *   ##########################################################################
+    *               ON RESUME ON PAUSE ON STOP
+    *   ##########################################################################
+    */
+
+    /*override fun onResume(){
+        super.onResume()
+    }
+
+    override fun onPause(){
+        super.onPause()
+    }
+
+    override fun onStop(){
+        super.onStop()
+    }*/
+
 
 
 

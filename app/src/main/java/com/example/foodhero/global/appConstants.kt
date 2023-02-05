@@ -10,8 +10,23 @@ import com.firebase.ui.storage.images.FirebaseImageLoader
 import com.google.firebase.storage.StorageReference
 import java.io.InputStream
 
-
+const val packageName = "com.example.foodhero"
 const val appFileProvider = "com.example.foodhero.fileprovider"
+
+/*
+*   ##########################################################################
+*                            PATH TO FIREBASE COLLECTION
+*   ##########################################################################
+*
+* */
+
+const val RESTAURANT_LOGGO_PATH = "images/restaurant/logo/"
+const val MENUITEM_LOGGO_PATH = "images/restaurant/menu/menuitem/logo/"
+const val RESTAURANT_COLLECTION = "Restaurants"
+const val MENU_COLLECTION = "Menu"
+const val DRINK_COLLECTION = "DrinkList"
+const val MENU_ITEM_COLLECTION = "MenuItems"
+const val USER_COLLECTION = "Users"
 
 /*
 *   ##########################################################################
