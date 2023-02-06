@@ -4,9 +4,14 @@ import com.example.foodhero.global.*
 import com.example.foodhero.struct.DrinkItem
 import com.example.foodhero.struct.MenuItem
 import com.example.foodhero.struct.Restaurant
+import com.firebase.geofire.GeoFireUtils
+
+import com.firebase.geofire.GeoLocation
 import com.google.android.gms.tasks.Task
+
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
@@ -50,6 +55,14 @@ class FirestoreRepository {
         return storageRef.putFile(imageUri)
     }
 
+    fun saveRestaurantGeo(restaurant:Restaurant):Task<Void>{
+        val hash = GeoFireUtils.getGeoHashForLocation(GeoLocation(restaurant.lat!!,restaurant.lon!!))
+        val updates: MutableMap<String, Any> = mutableMapOf(
+            "geohash" to hash,
+        )
+        return firestoreDB.collection(RESTAURANT_COLLECTION).document(restaurant.restaurantId!!).update(updates)
+    }
+
     fun getSavedMenuItems(restaurantId:String): CollectionReference {
         val path = "$RESTAURANT_COLLECTION/${restaurantId}/$MENU_COLLECTION"
         return firestoreDB.collection(path)
@@ -61,6 +74,10 @@ class FirestoreRepository {
     }
 
     fun getSavedRestaurants(): CollectionReference {
+        return firestoreDB.collection(RESTAURANT_COLLECTION)
+    }
+
+    fun getSavedRestaurantsGeo(): CollectionReference {
         return firestoreDB.collection(RESTAURANT_COLLECTION)
     }
 
