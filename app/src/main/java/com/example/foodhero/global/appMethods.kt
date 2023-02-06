@@ -17,6 +17,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.foodhero.R
+import com.firebase.geofire.GeoLocation
 import com.google.firebase.firestore.GeoPoint
 
 /*
@@ -65,7 +66,7 @@ fun Activity.showMessage(msg:String,duration:Int){
 *
 * */
 
-fun Activity.getUserLocation(): GeoPoint {
+fun Activity.getUserLocation(): GeoLocation {
     val location: Location?
     if(checkGpsProviderStatus() &&
         ContextCompat.checkSelfPermission(this,
@@ -77,7 +78,7 @@ fun Activity.getUserLocation(): GeoPoint {
     ){
         location =  (getSystemService(Context.LOCATION_SERVICE) as LocationManager).getLastKnownLocation(
             LocationManager.GPS_PROVIDER)
-        if(location!=null){return GeoPoint(location.latitude,location.longitude)}
+        if(location!=null){return GeoLocation(location.latitude,location.longitude)}
     }
     return getCenterOfStockholm()
 }
@@ -86,8 +87,8 @@ fun Activity.checkGpsProviderStatus():Boolean{
     return (getSystemService(Context.LOCATION_SERVICE) as LocationManager).isProviderEnabled(LocationManager.GPS_PROVIDER)
 }
 
-fun getCenterOfStockholm(): GeoPoint {
-    return GeoPoint(59.332911,18.054698)
+fun getCenterOfStockholm(): GeoLocation {
+    return GeoLocation(59.332911,18.054698)
 }
 
 /*

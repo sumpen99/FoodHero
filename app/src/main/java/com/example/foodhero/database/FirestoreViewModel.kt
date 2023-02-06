@@ -6,13 +6,18 @@ import androidx.lifecycle.ViewModel
 import com.example.foodhero.global.ServerResult
 import com.example.foodhero.global.logMessage
 import com.example.foodhero.struct.*
+import com.firebase.geofire.GeoFireUtils
+import com.firebase.geofire.GeoLocation
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.tasks.await
 
 class FirestoreViewModel:ViewModel() {
     var serverDetails = ArrayList<ServerDetails>()
     var firebaseRepository = FirestoreRepository()
-    var savedRestaurantMenuItems : MutableLiveData<List<MenuItem>?> = MutableLiveData()
     var savedRestaurants : MutableLiveData<List<Restaurant>?> = MutableLiveData()
 
     private fun clearServerDetails(){
@@ -24,6 +29,16 @@ class FirestoreViewModel:ViewModel() {
         saveRestaurantInfo(pos,restaurant)
         saveRestaurantLoggoToFirebase(pos,imageUri,restaurant.loggoDownloadUrl!!)
         return serverDetails.isEmpty()
+    }
+
+    fun saveRestaurantToGeoFire(pos:Int,restaurant:Restaurant){
+        clearServerDetails()
+        firebaseRepository.saveRestaurantGeo(restaurant).addOnCompleteListener { task->
+            if(!task.isSuccessful){
+                serverDetails.add(ServerDetails(pos,task.exception.toString(), ServerResult.UPLOAD_ERROR))
+            }
+        }
+        //return serverDetails.isEmpty()
     }
 
     private suspend fun saveRestaurantInfo(pos:Int,restaurant:Restaurant){
@@ -148,6 +163,43 @@ class FirestoreViewModel:ViewModel() {
 
         return savedRestaurants
     }
+
+    fun getRestaurantsGeo(
+        geoMiddle: GeoLocation,
+        radiusKm:Double,
+        callbackPrintForTesting:(args:Any?)->Unit){
+        val radiusInM = radiusKm*1000
+        val bounds = GeoFireUtils.getGeoHashQueryBounds(geoMiddle,radiusInM)
+        val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
+        for (b in bounds) {
+            val q = firebaseRepository.getSavedRestaurantsGeo()
+                .orderBy("geohash")
+                .startAt(b.startHash)
+                .endAt(b.endHash)
+            tasks.add(q.get())
+        }
+        Tasks.whenAllComplete(tasks).addOnCompleteListener{
+            val savedRestaurantsList : MutableList<Restaurant> = mutableListOf()
+            for (task in tasks) {
+                    val snap = task.result
+                    for (doc in snap!!.documents) {
+                        val lat = doc.getDouble("lat")!!
+                        val lng = doc.getDouble("lon")!!
+
+                        val docLocation = GeoLocation(lat, lng)
+                        val distanceInM = GeoFireUtils.getDistanceBetween(docLocation, geoMiddle)
+                        if (distanceInM <= radiusInM) {
+                            val restaurant = doc.toObject(Restaurant::class.java)
+                            restaurant?:continue
+                            savedRestaurantsList.add(restaurant)
+                        }
+                    }
+                }
+                callbackPrintForTesting(savedRestaurantsList)
+            }
+    }
+
+
 
     fun deleteMenuFromFirebase(restaurantId:String,docId:String){
         firebaseRepository.deleteMenuItem(restaurantId,docId).addOnFailureListener {

@@ -13,6 +13,7 @@ class Restaurant(
     val email:String?=null,
     val cathegoriesDishes:ArrayList<String>? = null,
     val description:String?=null,
+    val geohash:String?=null,
     val lat:Double?=null,
     val lon:Double?=null,
     val userRating:Double?=null,
@@ -34,6 +35,7 @@ class Restaurant(
                 "Email: $email\n" +
                 "Categories: " + cathegoriesDishes.toString() + "\n" +
                 "Description: $description\n" +
+                "GeoHash: $geohash\n" +
                 "Lat: $lat\n" +
                 "Lon: $lon\n" +
                 "UserRating: $userRating\n" +

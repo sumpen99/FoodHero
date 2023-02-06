@@ -12,8 +12,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import com.example.foodhero.activity.LoginActivity
 import com.example.foodhero.database.AuthRepo
 import com.example.foodhero.database.FirestoreViewModel
@@ -22,9 +22,6 @@ import com.example.foodhero.fragment.HomeFragment
 import com.example.foodhero.global.*
 import com.example.foodhero.struct.Restaurant
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var firestoreViewModel: FirestoreViewModel
@@ -32,25 +29,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var permissionsList: ArrayList<String>
     private var permissionDialogIsOpen:Boolean = false
     private lateinit var bottomNavMenu: BottomNavigationView
+    private var savedRestaurantsList : MutableList<Restaurant> = mutableListOf()
     private var permissionsCount = 0
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
     private val auth = AuthRepo()
 
-
-    private var restaurantObserver = Observer<List<Restaurant>?>{ it->
-        if(it!=null){
-            var i = 0
-            while(i<it.size){
-                val restaurant = it[i]
-                firestoreViewModel.getMenuItems(restaurant.restaurantId!!)
-                firestoreViewModel.getDrinkList(restaurant.restaurantId)
-                logMessage(restaurant.toString())
-                i++
-            }
-            //logMessage(it.toString())
-        }
-    }
 
     private var permissionsStr = arrayOf<String>(
         android.Manifest.permission.ACCESS_FINE_LOCATION,
@@ -76,12 +60,10 @@ class MainActivity : AppCompatActivity() {
                     showPermissionDialog()
                     // sort restaurants by some default
                     // or let the user pick a city
-                    logMessage("We have not permission")
+                    //logMessage("We have not permission")
                 }else{
-                    // sort restaurants by user location
-                    // and geofire
-                    logMessage("We have permission")
-                    setObservableRestaurantData()
+                    //logMessage("We have permission")
+                    loadRestaurantsByUserPosition()
                 }
             })
 
@@ -217,22 +199,32 @@ class MainActivity : AppCompatActivity() {
 
     /*
     *   ##########################################################################
-    *               USER SIGNED IN USER SIGN OUT
+    *               NAVIGATE BASED ON CURRENT USER STATUS
     *   ##########################################################################
     */
 
-    /*
-    *   ##########################################################################
-    *               TALK TO FIREBASE
-    *   ##########################################################################
-    */
-
-    private fun setObservableRestaurantData(){
-        firestoreViewModel.getRestaurants().observe(this,restaurantObserver)
+    private fun loadRestaurantsByUserPosition(){
+        //savedRestaurantsList.clear()
+        //val userLocation = getUserLocation()
+        val userLocation = getCenterOfStockholm()
+        val radiusKm = 20.0
+        firestoreViewModel.getRestaurantsGeo(userLocation,radiusKm,::testResultOfLoadedRestaurants)
     }
 
-    private fun cancelObservablePublicData(){
-        firestoreViewModel.getRestaurants().removeObserver(restaurantObserver)
+    private fun testResultOfLoadedRestaurants(parameter:Any?){
+        savedRestaurantsList = parameter as MutableList<Restaurant>
+        for(restaurant in savedRestaurantsList){
+            logMessage(restaurant.toString())
+        }
+    }
+
+    fun getListOfLoadedRestaurants():List<Restaurant>{
+        //firestoreViewModel.getMenuItems(restaurant.Id!!)
+        //firestoreViewModel.getDrinkList(restaurant.Id!!)
+        for(restaurant in savedRestaurantsList){
+            logMessage(restaurant.toString())
+        }
+        return savedRestaurantsList
     }
 
     /*
@@ -258,4 +250,8 @@ class MainActivity : AppCompatActivity() {
         logMessage("on stop main")
 
     }
+
+    override fun onDestroy(){
+        super.onDestroy()
+   }
 }
