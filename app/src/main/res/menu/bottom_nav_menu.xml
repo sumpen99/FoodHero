@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/navigateHome"
+        android:title="Home"
+        android:icon="@drawable/ic_home_foreground"
+        />
+    <item
+        android:id="@+id/navigateSearch"
+        android:title="Search"
+        android:icon="@drawable/ic_search_foreground"
+        />
+    <item
+        android:id="@+id/navigateCart"
+        android:title="Cart"
+        android:icon="@drawable/ic_cart_foreground"
+        />
+    <item
+        android:id="@+id/navigateProfile"
+        android:icon="@drawable/ic_profile_foreground"
+        android:title="Profile"
+        />
+</menu>

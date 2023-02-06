@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">FoodHero</string>
+    <string name="login_welcome_text">Get Started ...</string>
+    <string name="login_button_text">Enter</string>
     <string name="error_login_default_error">We encountered an unexpected error, please try again.</string>
     <string name="error_login_custom_token">The custom token format is incorrect. Please check the documentation.</string>
     <string name="error_login_custom_token_mismatch">The custom token corresponds to a different audience.</string>
