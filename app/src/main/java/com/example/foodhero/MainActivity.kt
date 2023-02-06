@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.foodhero.activity.LoginActivity
+import com.example.foodhero.database.AuthRepo
 import com.example.foodhero.database.FirestoreViewModel
 import com.example.foodhero.databinding.ActivityMainBinding
 import com.example.foodhero.fragment.HomeFragment
@@ -33,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     private var permissionsCount = 0
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
+    private val auth = AuthRepo()
 
 
     private var restaurantObserver = Observer<List<Restaurant>?>{ it->
@@ -84,8 +87,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(userIsLoggedIn()){
-            //signUserOut()
+        if(auth.isUserLoggedIn()){
+            //auth.signOut()
             //return
             setContentView(R.layout.activity_main)
             setViewModel()
@@ -94,6 +97,7 @@ class MainActivity : AppCompatActivity() {
             setOnBackNavigation()
             launchPermissionRequest()
             navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
+            Toast.makeText(applicationContext, "Välkommen tillbaka ${auth.getEmail()}.", Toast.LENGTH_SHORT).show()
         }
         else{
             moveToActivity(Intent(this,LoginActivity::class.java))
@@ -201,7 +205,7 @@ class MainActivity : AppCompatActivity() {
     */
 
     private fun navigateOnResume(){
-        if(!userIsLoggedIn()){
+        if(auth.isUserLoggedIn()){
             moveToActivity(Intent(this,LoginActivity::class.java))
         }
         else{
@@ -216,15 +220,6 @@ class MainActivity : AppCompatActivity() {
     *               USER SIGNED IN USER SIGN OUT
     *   ##########################################################################
     */
-
-    private fun userIsLoggedIn():Boolean{
-        return Firebase.auth.currentUser!=null
-
-    }
-
-    fun signUserOut(){
-        Firebase.auth.signOut()
-    }
 
     /*
     *   ##########################################################################
