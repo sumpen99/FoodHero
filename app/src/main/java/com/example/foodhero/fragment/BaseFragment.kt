@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.example.foodhero.R
+import com.example.foodhero.global.FragmentInstance
 import com.example.foodhero.interfaces.IFragment
 import com.example.foodhero.widgets.MessageToUser
 
@@ -76,6 +77,10 @@ abstract class BaseFragment: Fragment(), IFragment {
 
     open fun showMessage(){
         messageToUser.showMessage()
+    }
+
+    override fun parentFragment(): FragmentInstance? {
+        return null
     }
 
     /*

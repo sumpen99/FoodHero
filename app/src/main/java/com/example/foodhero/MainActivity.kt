@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                     //logMessage("We have not permission")
                 }else{
                     //logMessage("We have permission")
-                    loadRestaurantsByUserPosition()
+                    //loadRestaurantsByUserPosition()
                 }
             })
 
@@ -157,7 +157,7 @@ class MainActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
     }
 
-    private fun navigateOnBackPressed(){
+    fun navigateOnBackPressed(){
         logMessage("navigate me")
     }
 
@@ -214,7 +214,7 @@ class MainActivity : AppCompatActivity() {
     private fun testResultOfLoadedRestaurants(parameter:Any?){
         savedRestaurantsList = parameter as MutableList<Restaurant>
         for(restaurant in savedRestaurantsList){
-            logMessage(restaurant.toString())
+            //logMessage(restaurant.toString())
         }
     }
 
