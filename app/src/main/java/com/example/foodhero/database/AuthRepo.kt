@@ -19,7 +19,7 @@ class AuthRepo {
 
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                 task -> if (task.isSuccessful) {
-            callback.isSuccessful(true, "Konto skapat.")
+            callback.isSuccessful(true, "Du har loggat in.")
         } else {
             callback.isSuccessful(false, task.exception.toString())
         }
@@ -34,7 +34,7 @@ class AuthRepo {
 
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
                 task -> if (task.isSuccessful) {
-            callback.isSuccessful(true, "Du har loggat in.")
+            callback.isSuccessful(true, "Konto skapat.")
         } else {
             callback.isSuccessful(false, task.exception.toString())
         }

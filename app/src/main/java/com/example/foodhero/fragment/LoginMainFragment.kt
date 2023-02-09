@@ -5,12 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageButton
-import com.example.foodhero.MainActivity
 import com.example.foodhero.R
 import com.example.foodhero.activity.LoginActivity
 import com.example.foodhero.databinding.FragmentLoginmainBinding
 import com.example.foodhero.global.FragmentInstance
-
 
 
 class LoginMainFragment: BaseFragment() {
@@ -40,6 +38,8 @@ class LoginMainFragment: BaseFragment() {
     override fun getFragmentID(): FragmentInstance {
         return  FragmentInstance.FRAGMENT_LOGIN_HOME
     }
+
+
 
     /*
     *   ##########################################################################
@@ -79,15 +79,28 @@ class LoginMainFragment: BaseFragment() {
         userEnterAsGuestBtn.setOnClickListener{
             bottomSheetDialog.dismiss()
             (parentActivity as LoginActivity).loginAsGuest()
+        }
+
+        userLogInBtn.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            (parentActivity as LoginActivity).navigateToFragment(FragmentInstance.FRAGMENT_LOGIN_HOME)
+                 }
+
+        userSignUpBtn.setOnClickListener {
 
         }
         userLogInBtn.setOnClickListener{
             bottomSheetDialog.dismiss()
-
             (parentActivity as LoginActivity).navigateToFragment(FragmentInstance.FRAGMENT_LOGIN_USER)
 
         }
+        userSignUpBtn.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            (parentActivity as LoginActivity).navigateToFragment(FragmentInstance.FRAGMENT_SIGN_UP)
+        }
     }
+
+
 
     /*
     *   ##########################################################################
@@ -106,8 +119,5 @@ class LoginMainFragment: BaseFragment() {
     override fun onStop(){
         super.onStop()
     }*/
-
-
-
 
 }

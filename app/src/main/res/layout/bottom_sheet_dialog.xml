@@ -50,23 +50,27 @@
             android:id="@+id/userSignUpLayout"
             android:layout_width="200dp"
             android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/rounded_corner_black">
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_corner_black"
+            android:clickable="true"
+            android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sign Up"
                 android:layout_gravity="center_vertical"
-                android:fontFamily="sans-serif"
-                android:textColor="@color/white"
                 android:layout_marginStart="10dp"
-                android:textSize="20sp"/>
+                android:fontFamily="sans-serif"
+                android:text="Sign Up"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
             <Space
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
+
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/userSignUpButton"
                 android:layout_width="48dp"
@@ -74,32 +78,35 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="2dp"
                 android:background="@drawable/ic_filter_state"
-                android:src="@drawable/ic_main_login_button_foreground"
-                />
+                android:src="@drawable/ic_main_login_button_foreground" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/userLoginLayout"
             android:layout_width="200dp"
             android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
             android:layout_below="@+id/userSignUpLayout"
-            android:background="@drawable/rounded_corner_black">
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_corner_black"
+            android:clickable="true"
+            android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Log In"
-                android:fontFamily="sans-serif"
-                android:textColor="@color/white"
-                android:layout_marginStart="10dp"
                 android:layout_gravity="center_vertical"
-                android:textSize="20sp"/>
+                android:layout_marginStart="10dp"
+                android:fontFamily="sans-serif"
+                android:text="Log In"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
             <Space
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
+
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/userLoginButton"
                 android:layout_width="48dp"
@@ -107,8 +114,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="2dp"
                 android:background="@drawable/ic_filter_state"
-                android:src="@drawable/ic_main_login_button_foreground"
-                />
+                android:src="@drawable/ic_main_login_button_foreground" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat

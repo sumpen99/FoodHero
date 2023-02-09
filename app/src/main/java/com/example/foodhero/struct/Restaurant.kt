@@ -51,5 +51,4 @@ class Restaurant(
         return 0.0
         //return if (sortOperation == SortOperation.SORT_PRICE) price!! else name!![0].code.toDouble()
     }
-
 }

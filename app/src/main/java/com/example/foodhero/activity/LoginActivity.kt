@@ -10,6 +10,7 @@ import com.example.foodhero.R
 import com.example.foodhero.databinding.ActivityLoginBinding
 import com.example.foodhero.fragment.LoginMainFragment
 import com.example.foodhero.fragment.LoginUserFragment
+import com.example.foodhero.fragment.SignUpFragment
 import com.example.foodhero.global.*
 import com.example.foodhero.interfaces.IFragment
 import com.google.android.gms.tasks.Task
@@ -81,6 +82,7 @@ class LoginActivity: AppCompatActivity() {
         when(fragment){
             FragmentInstance.FRAGMENT_LOGIN_HOME->applyTransaction(LoginMainFragment())
             FragmentInstance.FRAGMENT_LOGIN_USER->applyTransaction(LoginUserFragment())
+            FragmentInstance.FRAGMENT_SIGN_UP->applyTransaction(SignUpFragment())
             FragmentInstance.FRAGMENT_LOGIN_OPTIONS->{}
             else -> {}
         }
@@ -125,6 +127,14 @@ class LoginActivity: AppCompatActivity() {
                 if(task.isSuccessful){navigateOnLogin()}
                 else{showUserException(task)}
             }
+    }
+
+    fun logIn(){
+
+    }
+
+    fun signUp(){
+
     }
 
     private fun showUserException(task: Task<AuthResult>){

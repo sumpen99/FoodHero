@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(auth.isUserLoggedIn()){
-            //auth.signOut()
+            auth.signOut()
             //return
             setContentView(R.layout.activity_main)
             setViewModel()
