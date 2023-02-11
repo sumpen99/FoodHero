@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/medium_transparent"
+    android:background="@color/snow"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:background="@color/black">
+        android:background="@color/snow">
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -51,8 +51,6 @@ fun Activity.downloadImageFromStorage(storeRef: StorageReference, imageView: Ima
     GlideApp.with(this)
         .load(storeRef)
         .error(R.drawable.ic_image_error_foreground)
-        .circleCrop()
-        .override(200, 200)
         .transition(DrawableTransitionOptions.withCrossFade(factory))
         .into(imageView)
 }

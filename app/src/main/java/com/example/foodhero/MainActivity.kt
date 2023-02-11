@@ -12,7 +12,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.example.foodhero.activity.LoginActivity
 import com.example.foodhero.adapter.RestaurantAdapter
 import com.example.foodhero.adapter.RestaurantMenuAdapter
@@ -99,7 +98,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setViewModel(){
-        firestoreViewModel = ViewModelProviders.of(this).get(FirestoreViewModel::class.java)
+        //firestoreViewModel = ViewModelProviders.of(this).get(FirestoreViewModel::class.java)
+        firestoreViewModel = FirestoreViewModel()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -207,7 +207,7 @@ class MainActivity : AppCompatActivity() {
 
     /*
     *   ##########################################################################
-    *               COLLECT RESTAURANTS
+    *               COLLECT RESTAURANTS & MENU
     *   ##########################################################################
     */
 

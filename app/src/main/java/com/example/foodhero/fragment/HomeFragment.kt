@@ -23,11 +23,13 @@ class HomeFragment: BaseFragment() {
     private lateinit var recyclerViewMenu: RecyclerView
     private lateinit var restaurantAdapter: RestaurantAdapter
     private lateinit var restaurantMenuAdapter: RestaurantMenuAdapter
+    private var lastShownId:String = ""
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBottomSheetDialog(R.layout.bottom_sheet_restaurant)
         setRecyclerView()
         setBottomSheetEvent()
+        loadRestaurants()
 
    }
 
@@ -41,7 +43,6 @@ class HomeFragment: BaseFragment() {
         restaurantAdapter = RestaurantAdapter(getMainActivity(),this)
         recyclerViewRestaurant.layoutManager = LinearLayoutManager(activityContext)
         recyclerViewRestaurant.adapter = restaurantAdapter
-        getMainActivity().loadRestaurants(restaurantAdapter)
     }
 
     /*
@@ -52,7 +53,7 @@ class HomeFragment: BaseFragment() {
 
     private fun setBottomSheetEvent(){
         val closeBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.closeMenuBtn)
-        val showInfobtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.showInfoBtn)
+        val showInfoBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.showInfoBtn)
         recyclerViewMenu = bottomSheetDialog.findViewById<RecyclerView>(R.id.menuItemsRecyclerview)
 
         restaurantMenuAdapter = RestaurantMenuAdapter(getMainActivity(),this)
@@ -62,7 +63,7 @@ class HomeFragment: BaseFragment() {
         closeBtn.setOnClickListener{
             bottomSheetDialog.dismiss()
         }
-        showInfobtn.setOnClickListener{
+        showInfoBtn.setOnClickListener{
             bottomSheetDialog.dismiss()
         }
     }
@@ -95,11 +96,30 @@ class HomeFragment: BaseFragment() {
 
     /*
     *   ##########################################################################
+    *               LOAD RESTAURANTS
+    *   ##########################################################################
+    */
+
+    private fun loadRestaurants(){
+        getMainActivity().loadRestaurants(restaurantAdapter)
+    }
+
+    private fun sameRestaurantAsBefore(newRestauranId:String):Boolean{
+        return newRestauranId == lastShownId
+    }
+
+    /*
+    *   ##########################################################################
     *               SHOW RESTAURANTS
     *   ##########################################################################
     */
 
     fun showRestaurant(restaurant: Restaurant){
+        if(sameRestaurantAsBefore(restaurant.restaurantId!!)){
+            bottomSheetDialog.show()
+            return
+        }
+        lastShownId = restaurant.restaurantId
         restaurantMenuAdapter.clearView()
 
         getMainActivity().downloadImageFromStorage(
@@ -113,7 +133,7 @@ class HomeFragment: BaseFragment() {
         bottomSheetDialog.findViewById<TextView>(R.id.restDeliveryTime).text = restaurant.getDeliveryTime()
 
         bottomSheetDialog.show()
-        getMainActivity().loadRestaurantMenu(restaurant.restaurantId!!,restaurantMenuAdapter)
+        getMainActivity().loadRestaurantMenu(restaurant.restaurantId,restaurantMenuAdapter)
 
     }
 

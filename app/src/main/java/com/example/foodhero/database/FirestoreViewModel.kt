@@ -2,7 +2,6 @@ package com.example.foodhero.database
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.foodhero.adapter.RestaurantAdapter
 import com.example.foodhero.adapter.RestaurantMenuAdapter
 import com.example.foodhero.global.ServerResult
@@ -13,11 +12,10 @@ import com.firebase.geofire.GeoLocation
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.tasks.await
 
-class FirestoreViewModel:ViewModel() {
+class FirestoreViewModel {
     var serverDetails = ArrayList<ServerDetails>()
     var firebaseRepository = FirestoreRepository()
     var savedRestaurants : MutableLiveData<List<Restaurant>?> = MutableLiveData()
