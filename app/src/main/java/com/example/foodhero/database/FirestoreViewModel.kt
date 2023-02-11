@@ -3,6 +3,8 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.foodhero.adapter.RestaurantAdapter
+import com.example.foodhero.adapter.RestaurantMenuAdapter
 import com.example.foodhero.global.ServerResult
 import com.example.foodhero.global.logMessage
 import com.example.foodhero.struct.*
@@ -122,12 +124,16 @@ class FirestoreViewModel:ViewModel() {
         return savedRestaurantMenuItems
     }*/
 
-    fun getMenuItems(restaurantId:String){
+    fun getMenuItems(restaurantId:String,menuAdapter:RestaurantMenuAdapter){
         firebaseRepository.getSavedMenuItems(restaurantId).get().addOnCompleteListener{it->
             if(it.isSuccessful){
                 for(doc in it.result){
                     //menu.add(doc.toObject(MenuItem::class.java))
-                    logMessage(doc.toObject(MenuItem::class.java).toString())
+                    val menuItem = doc.toObject(MenuItem::class.java)
+                    menuAdapter.addMenuItem(menuItem)
+                    //menuItem?:continue
+                    //menuList.add(doc.toObject(MenuItem::class.java))
+                    //logMessage(doc.toObject(MenuItem::class.java).toString())
                 }
             }
         }
@@ -167,7 +173,7 @@ class FirestoreViewModel:ViewModel() {
     fun getRestaurantsGeo(
         geoMiddle: GeoLocation,
         radiusKm:Double,
-        callbackPrintForTesting:(args:Any?)->Unit){
+        restaurantAdapter:RestaurantAdapter){
         val radiusInM = radiusKm*1000
         val bounds = GeoFireUtils.getGeoHashQueryBounds(geoMiddle,radiusInM)
         val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
@@ -179,7 +185,6 @@ class FirestoreViewModel:ViewModel() {
             tasks.add(q.get())
         }
         Tasks.whenAllComplete(tasks).addOnCompleteListener{
-            val savedRestaurantsList : MutableList<Restaurant> = mutableListOf()
             for (task in tasks) {
                     val snap = task.result
                     for (doc in snap!!.documents) {
@@ -191,11 +196,10 @@ class FirestoreViewModel:ViewModel() {
                         if (distanceInM <= radiusInM) {
                             val restaurant = doc.toObject(Restaurant::class.java)
                             restaurant?:continue
-                            savedRestaurantsList.add(restaurant)
+                            restaurantAdapter.addRestaurant(restaurant)
                         }
                     }
                 }
-                callbackPrintForTesting(savedRestaurantsList)
             }
     }
 

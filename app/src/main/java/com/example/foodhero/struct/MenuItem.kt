@@ -12,6 +12,14 @@ class MenuItem(
     val menuItemId:String?=null,
     val loggoDownloadUrl:String?=null,):java.io.Serializable {
 
+    fun getIngredients():String{
+        return "Salt,Peppar\n\n\nSalt,Peppar"
+    }
+
+    fun getCurrentPrice():String{
+        return "$price kr"
+    }
+
     override fun toString(): String {
         return "\n" +
                 "Name: $name\n" +

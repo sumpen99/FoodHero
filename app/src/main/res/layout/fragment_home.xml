@@ -6,15 +6,18 @@
     android:layout_height="match_parent">
 
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="329dp"
-        android:layout_height="166dp"
-        android:text="MAIN PAGE"
-        android:textSize="50sp"
-        android:gravity="center_horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/restaurantRecyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/restaurant_card" />
 </androidx.constraintlayout.widget.ConstraintLayout>

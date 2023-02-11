@@ -7,4 +7,5 @@ interface IFragment {
     fun getFragmentID(): FragmentInstance
     fun setFragmentBinding(inflater: LayoutInflater, container: ViewGroup?,)
     fun setFragmentView()
+    fun parentFragment():FragmentInstance?
 }
