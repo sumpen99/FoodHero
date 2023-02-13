@@ -18,6 +18,9 @@ import com.example.foodhero.global.hideKeyboard
 
 class SignUpFragment:BaseFragment() {
     private lateinit var emailField: EditText
+    private lateinit var phoneNumberField: EditText
+    private lateinit var adressField: EditText
+    private lateinit var socialSecurityNumberField: EditText
     private lateinit var passwordField: EditText
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,6 +62,9 @@ class SignUpFragment:BaseFragment() {
     @SuppressLint("ClickableViewAccessibility")
     private fun setEventListener(view: View){
         emailField = signUpUserBinding().userEmail
+        phoneNumberField = signUpUserBinding().userPhonenumber
+        adressField = signUpUserBinding().userAdress
+        socialSecurityNumberField = signUpUserBinding().userSocialSecurityNumber
         passwordField = signUpUserBinding().userPassword
 
         val logInBtn: Button = signUpUserBinding().logInBtn
