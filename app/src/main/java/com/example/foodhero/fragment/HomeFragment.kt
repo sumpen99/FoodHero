@@ -16,6 +16,7 @@ import com.example.foodhero.databinding.FragmentHomeBinding
 import com.example.foodhero.global.FragmentInstance
 import com.example.foodhero.global.downloadImageFromStorage
 import com.example.foodhero.struct.Restaurant
+import com.example.foodhero.widgets.CathegoryItem
 
 
 class HomeFragment: BaseFragment() {
@@ -30,6 +31,7 @@ class HomeFragment: BaseFragment() {
         setRecyclerView()
         setBottomSheetEvent()
         loadRestaurants()
+        loadCathegorys()
 
    }
 
@@ -106,6 +108,17 @@ class HomeFragment: BaseFragment() {
 
     private fun sameRestaurantAsBefore(newRestauranId:String):Boolean{
         return newRestauranId == lastShownId
+    }
+
+    private fun loadCathegorys(){
+        val catContainer = getHomeBinding().restaurantCatContainerLayout
+        var i = 0
+        while(i<10){
+            val cat = CathegoryItem(parentActivity,null)
+            catContainer.addView(cat,catContainer.childCount)
+            i++
+        }
+        //android:id="@+id/restaurantCatContainerLayout"
     }
 
     /*
