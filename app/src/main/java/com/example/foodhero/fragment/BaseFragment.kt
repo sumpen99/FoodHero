@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.example.foodhero.R
 import com.example.foodhero.global.FragmentInstance
+import com.example.foodhero.global.logMessage
 import com.example.foodhero.interfaces.IFragment
 import com.example.foodhero.widgets.MessageToUser
 
@@ -27,6 +28,7 @@ abstract class BaseFragment: Fragment(), IFragment {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View {
         if(baseView!=null){return baseView!!}
+        logMessage("need creation")
         setFragmentBinding(inflater,container)
         setFragmentView()
         setParentActivity()
@@ -53,14 +55,12 @@ abstract class BaseFragment: Fragment(), IFragment {
 
     open fun setBottomSheetDialog(layoutID:Int){
         bottomSheetDialog = Dialog(parentActivity,R.style.MaterialDialogSheet)
-        bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog)
+        bottomSheetDialog.setContentView(layoutID)
         bottomSheetDialog.setCancelable(true)
         bottomSheetDialog.window?:return
         bottomSheetDialog.window!!.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         bottomSheetDialog.window!!.setGravity(Gravity.BOTTOM)
     }
-
-
 
     /*
     *   ##########################################################################

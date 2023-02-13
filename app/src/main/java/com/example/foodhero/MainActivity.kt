@@ -12,16 +12,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.lifecycleScope
 import com.example.foodhero.activity.LoginActivity
+import com.example.foodhero.adapter.RestaurantAdapter
+import com.example.foodhero.adapter.RestaurantMenuAdapter
 import com.example.foodhero.database.AuthRepo
 import com.example.foodhero.database.FirestoreViewModel
 import com.example.foodhero.databinding.ActivityMainBinding
 import com.example.foodhero.fragment.HomeFragment
 import com.example.foodhero.global.*
-import com.example.foodhero.struct.Restaurant
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.storage.StorageReference
 
 class MainActivity : AppCompatActivity() {
     private lateinit var firestoreViewModel: FirestoreViewModel
@@ -29,11 +29,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var permissionsList: ArrayList<String>
     private var permissionDialogIsOpen:Boolean = false
     private lateinit var bottomNavMenu: BottomNavigationView
-    private var savedRestaurantsList : MutableList<Restaurant> = mutableListOf()
     private var permissionsCount = 0
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
     private val auth = AuthRepo()
+    private var loadRestaurantsGeo = false
+    private var currentFragment:FragmentInstance? = null
 
 
     private var permissionsStr = arrayOf<String>(
@@ -58,12 +59,11 @@ class MainActivity : AppCompatActivity() {
                     askForPermissions(permissionsList)
                 } else if (permissionsCount > 0) {
                     showPermissionDialog()
-                    // sort restaurants by some default
-                    // or let the user pick a city
-                    //logMessage("We have not permission")
+                    loadRestaurantsGeo = false
+                    navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
                 }else{
-                    //logMessage("We have permission")
-                    //loadRestaurantsByUserPosition()
+                    loadRestaurantsGeo = true
+                    navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
                 }
             })
 
@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
             setBottomNavigationMenu()
             setOnBackNavigation()
             launchPermissionRequest()
-            navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
+            //navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
             Toast.makeText(applicationContext, "Välkommen tillbaka ${auth.getEmail()}.", Toast.LENGTH_SHORT).show()
         }
         else{
@@ -98,7 +98,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setViewModel(){
-        firestoreViewModel = ViewModelProviders.of(this).get(FirestoreViewModel::class.java)
+        //firestoreViewModel = ViewModelProviders.of(this).get(FirestoreViewModel::class.java)
+        firestoreViewModel = FirestoreViewModel()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -156,9 +157,9 @@ class MainActivity : AppCompatActivity() {
         }
         onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
     }
-
-    fun navigateOnBackPressed(){
-        logMessage("navigate me")
+    
+    private fun navigateOnBackPressed(){
+        logMessage(supportFragmentManager.fragments.toString())
     }
 
     /*
@@ -168,6 +169,8 @@ class MainActivity : AppCompatActivity() {
     */
 
     private fun navigateToFragment(fragment: FragmentInstance){
+        if(isSameFragment(fragment))return
+        currentFragment = fragment
         when(fragment){
             FragmentInstance.FRAGMENT_MAIN_HOME->applyTransaction(HomeFragment())
             else -> {}
@@ -178,6 +181,11 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.homeLayout,frag).commit()
         }
+    }
+
+    private fun isSameFragment(fragmentInstance:FragmentInstance):Boolean{
+        currentFragment?:return false
+        return currentFragment == fragmentInstance
     }
 
     /*
@@ -199,33 +207,38 @@ class MainActivity : AppCompatActivity() {
 
     /*
     *   ##########################################################################
-    *               NAVIGATE BASED ON CURRENT USER STATUS
+    *               COLLECT RESTAURANTS & MENU
     *   ##########################################################################
     */
 
-    private fun loadRestaurantsByUserPosition(){
-        //savedRestaurantsList.clear()
-        //val userLocation = getUserLocation()
-        val userLocation = getCenterOfStockholm()
-        val radiusKm = 20.0
-        firestoreViewModel.getRestaurantsGeo(userLocation,radiusKm,::testResultOfLoadedRestaurants)
+    fun getRestaurantLoggoRef(downloadUrl:String?): StorageReference {
+        return firestoreViewModel.firebaseRepository.getRestaurantLoggoReference(downloadUrl)
     }
 
-    private fun testResultOfLoadedRestaurants(parameter:Any?){
-        savedRestaurantsList = parameter as MutableList<Restaurant>
-        for(restaurant in savedRestaurantsList){
-            //logMessage(restaurant.toString())
+    fun getRestaurantMenuItemLoggoRef(downloadUrl:String?): StorageReference {
+        return firestoreViewModel.firebaseRepository.getMenuItemLoggoReference(downloadUrl)
+    }
+
+    fun loadRestaurants(restaurantAdapter:RestaurantAdapter){
+        if(loadRestaurantsGeo){
+            val userLocation = getCenterOfStockholm()
+            val radiusKm = 20.0
+            firestoreViewModel.getRestaurantsGeo(userLocation,radiusKm,restaurantAdapter)
         }
     }
 
-    fun getListOfLoadedRestaurants():List<Restaurant>{
-        //firestoreViewModel.getMenuItems(restaurant.Id!!)
-        //firestoreViewModel.getDrinkList(restaurant.Id!!)
-        for(restaurant in savedRestaurantsList){
-            logMessage(restaurant.toString())
-        }
-        return savedRestaurantsList
+    fun loadRestaurantMenu(restaurantId:String,restaurantMenuAdapter: RestaurantMenuAdapter){
+        firestoreViewModel.getMenuItems(restaurantId,restaurantMenuAdapter)
+
     }
+
+    private fun loadRestaurantsByDefault(restaurantAdapter:RestaurantAdapter){
+        //val userLocation = getCenterOfStockholm()
+        //val radiusKm = 20.0
+        //firestoreViewModel.getRestaurantsGeo(userLocation,radiusKm,restaurantAdapter)
+    }
+
+
 
     /*
     *   ##########################################################################
