@@ -5,19 +5,109 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:id="@+id/userPositionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:background="@color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+             android:src="@drawable/ic_user_position_foreground" />
+
+        <TextView
+            android:id="@+id/menuItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="sans-serif"
+            android:text="@string/user_allowed_position"
+            android:textColor="@color/background_medium_dark"
+            android:textSize="@dimen/cardTextHeader"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_arrow_point_down_foreground" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/restaurantCatLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        android:background="@color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userPositionLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="sans-serif"
+            android:text="Kategorier"
+            android:textColor="@color/snow"
+            android:textSize="@dimen/cardTextHeader"
+            android:textStyle="bold" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:background="@color/medium_transparent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/restImage"
+                    android:layout_width="10dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/appbackgroundimage"
+                    android:scaleType="centerCrop"
+                    />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/restImage2"
+                    android:layout_width="10dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/appbackgroundimage"
+                    android:scaleType="centerCrop"
+                    />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/restImage3"
+                    android:layout_width="10dp"
+                    android:layout_height="101dp"
+                    android:src="@drawable/appbackgroundimage"
+                    android:scaleType="centerCrop"
+                    />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/restaurantRecyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
+        android:layout_height="0dp"
         android:paddingStart="10dp"
         android:paddingTop="10dp"
         android:paddingEnd="10dp"
         android:paddingBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/restaurantCatLayout"
         tools:listitem="@layout/restaurant_card" />
 </androidx.constraintlayout.widget.ConstraintLayout>
