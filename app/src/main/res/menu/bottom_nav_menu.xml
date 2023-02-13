@@ -10,9 +10,9 @@
         />
     <item
         android:id="@+id/navigateSearch"
-        android:title="Search"
+        android:title="Favorit"
         android:fontFamily="sans-serif"
-        android:icon="@drawable/baseline_search_24"
+        android:icon="@drawable/baseline_favorite_24"
         />
     <item
         android:id="@+id/navigateCart"
