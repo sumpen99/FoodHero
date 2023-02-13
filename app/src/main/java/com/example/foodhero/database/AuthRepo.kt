@@ -34,6 +34,7 @@ class AuthRepo {
 
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
                 task -> if (task.isSuccessful) {
+
             callback.isSuccessful(true, "Konto skapat.")
         } else {
             callback.isSuccessful(false, task.exception.toString())
