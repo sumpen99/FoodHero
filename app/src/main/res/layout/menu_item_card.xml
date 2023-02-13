@@ -5,18 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    app:cardBackgroundColor="@color/snow"
+    app:cardBackgroundColor="@color/black"
+
     app:cardElevation="6dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/white">
+        android:background="@color/snow">
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+
+            >
 
             <TextView
                 android:id="@+id/menuItemName"
@@ -55,9 +58,11 @@
                 android:id="@+id/floatingActionButtonBasket"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="#F6F3F3"
                 android:clickable="true"
-                app:backgroundTint="#C1BEBE"
-                app:rippleColor="#251B1B"
+                android:tint="#FAFAFA"
+                app:backgroundTint="#C6FFFDFD"
+                app:rippleColor="#F3F0F0"
                 app:srcCompat="@drawable/baseline_shopping_basket_24" />
 
         </LinearLayout>

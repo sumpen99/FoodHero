@@ -6,41 +6,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/snow"
+    android:background="@color/black"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_margin="10dp"
         android:layout_height="40dp"
         android:orientation="horizontal">
+
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/closeMenuBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginStart="10dp"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/ic_filter_state"
-            android:src="@drawable/ic_chevron_left_foreground"
-            />
+            android:layout_marginStart="10dp"
+            android:backgroundTint="#00FFFFFF"
+            android:src="@drawable/baseline_arrow_back_24" />
         <Space
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
+
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/showInfoBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/ic_filter_state"
-            android:src="@drawable/ic_kebab_menu_foreground"
-            />
+            android:backgroundTint="#0DFFFFFF"
+            android:src="@drawable/baseline_reorder_24" />
     </LinearLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:background="@color/snow">
+        android:background="@color/black">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -165,15 +165,17 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="24dp">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="MENU"
-                        android:textColor="@color/background_medium_dark"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="sans-serif"
                         android:paddingBottom="20dp"
-                        android:textSize="@dimen/cardTextHeader"
+                        android:text="MENU"
                         android:textAlignment="center"
-                        android:layout_gravity="center_horizontal" />
+                        android:textColor="@color/snow"
+                        android:textSize="@dimen/cardTextHeader" />
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
