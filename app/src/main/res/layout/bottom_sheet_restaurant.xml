@@ -34,7 +34,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="10dp"
             android:backgroundTint="#0DFFFFFF"
-            android:src="@drawable/baseline_reorder_24" />
+            android:src="@drawable/baseline_shopping_basket_24" />
     </LinearLayout>
     <ScrollView
         android:layout_width="match_parent"
@@ -184,7 +184,7 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/menuItemsRecyclerview"
                             android:layout_width="match_parent"
-                            android:layout_height="2677dp"
+                            android:layout_height="2668dp"
                             android:layout_marginTop="10dp"
                             android:nestedScrollingEnabled="false"
                             android:paddingStart="10dp"
