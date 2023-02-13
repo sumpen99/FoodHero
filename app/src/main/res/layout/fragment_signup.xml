@@ -68,16 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Social security number"
-                    android:textSize="22sp" />
-                <EditText
-                    android:id="@+id/userSocialSecurityNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

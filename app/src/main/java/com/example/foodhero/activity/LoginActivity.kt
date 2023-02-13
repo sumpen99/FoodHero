@@ -123,10 +123,7 @@ class LoginActivity: AppCompatActivity() {
 
     fun loginWithCredentials(
         email: String,
-        password: String,
-        toString: String,
-        toString1: String,
-        toString2: String
+        password: String
     ){
         Firebase.auth.signInWithEmailAndPassword(email,password)
             .addOnCompleteListener(this) { task ->

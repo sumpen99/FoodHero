@@ -73,9 +73,6 @@ class LoginUserFragment:BaseFragment() {
         if( illegalUserInput()){return}
         (parentActivity as LoginActivity).loginWithCredentials(
             emailField.text.toString(),
-            passwordField.text.toString(),
-            adressField.text.toString(),
-            socialSecurityNumberField.text.toString(),
             passwordField.text.toString()
         )
     }

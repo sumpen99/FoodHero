@@ -61,7 +61,6 @@ class SignUpFragment:BaseFragment() {
         emailField = signUpUserBinding().userEmail
         phoneNumberField = signUpUserBinding().userPhonenumber
         adressField = signUpUserBinding().userAdress
-        socialSecurityNumberField = signUpUserBinding().userSocialSecurityNumber
         passwordField = signUpUserBinding().userPassword
 
         val signUpBtn: Button = signUpUserBinding().signUpBtn
@@ -73,7 +72,6 @@ class SignUpFragment:BaseFragment() {
                     emailField.hideKeyboard();
                     phoneNumberField.hideKeyboard();
                     adressField.hideKeyboard();
-                    socialSecurityNumberField.hideKeyboard();
                     passwordField.hideKeyboard()}
             }
             true
@@ -85,10 +83,8 @@ class SignUpFragment:BaseFragment() {
         (parentActivity as LoginActivity)
             .loginWithCredentials(
                 emailField.text.toString(),
-                phoneNumberField.text.toString(),
-                adressField.text.toString(),
-                socialSecurityNumberField.text.toString(),
-                passwordField.text.toString())
+                phoneNumberField.text.toString()
+            )
 
     }
 
@@ -98,11 +94,9 @@ class SignUpFragment:BaseFragment() {
                 emailField.text.toString().isEmpty() ||
                         phoneNumberField.text.toString().isEmpty() ||
                         adressField.text.toString().isEmpty() ||
-                        socialSecurityNumberField.text.toString().isEmpty()||
                         passwordField.text.toString().isEmpty()
 
                 )
     }
-
 
 }

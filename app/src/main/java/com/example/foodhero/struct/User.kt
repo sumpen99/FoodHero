@@ -12,6 +12,5 @@ class User (
                          "Email: $email\n" +
                          "Phonenumber: $phoneNumber\n" +
                          "Adress: $adress\n" +
-                         "Socailsecuritynumber: $socialSecurityNumber\n" +
                          "Password: $password\n"}
 }
