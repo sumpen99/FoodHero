@@ -7,10 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import androidx.fragment.app.Fragment
-import com.example.foodhero.R
 import com.example.foodhero.activity.LoginActivity
-import com.example.foodhero.databinding.FragmentLoginuserBinding
 import com.example.foodhero.databinding.FragmentSignupBinding
 import com.example.foodhero.global.FragmentInstance
 import com.example.foodhero.global.hideKeyboard
@@ -67,25 +64,44 @@ class SignUpFragment:BaseFragment() {
         socialSecurityNumberField = signUpUserBinding().userSocialSecurityNumber
         passwordField = signUpUserBinding().userPassword
 
-        val logInBtn: Button = signUpUserBinding().logInBtn
-        logInBtn.setOnClickListener{logIn()}
+        val signUpBtn: Button = signUpUserBinding().signUpBtn
+        signUpBtn.setOnClickListener{signUp()}
 
         view.setOnTouchListener { v, event ->
             when(event.actionMasked){
-                MotionEvent.ACTION_DOWN -> {emailField.hideKeyboard();passwordField.hideKeyboard()}
+                MotionEvent.ACTION_DOWN -> {
+                    emailField.hideKeyboard();
+                    phoneNumberField.hideKeyboard();
+                    adressField.hideKeyboard();
+                    socialSecurityNumberField.hideKeyboard();
+                    passwordField.hideKeyboard()}
             }
             true
         }
     }
 
-    private fun logIn(){
+    private fun signUp(){
         if( illegalUserInput()){return}
-        (parentActivity as LoginActivity).loginWithCredentials(emailField.text.toString(),passwordField.text.toString())
+        (parentActivity as LoginActivity)
+            .loginWithCredentials(
+                emailField.text.toString(),
+                phoneNumberField.text.toString(),
+                adressField.text.toString(),
+                socialSecurityNumberField.text.toString(),
+                passwordField.text.toString())
+
     }
 
 
     private fun illegalUserInput():Boolean{
-        return (emailField.text.toString().isEmpty() || passwordField.text.toString().isEmpty())
+        return (
+                emailField.text.toString().isEmpty() ||
+                        phoneNumberField.text.toString().isEmpty() ||
+                        adressField.text.toString().isEmpty() ||
+                        socialSecurityNumberField.text.toString().isEmpty()||
+                        passwordField.text.toString().isEmpty()
+
+                )
     }
 
 

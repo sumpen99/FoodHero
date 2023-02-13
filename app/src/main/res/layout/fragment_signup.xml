@@ -97,7 +97,7 @@
                     android:layout_weight="1" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/logInBtn"
+                    android:id="@+id/signUpBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_white"

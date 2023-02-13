@@ -121,7 +121,13 @@ class LoginActivity: AppCompatActivity() {
         }
     }
 
-    fun loginWithCredentials(email:String,password:String){
+    fun loginWithCredentials(
+        email: String,
+        password: String,
+        toString: String,
+        toString1: String,
+        toString2: String
+    ){
         Firebase.auth.signInWithEmailAndPassword(email,password)
             .addOnCompleteListener(this) { task ->
                 if(task.isSuccessful){navigateOnLogin()}
