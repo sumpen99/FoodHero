@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="menuItemHeight">100dp</dimen>
+    <dimen name="bottomMapMenuIcon">30dp</dimen>
+    <dimen name="cardTextHeader">20sp</dimen>
+    <dimen name="cardText">18sp</dimen>
+    <dimen name="userCardText">13sp</dimen>
+</resources>

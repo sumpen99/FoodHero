@@ -24,6 +24,36 @@ class Restaurant(
     val restaurantId:String?=null,
     val loggoDownloadUrl:String?=null,):java.io.Serializable {
 
+    fun getOpeningHours():String{
+        return "06.00 - 22.00"
+    }
+
+    fun getUserRatingString():String{
+        return if(userRating!! > 7.0) " Very Good, $userRating"
+            else "$userRating"
+    }
+
+    fun getDeliveryCostString():String{
+        return "50 kr"
+    }
+
+    fun getDeliveryTime():String{
+        return "15 - 30 min"
+    }
+
+    fun getRestaurantInfo():String{
+        return "No Info Yet\n\n\n"
+    }
+
+    fun getCategoriesString():String{
+        cathegoriesDishes?:return ""
+        var out = ""
+        for(cat:String in cathegoriesDishes){
+            out+= "$cat "
+        }
+        return out
+    }
+
     override fun toString(): String {
         return "\n" +
                 "Country: : $country\n" +

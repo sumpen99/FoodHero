@@ -13,12 +13,16 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.example.foodhero.R
 import com.firebase.geofire.GeoLocation
 import com.google.firebase.firestore.GeoPoint
+import com.google.firebase.storage.StorageReference
 
 /*
 *   ##########################################################################
@@ -35,6 +39,22 @@ fun Activity.showPermissionDialog() {
     alertDialog = builder.create()
     alertDialog.show()
 }
+
+/*
+*   ##########################################################################
+*                                LOAD IMAGES FROM STORAGE
+*   ##########################################################################
+*
+* */
+fun Activity.downloadImageFromStorage(storeRef: StorageReference, imageView: ImageView){
+    val factory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()
+    GlideApp.with(this)
+        .load(storeRef)
+        .error(R.drawable.ic_image_error_foreground)
+        .transition(DrawableTransitionOptions.withCrossFade(factory))
+        .into(imageView)
+}
+
 
 /*
 *   ##########################################################################
