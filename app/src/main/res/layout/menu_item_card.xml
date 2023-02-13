@@ -17,34 +17,49 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/menuItemName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                android:fontFamily="sans-serif"
                 android:padding="10dp"
-                android:textColor="@color/background_medium_dark"
                 android:text="Burger Burger"
+                android:textColor="@color/background_medium_dark"
                 android:textSize="@dimen/cardTextHeader"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/menuItemIngredients"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:textColor="@color/background_medium_dark"
-                android:text="Salt peppar mm\n\n\nMore salt peppar"
+                android:fontFamily="sans-serif-thin"
                 android:padding="10dp"
+                android:text="Salt peppar mm\n\n\nMore salt peppar"
+                android:textColor="@color/black"
                 android:textSize="@dimen/cardText" />
+
             <TextView
                 android:id="@+id/menuItemPrice"
-                android:layout_width="wrap_content"
+                android:layout_width="87dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:textColor="@color/background_medium_dark"
-                android:text="140 kr"
                 android:padding="10dp"
+                android:text="140 kr"
+                android:textColor="@color/background_medium_dark"
                 android:textSize="@dimen/cardText" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingActionButtonBasket"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                app:backgroundTint="#C1BEBE"
+                app:rippleColor="#251B1B"
+                app:srcCompat="@drawable/baseline_shopping_basket_24" />
+
         </LinearLayout>
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/menuItemLoggo"
@@ -53,6 +68,8 @@
             android:layout_weight="1"
             android:src="@drawable/appbackgroundimage"
             android:scaleType="centerCrop"
-            />
+
+        />
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>
