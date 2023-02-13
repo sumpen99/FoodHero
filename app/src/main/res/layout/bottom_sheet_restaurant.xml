@@ -184,7 +184,7 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/menuItemsRecyclerview"
                             android:layout_width="match_parent"
-                            android:layout_height="2677dp"
+                            android:layout_height="match_parent"
                             android:layout_marginTop="10dp"
                             android:nestedScrollingEnabled="false"
                             android:paddingStart="10dp"
