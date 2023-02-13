@@ -4,7 +4,6 @@ class User (
     val email:String?=null,
     val phoneNumber:String?=null,
     val adress:String?=null,
-    val socialSecurityNumber:String?=null,
     val password:String?=null, ):java.io.Serializable
          {
              override fun toString(): String {
