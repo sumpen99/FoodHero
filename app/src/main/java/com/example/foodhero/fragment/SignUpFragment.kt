@@ -17,7 +17,6 @@ class SignUpFragment:BaseFragment() {
     private lateinit var emailField: EditText
     private lateinit var phoneNumberField: EditText
     private lateinit var adressField: EditText
-    private lateinit var socialSecurityNumberField: EditText
     private lateinit var passwordField: EditText
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
