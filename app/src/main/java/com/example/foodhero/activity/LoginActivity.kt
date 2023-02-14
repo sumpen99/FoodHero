@@ -9,7 +9,10 @@ import com.example.foodhero.MainActivity
 import com.example.foodhero.R
 import com.example.foodhero.databinding.ActivityLoginBinding
 import com.example.foodhero.fragment.LoginMainFragment
+import com.example.foodhero.fragment.LoginUserFragment
+import com.example.foodhero.fragment.SignUpFragment
 import com.example.foodhero.global.*
+import com.example.foodhero.interfaces.IFragment
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuthException
@@ -55,7 +58,18 @@ class LoginActivity: AppCompatActivity() {
     }
 
     private fun navigateOnBackPressed(){
-        logMessage("navigate me")
+        val moveToParent = getFragmentParent()
+        moveToParent?:return
+        navigateToFragment(moveToParent)
+    }
+
+    private fun getFragmentParent():FragmentInstance?{
+        return try{
+            val size = supportFragmentManager.fragments.size
+            (supportFragmentManager.fragments[size-1] as IFragment).parentFragment()
+        }catch(err:Exception){
+            null
+        }
     }
 
     /*
@@ -64,7 +78,7 @@ class LoginActivity: AppCompatActivity() {
     *   ##########################################################################
     */
 
-   private fun navigateToFragment(fragment: FragmentInstance){
+   fun navigateToFragment(fragment: FragmentInstance){
         when(fragment){
             FragmentInstance.FRAGMENT_LOGIN_HOME->applyTransaction(LoginMainFragment(intent))
             FragmentInstance.FRAGMENT_LOGIN_OPTIONS->{}
@@ -103,6 +117,25 @@ class LoginActivity: AppCompatActivity() {
             }
 
         }
+    }
+
+    fun loginWithCredentials(
+        email: String,
+        password: String
+    ){
+        Firebase.auth.signInWithEmailAndPassword(email,password)
+            .addOnCompleteListener(this) { task ->
+                if(task.isSuccessful){navigateOnLogin()}
+                else{showUserException(task)}
+            }
+    }
+
+    fun logIn(){
+
+    }
+
+    fun signUp(){
+
     }
 
     private fun showUserException(task: Task<AuthResult>){

@@ -144,6 +144,7 @@ fun getRandomNumber(maxSize:Int,minValue:Double):Double{
     return rnd+minValue
 }
 
+fun Double.format(digits: Int) = "%.${digits}f".format(this)
 
 /*
 *   ##########################################################################

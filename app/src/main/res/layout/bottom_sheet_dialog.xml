@@ -95,13 +95,13 @@
                 android:text="    Guest Mode"
                 android:fontFamily="sans-serif-light"
                 android:textColor="@color/white"
-                android:layout_marginStart="10dp"
-                android:layout_gravity="center_vertical"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
+
             <Space
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
+
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/userEnterAsGuestButton"
                 android:layout_width="48dp"

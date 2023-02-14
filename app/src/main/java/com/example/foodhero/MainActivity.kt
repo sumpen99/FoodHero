@@ -98,7 +98,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setViewModel(){
-        //firestoreViewModel = ViewModelProviders.of(this).get(FirestoreViewModel::class.java)
         firestoreViewModel = FirestoreViewModel()
     }
 
@@ -157,7 +156,7 @@ class MainActivity : AppCompatActivity() {
         }
         onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
     }
-
+    
     private fun navigateOnBackPressed(){
         logMessage(supportFragmentManager.fragments.toString())
     }

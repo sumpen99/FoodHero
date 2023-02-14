@@ -11,10 +11,7 @@ import com.example.foodhero.activity.LoginActivity
 import com.example.foodhero.databinding.FragmentLoginmainBinding
 import com.example.foodhero.global.FragmentInstance
 
-
-
 class LoginMainFragment(intent: Intent) : BaseFragment() {
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setEventListener(view)
@@ -40,6 +37,8 @@ class LoginMainFragment(intent: Intent) : BaseFragment() {
     override fun getFragmentID(): FragmentInstance {
         return  FragmentInstance.FRAGMENT_LOGIN_HOME
     }
+
+
 
     /*
     *   ##########################################################################
@@ -79,9 +78,28 @@ class LoginMainFragment(intent: Intent) : BaseFragment() {
         userEnterAsGuestBtn.setOnClickListener{
             bottomSheetDialog.dismiss()
             (parentActivity as LoginActivity).loginAsGuest()
+        }
+
+        userLogInBtn.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            (parentActivity as LoginActivity).navigateToFragment(FragmentInstance.FRAGMENT_LOGIN_HOME)
+                 }
+
+        userSignUpBtn.setOnClickListener {
 
         }
+        userLogInBtn.setOnClickListener{
+            bottomSheetDialog.dismiss()
+            (parentActivity as LoginActivity).navigateToFragment(FragmentInstance.FRAGMENT_LOGIN_USER)
+
+        }
+        userSignUpBtn.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            (parentActivity as LoginActivity).navigateToFragment(FragmentInstance.FRAGMENT_SIGN_UP)
+        }
     }
+
+
 
     /*
     *   ##########################################################################
@@ -100,8 +118,5 @@ class LoginMainFragment(intent: Intent) : BaseFragment() {
     override fun onStop(){
         super.onStop()
     }*/
-
-
-
 
 }
