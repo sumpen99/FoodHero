@@ -184,24 +184,25 @@ class FirestoreViewModel {
         }
         Tasks.whenAllComplete(tasks).addOnCompleteListener{
             for (task in tasks) {
-                    val snap = task.result
-                    for (doc in snap!!.documents) {
-                        val lat = doc.getDouble("lat")!!
-                        val lng = doc.getDouble("lon")!!
+                val snap = task.result
+                for (doc in snap!!.documents) {
+                    val lat = doc.getDouble("lat")!!
+                    val lng = doc.getDouble("lon")!!
 
-                        val docLocation = GeoLocation(lat, lng)
-                        val distanceInM = GeoFireUtils.getDistanceBetween(docLocation, geoMiddle)
-                        if (distanceInM <= radiusInM) {
-                            val restaurant = doc.toObject(Restaurant::class.java)
-                            restaurant?:continue
-                            restaurantAdapter.addRestaurant(restaurant)
-                        }
+                    val docLocation = GeoLocation(lat, lng)
+                    val distanceInM = GeoFireUtils.getDistanceBetween(docLocation, geoMiddle)
+                    if (distanceInM <= radiusInM) {
+                        val restaurant = doc.toObject(Restaurant::class.java)
+                        restaurant?:continue
+                        restaurantAdapter.addRestaurant(restaurant)
+                        restaurant.cathegoriesDishes?:continue
+                        restaurantAdapter.addNewCathegorie(restaurant.cathegoriesDishes[0])
                     }
                 }
             }
+            restaurantAdapter.loadAllCathegories()
+        }
     }
-
-
 
     fun deleteMenuFromFirebase(restaurantId:String,docId:String){
         firebaseRepository.deleteMenuItem(restaurantId,docId).addOnFailureListener {

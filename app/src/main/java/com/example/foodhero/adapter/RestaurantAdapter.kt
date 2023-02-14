@@ -14,6 +14,7 @@ import com.example.foodhero.struct.Restaurant
 
 class RestaurantAdapter(private val activity:MainActivity,private val fragment: HomeFragment):RecyclerView.Adapter<RestaurantAdapter.ViewHolder>() {
     private val restaurantList = ArrayList<Restaurant>()
+    var listOfCathegories = mutableMapOf <String,Int>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.restaurant_card, parent, false)
@@ -29,6 +30,32 @@ class RestaurantAdapter(private val activity:MainActivity,private val fragment: 
         val restaurant = getRestaurant(pos)
         restaurant?:return
         fragment.showRestaurant(restaurant)
+    }
+
+    /*
+    *   ##########################################################################
+    *               CATEGORIES
+    *   ##########################################################################
+    */
+
+    fun addNewCathegorie(name:String){
+        if(!listOfCathegories.containsKey(name)){
+            listOfCathegories[name] = 1
+        }
+        else{
+            val cnt:Int? = listOfCathegories[name]
+            cnt?:return
+            listOfCathegories[name] = cnt+1
+        }
+    }
+
+    fun loadAllCathegories(){
+        if(listOfCathegories.isEmpty())return
+        fragment.addCathegorysToView(listOfCathegories)
+    }
+
+    fun clearCathegories(){
+        listOfCathegories.clear()
     }
 
     fun clearView(){

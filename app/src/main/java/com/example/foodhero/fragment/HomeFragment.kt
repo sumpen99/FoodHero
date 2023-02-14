@@ -31,8 +31,6 @@ class HomeFragment: BaseFragment() {
         setRecyclerView()
         setBottomSheetEvent()
         loadRestaurants()
-        loadCathegorys()
-
    }
 
     /*
@@ -110,15 +108,14 @@ class HomeFragment: BaseFragment() {
         return newRestauranId == lastShownId
     }
 
-    private fun loadCathegorys(){
+    fun addCathegorysToView(listOfCat:MutableMap<String,Int>){
         val catContainer = getHomeBinding().restaurantCatContainerLayout
-        var i = 0
-        while(i<10){
-            val cat = CathegoryItem(parentActivity,null)
+        for(lbl in listOfCat.keys){
+            val cnt:Int = listOfCat[lbl]?:continue
+            val cat = CathegoryItem(lbl,cnt,parentActivity,null)
+            //cat.setImageResource()
             catContainer.addView(cat,catContainer.childCount)
-            i++
         }
-        //android:id="@+id/restaurantCatContainerLayout"
     }
 
     /*
