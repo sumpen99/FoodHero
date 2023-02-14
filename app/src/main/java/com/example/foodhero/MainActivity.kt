@@ -172,7 +172,7 @@ class MainActivity : AppCompatActivity() {
         if(isSameFragment(fragment))return
         currentFragment = fragment
         when(fragment){
-            FragmentInstance.FRAGMENT_MAIN_HOME->applyTransaction(HomeFragment())
+            FragmentInstance.FRAGMENT_MAIN_HOME->applyTransaction(HomeFragment(intent))
             else -> {}
         }
     }

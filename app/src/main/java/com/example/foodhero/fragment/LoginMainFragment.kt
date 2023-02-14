@@ -1,5 +1,6 @@
 package com.example.foodhero.fragment
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +13,7 @@ import com.example.foodhero.global.FragmentInstance
 
 
 
-class LoginMainFragment: BaseFragment() {
+class LoginMainFragment(intent: Intent) : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

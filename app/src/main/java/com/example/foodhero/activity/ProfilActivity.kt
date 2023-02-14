@@ -4,15 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import com.example.foodhero.R
-import com.example.foodhero.databinding.FragmentLoginmainBinding
 import com.example.foodhero.fragment.HomeFragment
 import com.example.foodhero.fragment.LoginMainFragment
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 
 class ProfilActivity : AppCompatActivity() {
 
@@ -58,18 +55,16 @@ class ProfilActivity : AppCompatActivity() {
 
 
     fun goBack(){
-        val intent = Intent(this,HomeFragment()::class.java)
+        val intent = Intent(this,HomeFragment(intent)::class.java)
         HomeFragment(intent)
-        // Samma här kan ej skicka vidare
 
     }
 
     fun signOut(){
 
         FirebaseAuth.getInstance().signOut()
-        val intent = Intent(this, LoginMainFragment()::class.java)
+        val intent = Intent(this, LoginMainFragment(intent)::class.java)
          LoginMainFragment(intent)
-       // Den ska dock skickas till LoginMainFragment , kan ej få det att funka.
 
     }
 }

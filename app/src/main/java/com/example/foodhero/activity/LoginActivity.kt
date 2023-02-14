@@ -1,7 +1,6 @@
 package com.example.foodhero.activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -67,7 +66,7 @@ class LoginActivity: AppCompatActivity() {
 
    private fun navigateToFragment(fragment: FragmentInstance){
         when(fragment){
-            FragmentInstance.FRAGMENT_LOGIN_HOME->applyTransaction(LoginMainFragment())
+            FragmentInstance.FRAGMENT_LOGIN_HOME->applyTransaction(LoginMainFragment(intent))
             FragmentInstance.FRAGMENT_LOGIN_OPTIONS->{}
             else -> {}
         }
