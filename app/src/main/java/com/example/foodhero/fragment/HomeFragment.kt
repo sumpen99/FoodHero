@@ -1,4 +1,5 @@
 package com.example.foodhero.fragment
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +19,7 @@ import com.example.foodhero.global.downloadImageFromStorage
 import com.example.foodhero.struct.Restaurant
 
 
-class HomeFragment: BaseFragment() {
+class HomeFragment(intent: Intent) : BaseFragment() {
     private lateinit var recyclerViewRestaurant: RecyclerView
     private lateinit var recyclerViewMenu: RecyclerView
     private lateinit var restaurantAdapter: RestaurantAdapter
