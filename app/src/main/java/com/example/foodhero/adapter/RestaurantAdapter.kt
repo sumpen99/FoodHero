@@ -10,11 +10,12 @@ import com.example.foodhero.MainActivity
 import com.example.foodhero.R
 import com.example.foodhero.fragment.HomeFragment
 import com.example.foodhero.global.downloadImageFromStorage
+import com.example.foodhero.struct.CathegoryCounter
 import com.example.foodhero.struct.Restaurant
 
 class RestaurantAdapter(private val activity:MainActivity,private val fragment: HomeFragment):RecyclerView.Adapter<RestaurantAdapter.ViewHolder>() {
     private val restaurantList = ArrayList<Restaurant>()
-    var listOfCathegories = mutableMapOf <String,Int>()
+    var listOfCathegories = mutableMapOf <String,CathegoryCounter>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.restaurant_card, parent, false)
@@ -38,14 +39,17 @@ class RestaurantAdapter(private val activity:MainActivity,private val fragment: 
     *   ##########################################################################
     */
 
-    fun addNewCathegorie(name:String){
-        if(!listOfCathegories.containsKey(name)){
-            listOfCathegories[name] = 1
+    fun addNewCathegorie(restaurant:Restaurant){
+        val cat = restaurant.cathegoriesDishes!![0]
+        val id = restaurant.restaurantId!!
+        if(!listOfCathegories.containsKey(cat)){
+            val catCnt = CathegoryCounter()
+            catCnt.updateCounter(id)
+            listOfCathegories[cat] = catCnt
+
         }
         else{
-            val cnt:Int? = listOfCathegories[name]
-            cnt?:return
-            listOfCathegories[name] = cnt+1
+            listOfCathegories[cat]?.updateCounter(id)
         }
     }
 

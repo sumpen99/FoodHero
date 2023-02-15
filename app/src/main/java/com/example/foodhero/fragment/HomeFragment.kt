@@ -15,6 +15,8 @@ import com.example.foodhero.adapter.RestaurantMenuAdapter
 import com.example.foodhero.databinding.FragmentHomeBinding
 import com.example.foodhero.global.FragmentInstance
 import com.example.foodhero.global.downloadImageFromStorage
+import com.example.foodhero.global.logMessage
+import com.example.foodhero.struct.CathegoryCounter
 import com.example.foodhero.struct.Restaurant
 import com.example.foodhero.widgets.CathegoryItem
 
@@ -100,22 +102,49 @@ class HomeFragment: BaseFragment() {
     *   ##########################################################################
     */
 
+    private fun clearRestaurantAdapter(){
+        restaurantAdapter.clearView()
+    }
+
+    private fun clearRestaurantMenuAdapter(){
+        restaurantMenuAdapter.clearView()
+    }
+
+    /*
+    *   ##########################################################################
+    *               LOAD RESTAURANTS
+    *   ##########################################################################
+    */
+
     private fun loadRestaurants(){
+        clearRestaurantAdapter()
         getMainActivity().loadRestaurants(restaurantAdapter)
     }
 
-    private fun sameRestaurantAsBefore(newRestauranId:String):Boolean{
-        return newRestauranId == lastShownId
+    private fun sameRestaurantAsBefore(newRestaurantId:String):Boolean{
+        return newRestaurantId == lastShownId
     }
 
-    fun addCathegorysToView(listOfCat:MutableMap<String,Int>){
+    fun addCathegorysToView(listOfCat:MutableMap<String,CathegoryCounter>){
         val catContainer = getHomeBinding().restaurantCatContainerLayout
         for(lbl in listOfCat.keys){
-            val cnt:Int = listOfCat[lbl]?:continue
-            val cat = CathegoryItem(lbl,cnt,parentActivity,null)
+            val catCounter = listOfCat[lbl]
+            catCounter?:continue
+            val cat = CathegoryItem(lbl,catCounter,::sortRestaurantsByCat,parentActivity,null)
             //cat.setImageResource()
             catContainer.addView(cat,catContainer.childCount)
         }
+    }
+
+    /*
+    *   ##########################################################################
+    *               CALLBACK TO SORT RESTAURANT LIST
+    *   ##########################################################################
+    */
+
+    private fun sortRestaurantsByCat(ids:List<String>){
+        clearRestaurantAdapter()
+        getMainActivity().loadRestaurantsByCathegory(ids,restaurantAdapter)
     }
 
     /*
@@ -130,7 +159,8 @@ class HomeFragment: BaseFragment() {
             return
         }
         lastShownId = restaurant.restaurantId
-        restaurantMenuAdapter.clearView()
+
+        clearRestaurantMenuAdapter()
 
         getMainActivity().downloadImageFromStorage(
             getMainActivity().getRestaurantLoggoRef(restaurant.loggoDownloadUrl),

@@ -12,6 +12,7 @@ import com.firebase.geofire.GeoLocation
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.tasks.await
 
@@ -176,7 +177,7 @@ class FirestoreViewModel {
         val bounds = GeoFireUtils.getGeoHashQueryBounds(geoMiddle,radiusInM)
         val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
         for (b in bounds) {
-            val q = firebaseRepository.getSavedRestaurantsGeo()
+            val q = firebaseRepository.getSavedRestaurants()
                 .orderBy("geohash")
                 .startAt(b.startHash)
                 .endAt(b.endHash)
@@ -196,11 +197,26 @@ class FirestoreViewModel {
                         restaurant?:continue
                         restaurantAdapter.addRestaurant(restaurant)
                         restaurant.cathegoriesDishes?:continue
-                        restaurantAdapter.addNewCathegorie(restaurant.cathegoriesDishes[0])
+                        restaurantAdapter.addNewCathegorie(restaurant)
                     }
                 }
             }
             restaurantAdapter.loadAllCathegories()
+        }
+    }
+
+    fun getRestaurantsByIds(ids:List<String>,restaurantAdapter:RestaurantAdapter){
+        firebaseRepository
+            .getSavedRestaurants()
+            .whereIn(FieldPath.documentId(),ids)
+            .get()
+            .addOnCompleteListener{ task->
+            if(task.isSuccessful){
+                for(doc in task.result){
+                    val restaurant = doc.toObject(Restaurant::class.java)
+                    restaurantAdapter.addRestaurant(restaurant)
+                }
+            }
         }
     }
 

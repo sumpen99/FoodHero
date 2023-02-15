@@ -232,6 +232,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun loadRestaurantsByCathegory(ids:List<String>,restaurantAdapter: RestaurantAdapter){
+        firestoreViewModel.getRestaurantsByIds(ids,restaurantAdapter)
+    }
+
     private fun loadRestaurantsByDefault(restaurantAdapter:RestaurantAdapter){
         //val userLocation = getCenterOfStockholm()
         //val radiusKm = 20.0

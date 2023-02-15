@@ -77,10 +77,6 @@ class FirestoreRepository {
         return firestoreDB.collection(RESTAURANT_COLLECTION)
     }
 
-    fun getSavedRestaurantsGeo(): CollectionReference {
-        return firestoreDB.collection(RESTAURANT_COLLECTION)
-    }
-
     fun getRestaurantLoggoReference(downloadUrl:String?): StorageReference {
         val path = "$RESTAURANT_LOGGO_PATH${downloadUrl}"
         return firestoreStorage.child(path)

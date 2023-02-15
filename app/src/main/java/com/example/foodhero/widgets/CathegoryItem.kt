@@ -7,10 +7,12 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import com.example.foodhero.R
 import com.example.foodhero.global.logMessage
+import com.example.foodhero.struct.CathegoryCounter
 
 @SuppressLint("ViewConstructor")
-class CathegoryItem(val cat:String,
-                    val count:Int,
+class CathegoryItem(cat:String,
+                    catCounter:CathegoryCounter,
+                    sortFunc:(args:List<String>)->Unit,
                     context: Context?,
                     attrs: AttributeSet?): LinearLayout(context,attrs) {
     init{
@@ -20,10 +22,10 @@ class CathegoryItem(val cat:String,
         val catCount:TextView = this.findViewById(R.id.catFoodCount)
         img.setImageResource(getImageBasedOnCat(cat))
         catLbl.text = getCatBasedOnCat(cat)
-        catCount.text = getCatCount(count)
+        catCount.text = getCatCount(catCounter.sumOfItems)
 
         this.setOnClickListener{
-            logMessage("hepp")
+            sortFunc(catCounter.listOfIds)
         }
 
     }
