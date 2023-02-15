@@ -30,6 +30,7 @@ class HomeFragment: BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBottomSheetDialog(R.layout.bottom_sheet_restaurant)
+        setRefreshButton()
         setRecyclerView()
         setBottomSheetEvent()
         loadRestaurants()
@@ -45,6 +46,19 @@ class HomeFragment: BaseFragment() {
         restaurantAdapter = RestaurantAdapter(getMainActivity(),this)
         recyclerViewRestaurant.layoutManager = LinearLayoutManager(activityContext)
         recyclerViewRestaurant.adapter = restaurantAdapter
+    }
+
+    /*
+    *   ##########################################################################
+    *               SET REFRESH BUTTON
+    *   ##########################################################################
+    */
+
+    private fun setRefreshButton(){
+        val refresh = getHomeBinding().refreshButton
+        refresh.setOnClickListener{
+            refreshRestaurants()
+        }
     }
 
     /*
@@ -104,10 +118,17 @@ class HomeFragment: BaseFragment() {
 
     private fun clearRestaurantAdapter(){
         restaurantAdapter.clearView()
+        restaurantAdapter.clearCathegories()
     }
 
     private fun clearRestaurantMenuAdapter(){
         restaurantMenuAdapter.clearView()
+    }
+
+    private fun clearCathegorysContainer(){
+        val catContainer = getHomeBinding().restaurantCatContainerLayout
+        catContainer.removeAllViews()
+
     }
 
     /*
@@ -116,9 +137,14 @@ class HomeFragment: BaseFragment() {
     *   ##########################################################################
     */
 
-    private fun loadRestaurants(){
+    private fun refreshRestaurants(){
+        clearCathegorysContainer()
         clearRestaurantAdapter()
         getMainActivity().loadRestaurants(restaurantAdapter)
+    }
+
+    private fun loadRestaurants(){
+        refreshRestaurants()
     }
 
     private fun sameRestaurantAsBefore(newRestaurantId:String):Boolean{
