@@ -13,7 +13,7 @@
     <color name="transparent">#00000000</color>
     <color name="medium_transparent">#99000000</color>
     <color name="snow">#fffafa</color>
-    <color name="background_moist_dark">#383434</color>
     <color name="background_dark">#121212</color>
+    <color name="background_moist_dark">#383434</color>
     <color name="background_medium_dark">#424242</color>
 </resources>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.OrderActivity">
+
+    <ImageButton
+        android:id="@+id/imageBackOrderButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="19dp"
+        android:backgroundTint="#03FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_arrow_back_24" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomOrderNavMenu"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        app:backgroundTint="@color/transparent"
+        app:itemHorizontalTranslationEnabled="false"
+        app:itemIconTint="@drawable/bottom_navigation_selector"
+        app:itemTextColor="@color/white"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_ordernav_menu" />
+
+    <TextView
+        android:id="@+id/textOrderEmptyView"
+        android:layout_width="266dp"
+        android:layout_height="125dp"
+        android:layout_marginStart="83dp"
+        android:layout_marginTop="303dp"
+        android:layout_marginEnd="83dp"
+        android:layout_marginBottom="238dp"
+        android:fontFamily="sans-serif-light"
+        android:text="Varukorgen är tom....."
+        android:textColor="#EDF3F1F1"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomOrderNavMenu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.523"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="59dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="106dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="184dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageBackOrderButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/applogowhite" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
