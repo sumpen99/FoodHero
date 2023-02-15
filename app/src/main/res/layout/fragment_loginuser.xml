@@ -28,17 +28,17 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Welcome"
+                    android:layout_gravity="center_horizontal"
                     android:paddingBottom="20dp"
-                    android:textSize="36sp"
+                    android:text="Välkommen"
                     android:textAlignment="center"
-                    android:layout_gravity="center_horizontal" />
+                    android:textSize="36sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    android:text="Email" />
+                    android:text="Mail"
+                    android:textSize="22sp" />
 
                 <EditText
                     android:layout_width="match_parent"
@@ -49,8 +49,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    android:text="Password" />
+                    android:text="Lösenord"
+                    android:textSize="22sp" />
 
                 <EditText
                     android:layout_width="match_parent"
@@ -64,14 +64,14 @@
                     android:layout_weight="1" />
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/logInBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
                     android:background="@drawable/button_white"
-                    android:id="@+id/logInBtn"
-                    android:text="Login"
+                    android:padding="10dp"
+                    android:text="Logga in"
                     android:textColor="@color/background_medium_dark"
-                    android:textSize="22sp"/>
+                    android:textSize="22sp" />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
