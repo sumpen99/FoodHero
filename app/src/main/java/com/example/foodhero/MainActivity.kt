@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.foodhero.activity.LoginActivity
+import com.example.foodhero.activity.OrderActivity
 import com.example.foodhero.activity.ProfilActivity
 import com.example.foodhero.adapter.RestaurantAdapter
 import com.example.foodhero.adapter.RestaurantMenuAdapter
@@ -109,7 +110,7 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId){
                 R.id.navigateHome->navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
                 //R.id.navigateSearch->SEARCH BOX
-                //R.id.navigateCart->navigateFragment(FragmentInstance.FRAGMENT_MAIN_CART)
+                R.id.navigateCart->moveToActivity(Intent(this,OrderActivity::class.java))
                 R.id.navigateProfile->moveToActivity(Intent(this, ProfilActivity::class.java))
 
             }
