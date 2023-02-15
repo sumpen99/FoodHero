@@ -31,7 +31,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginBottom="35dp"
         android:fontFamily="sans-serif-light"
-        android:text="Välkommen"
+        android:text="Välkommen!"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="35sp" />

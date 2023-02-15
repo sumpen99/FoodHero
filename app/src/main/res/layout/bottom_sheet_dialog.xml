@@ -19,14 +19,14 @@
         android:id="@+id/textviewWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_below="@id/topImage"
-        android:text="Welcome to FoodHero"
-        android:textAlignment="center"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Välkommen till FoodHero!"
+        android:textAlignment="center"
         android:textColor="@color/background_dark"
         android:textSize="25sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
     <TextView
         android:id="@+id/textviewDescription"
         android:layout_below="@id/textviewWelcome"
