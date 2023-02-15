@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.foodhero.activity.LoginActivity
+import com.example.foodhero.activity.OrderActivity
+import com.example.foodhero.activity.ProfilActivity
 import com.example.foodhero.adapter.RestaurantAdapter
 import com.example.foodhero.adapter.RestaurantMenuAdapter
 import com.example.foodhero.database.AuthRepo
@@ -35,7 +37,6 @@ class MainActivity : AppCompatActivity() {
     private val auth = AuthRepo()
     private var loadRestaurantsGeo = false
     private var currentFragment:FragmentInstance? = null
-
 
     private var permissionsStr = arrayOf<String>(
         android.Manifest.permission.ACCESS_FINE_LOCATION,
@@ -70,19 +71,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(auth.isUserLoggedIn()){
-            //auth.signOut()
-            //return
             setContentView(R.layout.activity_main)
             setViewModel()
             setDataBinding()
             setBottomNavigationMenu()
             setOnBackNavigation()
             launchPermissionRequest()
-            //navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
             Toast.makeText(applicationContext, "Välkommen tillbaka ${auth.getEmail()}.", Toast.LENGTH_SHORT).show()
         }
         else{
-            moveToActivity(Intent(this,LoginActivity::class.java))
+            moveToActivityAndFinish(Intent(this,LoginActivity::class.java))
         }
     }
     
@@ -98,7 +96,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setViewModel(){
-        //firestoreViewModel = ViewModelProviders.of(this).get(FirestoreViewModel::class.java)
         firestoreViewModel = FirestoreViewModel()
     }
 
@@ -109,8 +106,9 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId){
                 R.id.navigateHome->navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
                 //R.id.navigateSearch->SEARCH BOX
-                //R.id.navigateCart->navigateFragment(FragmentInstance.FRAGMENT_MAIN_CART)
-                //R.id.navigateProfile->navigateFragment(FragmentInstance.FRAGMENT_MAIN_PROFILE)
+                R.id.navigateCart->moveToActivityAndPutOnTop(Intent(this,OrderActivity::class.java))
+                R.id.navigateProfile->moveToActivityAndPutOnTop(Intent(this, ProfilActivity::class.java))
+
             }
             true
         }
@@ -157,7 +155,7 @@ class MainActivity : AppCompatActivity() {
         }
         onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
     }
-
+    
     private fun navigateOnBackPressed(){
         logMessage(supportFragmentManager.fragments.toString())
     }
@@ -172,7 +170,7 @@ class MainActivity : AppCompatActivity() {
         if(isSameFragment(fragment))return
         currentFragment = fragment
         when(fragment){
-            FragmentInstance.FRAGMENT_MAIN_HOME->applyTransaction(HomeFragment())
+            FragmentInstance.FRAGMENT_MAIN_HOME->applyTransaction(HomeFragment(intent))
             else -> {}
         }
     }
@@ -195,8 +193,8 @@ class MainActivity : AppCompatActivity() {
     */
 
     private fun navigateOnResume(){
-        if(auth.isUserLoggedIn()){
-            moveToActivity(Intent(this,LoginActivity::class.java))
+        if(!auth.isUserLoggedIn()){
+            moveToActivityAndFinish(Intent(this,LoginActivity::class.java))
         }
         else{
             navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
@@ -252,19 +250,19 @@ class MainActivity : AppCompatActivity() {
     override fun onResume(){
         super.onResume()
         //navigateOnResume()
-        logMessage("on resume main")
+        //logMessage("on resume main")
 
     }
 
     override fun onPause(){
         super.onPause()
-        logMessage("on pause main")
+        //logMessage("on pause main")
 
     }
 
     override fun onStop(){
         super.onStop()
-        logMessage("on stop main")
+        //logMessage("on stop main")
 
     }
 

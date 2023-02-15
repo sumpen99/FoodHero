@@ -4,6 +4,7 @@ import com.example.foodhero.global.*
 import com.example.foodhero.struct.DrinkItem
 import com.example.foodhero.struct.MenuItem
 import com.example.foodhero.struct.Restaurant
+import com.example.foodhero.struct.User
 import com.firebase.geofire.GeoFireUtils
 
 import com.firebase.geofire.GeoLocation
@@ -41,6 +42,12 @@ class FirestoreRepository {
         return firestoreDB.collection(RESTAURANT_COLLECTION)
             .document(restaurant.restaurantId!!)
             .set(restaurant)
+    }
+
+    fun saveUser(user: User): Task<Void> {
+        return firestoreDB.collection(USER_COLLECTION)
+            .document(user.email!!)
+            .set(user)
     }
 
     fun saveRestaurantLoggo(imageUri: Uri, downloadUrl:String): UploadTask {

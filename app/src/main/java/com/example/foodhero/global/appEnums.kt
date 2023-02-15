@@ -4,6 +4,9 @@ enum class FragmentInstance {
     FRAGMENT_MAIN_HOME,
     FRAGMENT_LOGIN_HOME,
     FRAGMENT_LOGIN_OPTIONS,
+    FRAGMENT_LOGIN_USER,
+    FRAGMENT_SIGN_UP,
+
 }
 
 // Hopefully this will not be needed

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/navigateSearch"
+        android:title="Favoriter"
+        android:fontFamily="sans-serif"
+        android:icon="@drawable/baseline_favorite_24"
+        />
+
+    <item
+        android:id="@+id/navigateProfile"
+        android:icon="@drawable/baseline_payment_24"
+        android:title="Köp nu"
+        />
+
+
+</menu>

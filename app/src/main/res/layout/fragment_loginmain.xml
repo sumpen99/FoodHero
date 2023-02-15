@@ -28,12 +28,13 @@
         android:layout_above="@+id/loginButtonLayout"
         android:layout_alignParentStart="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
-        android:fontFamily="sans-serif-thin"
-        android:text="@string/login_welcome_text"
+        android:layout_marginStart="0dp"
+        android:layout_marginBottom="35dp"
+        android:fontFamily="sans-serif-light"
+        android:text="Välkommen!"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="40sp" />
+        android:textSize="35sp" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/loginButtonLayout"
@@ -47,24 +48,24 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/login_button_text"
+            android:text="Enter"
             android:layout_marginStart="20dp"
             android:fontFamily="sans-serif-light"
             android:textColor="@color/white"
             android:textAlignment="center"
-            android:textSize="35sp"/>
+            android:textSize="30sp"/>
         <Space
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
-        <androidx.appcompat.widget.AppCompatImageButton
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/userEnterButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="2dp"
-            android:background="@drawable/ic_filter_state"
-            android:src="@drawable/ic_main_login_button_foreground"
+            android:background="@drawable/rounded_corner_black"
+            android:src="@drawable/baseline_arrow_right_24"
             />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </RelativeLayout>
