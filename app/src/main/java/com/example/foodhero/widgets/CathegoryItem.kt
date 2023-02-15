@@ -6,6 +6,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import com.example.foodhero.R
+import com.example.foodhero.global.logMessage
 
 @SuppressLint("ViewConstructor")
 class CathegoryItem(val cat:String,
@@ -20,6 +21,11 @@ class CathegoryItem(val cat:String,
         img.setImageResource(getImageBasedOnCat(cat))
         catLbl.text = getCatBasedOnCat(cat)
         catCount.text = getCatCount(count)
+
+        this.setOnClickListener{
+            logMessage("hepp")
+        }
+
     }
 
     private fun getImageBasedOnCat(cat:String):Int{

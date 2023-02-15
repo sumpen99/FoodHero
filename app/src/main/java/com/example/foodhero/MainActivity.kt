@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
             moveToActivity(Intent(this,LoginActivity::class.java))
         }
     }
-
+    
     /*
     *   ##########################################################################
     *               SET BINDING AND OTHER STUFF
