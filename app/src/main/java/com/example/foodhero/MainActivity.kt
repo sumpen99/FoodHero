@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
             moveToActivityAndFinish(Intent(this,LoginActivity::class.java))
         }
     }
-
+    
     /*
     *   ##########################################################################
     *               SET BINDING AND OTHER STUFF
@@ -228,6 +228,10 @@ class MainActivity : AppCompatActivity() {
     fun loadRestaurantMenu(restaurantId:String,restaurantMenuAdapter: RestaurantMenuAdapter){
         firestoreViewModel.getMenuItems(restaurantId,restaurantMenuAdapter)
 
+    }
+
+    fun loadRestaurantsByCathegory(ids:List<String>,restaurantAdapter: RestaurantAdapter){
+        firestoreViewModel.getRestaurantsByIds(ids,restaurantAdapter)
     }
 
     private fun loadRestaurantsByDefault(restaurantAdapter:RestaurantAdapter){

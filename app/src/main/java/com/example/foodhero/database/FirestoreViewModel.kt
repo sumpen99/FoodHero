@@ -12,6 +12,7 @@ import com.firebase.geofire.GeoLocation
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.tasks.await
 
@@ -180,7 +181,7 @@ class FirestoreViewModel {
         val bounds = GeoFireUtils.getGeoHashQueryBounds(geoMiddle,radiusInM)
         val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
         for (b in bounds) {
-            val q = firebaseRepository.getSavedRestaurantsGeo()
+            val q = firebaseRepository.getSavedRestaurants()
                 .orderBy("geohash")
                 .startAt(b.startHash)
                 .endAt(b.endHash)
@@ -188,24 +189,40 @@ class FirestoreViewModel {
         }
         Tasks.whenAllComplete(tasks).addOnCompleteListener{
             for (task in tasks) {
-                    val snap = task.result
-                    for (doc in snap!!.documents) {
-                        val lat = doc.getDouble("lat")!!
-                        val lng = doc.getDouble("lon")!!
+                val snap = task.result
+                for (doc in snap!!.documents) {
+                    val lat = doc.getDouble("lat")!!
+                    val lng = doc.getDouble("lon")!!
 
-                        val docLocation = GeoLocation(lat, lng)
-                        val distanceInM = GeoFireUtils.getDistanceBetween(docLocation, geoMiddle)
-                        if (distanceInM <= radiusInM) {
-                            val restaurant = doc.toObject(Restaurant::class.java)
-                            restaurant?:continue
-                            restaurantAdapter.addRestaurant(restaurant)
-                        }
+                    val docLocation = GeoLocation(lat, lng)
+                    val distanceInM = GeoFireUtils.getDistanceBetween(docLocation, geoMiddle)
+                    if (distanceInM <= radiusInM) {
+                        val restaurant = doc.toObject(Restaurant::class.java)
+                        restaurant?:continue
+                        restaurantAdapter.addRestaurant(restaurant)
+                        restaurant.cathegoriesDishes?:continue
+                        restaurantAdapter.addNewCathegorie(restaurant)
                     }
                 }
             }
+            restaurantAdapter.loadAllCathegories()
+        }
     }
 
-
+    fun getRestaurantsByIds(ids:List<String>,restaurantAdapter:RestaurantAdapter){
+        firebaseRepository
+            .getSavedRestaurants()
+            .whereIn(FieldPath.documentId(),ids)
+            .get()
+            .addOnCompleteListener{ task->
+            if(task.isSuccessful){
+                for(doc in task.result){
+                    val restaurant = doc.toObject(Restaurant::class.java)
+                    restaurantAdapter.addRestaurant(restaurant)
+                }
+            }
+        }
+    }
 
     fun deleteMenuFromFirebase(restaurantId:String,docId:String){
         firebaseRepository.deleteMenuItem(restaurantId,docId).addOnFailureListener {

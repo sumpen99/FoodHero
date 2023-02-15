@@ -17,7 +17,9 @@ import com.example.foodhero.databinding.FragmentHomeBinding
 import com.example.foodhero.global.FragmentInstance
 import com.example.foodhero.global.downloadImageFromStorage
 import com.example.foodhero.global.logMessage
+import com.example.foodhero.struct.CathegoryCounter
 import com.example.foodhero.struct.Restaurant
+import com.example.foodhero.widgets.CathegoryItem
 
 
 class HomeFragment(intent: Intent) : BaseFragment() {
@@ -29,10 +31,10 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBottomSheetDialog(R.layout.bottom_sheet_restaurant)
+        setRefreshButton()
         setRecyclerView()
         setBottomSheetEvent()
         loadRestaurants()
-
    }
 
     /*
@@ -45,6 +47,19 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         restaurantAdapter = RestaurantAdapter(getMainActivity(),this)
         recyclerViewRestaurant.layoutManager = LinearLayoutManager(activityContext)
         recyclerViewRestaurant.adapter = restaurantAdapter
+    }
+
+    /*
+    *   ##########################################################################
+    *               SET REFRESH BUTTON
+    *   ##########################################################################
+    */
+
+    private fun setRefreshButton(){
+        val refresh = getHomeBinding().refreshButton
+        refresh.setOnClickListener{
+            refreshRestaurants()
+        }
     }
 
     /*
@@ -102,12 +117,61 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     *   ##########################################################################
     */
 
-    private fun loadRestaurants(){
+    private fun clearRestaurantAdapter(){
+        restaurantAdapter.clearView()
+        restaurantAdapter.clearCathegories()
+    }
+
+    private fun clearRestaurantMenuAdapter(){
+        restaurantMenuAdapter.clearView()
+    }
+
+    private fun clearCathegorysContainer(){
+        val catContainer = getHomeBinding().restaurantCatContainerLayout
+        catContainer.removeAllViews()
+
+    }
+
+    /*
+    *   ##########################################################################
+    *               LOAD RESTAURANTS
+    *   ##########################################################################
+    */
+
+    private fun refreshRestaurants(){
+        clearCathegorysContainer()
+        clearRestaurantAdapter()
         getMainActivity().loadRestaurants(restaurantAdapter)
     }
 
-    private fun sameRestaurantAsBefore(newRestauranId:String):Boolean{
-        return newRestauranId == lastShownId
+    private fun loadRestaurants(){
+        refreshRestaurants()
+    }
+
+    private fun sameRestaurantAsBefore(newRestaurantId:String):Boolean{
+        return newRestaurantId == lastShownId
+    }
+
+    fun addCathegorysToView(listOfCat:MutableMap<String,CathegoryCounter>){
+        val catContainer = getHomeBinding().restaurantCatContainerLayout
+        for(lbl in listOfCat.keys){
+            val catCounter = listOfCat[lbl]
+            catCounter?:continue
+            val cat = CathegoryItem(lbl,catCounter,::sortRestaurantsByCat,parentActivity,null)
+            //cat.setImageResource()
+            catContainer.addView(cat,catContainer.childCount)
+        }
+    }
+
+    /*
+    *   ##########################################################################
+    *               CALLBACK TO SORT RESTAURANT LIST
+    *   ##########################################################################
+    */
+
+    private fun sortRestaurantsByCat(ids:List<String>){
+        clearRestaurantAdapter()
+        getMainActivity().loadRestaurantsByCathegory(ids,restaurantAdapter)
     }
 
     /*
@@ -122,7 +186,8 @@ class HomeFragment(intent: Intent) : BaseFragment() {
             return
         }
         lastShownId = restaurant.restaurantId
-        restaurantMenuAdapter.clearView()
+
+        clearRestaurantMenuAdapter()
 
         getMainActivity().downloadImageFromStorage(
             getMainActivity().getRestaurantLoggoRef(restaurant.loggoDownloadUrl),
