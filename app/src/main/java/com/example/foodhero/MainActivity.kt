@@ -237,6 +237,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadRestaurantsByDefault(restaurantAdapter:RestaurantAdapter){
+        // hepp
         //val userLocation = getCenterOfStockholm()
         //val radiusKm = 20.0
         //firestoreViewModel.getRestaurantsGeo(userLocation,radiusKm,restaurantAdapter)
