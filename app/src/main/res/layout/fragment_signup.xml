@@ -30,14 +30,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:paddingBottom="20dp"
-                    android:text="Welcome"
+                    android:text="Välkommen"
                     android:textAlignment="center"
                     android:textSize="36sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Email"
+                    android:text="Mail"
                     android:textSize="22sp" />
 
                 <EditText
@@ -49,7 +49,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Phonenumber"
+                    android:text="Telefonnummer"
                     android:textSize="22sp" />
 
                 <EditText
@@ -72,7 +72,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Password"
+                    android:text="Lösenord"
                     android:textSize="22sp" />
 
 
@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_white"
                     android:padding="10dp"
-                    android:text="Sign up"
+                    android:text="Bli medlem"
                     android:textColor="@color/background_medium_dark"
                     android:textSize="22sp" />
             </LinearLayout>
