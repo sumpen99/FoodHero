@@ -59,7 +59,7 @@ class SignUpFragment:BaseFragment() {
     private fun setEventListener(view: View){
         emailField = signUpUserBinding().userEmail
         phoneNumberField = signUpUserBinding().userPhonenumber
-        adressField = signUpUserBinding().userAdress
+        adressField = signUpUserBinding().userCity
         passwordField = signUpUserBinding().userPassword
 
         val signUpBtn: Button = signUpUserBinding().signUpBtn

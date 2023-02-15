@@ -11,6 +11,7 @@
         android:orientation="vertical"
         >
 
+
         <androidx.cardview.widget.CardView
             android:layout_margin="64dp"
             android:layout_width="match_parent"
@@ -24,6 +25,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="24dp">
+
+
 
                 <TextView
                     android:layout_width="match_parent"
@@ -57,14 +60,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Adress"
+                    android:text="City"
                     android:textSize="22sp" />
 
                 <EditText
-                    android:id="@+id/userAdress"
+                    android:id="@+id/userCity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword" />
@@ -99,6 +103,8 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
+
+
 
     </LinearLayout>
 
