@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.example.foodhero.R
 import com.example.foodhero.activity.LoginActivity
@@ -60,15 +58,9 @@ class LoginMainFragment(intent: Intent) : BaseFragment() {
     @SuppressLint("ClickableViewAccessibility")
     private fun setEventListener(view: View?){
         val userEnterButton = loginMainBinding().loginButtonLayout
-        //val userLogInBtn = bottomSheetDialog.findViewById<AppCompatButton>(R.id.userLoginButton)
-        //val userSignUpBtn = bottomSheetDialog.findViewById<AppCompatButton>(R.id.userSignUpButton)
-        //val userEnterAsGuestBtn = bottomSheetDialog.findViewById<AppCompatButton>(R.id.userEnterAsGuestButton)
 
         userEnterButton.setOnClickListener{
-            //updateMessageDialog("To Be Implemented",::templateFunctionAny)
-            //showMessage()
             bottomSheetDialog.show()
-            //(parentActivity as LoginActivity).navigateToFragment(FragmentInstance.FRAGMENT_LOGIN_OPTIONS)
         }
     }
 

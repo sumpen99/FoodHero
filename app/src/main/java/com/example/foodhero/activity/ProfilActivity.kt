@@ -7,11 +7,8 @@ import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
-import com.example.foodhero.MainActivity
 import com.example.foodhero.R
-import com.example.foodhero.fragment.HomeFragment
-import com.example.foodhero.fragment.LoginMainFragment
-import com.example.foodhero.global.moveToActivity
+import com.example.foodhero.global.moveToActivityAndFinish
 import com.google.firebase.auth.FirebaseAuth
 
 class ProfilActivity : AppCompatActivity() {
@@ -64,16 +61,17 @@ class ProfilActivity : AppCompatActivity() {
 
 
     fun goBack(){
-        val intent = Intent(this,MainActivity::class.java)
-        moveToActivity(intent)
+        //super.onBackPressed() is deprecated but works
+        finish()
+        //val intent = Intent(this,MainActivity::class.java)
+        //moveToActivity(intent)
 
     }
 
     fun signOut(){
-
         FirebaseAuth.getInstance().signOut()
         val intent = Intent(this, LoginActivity::class.java)
-         moveToActivity(intent)
+         moveToActivityAndFinish(intent)
 
     }
 }

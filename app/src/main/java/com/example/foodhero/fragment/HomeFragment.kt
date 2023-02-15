@@ -16,6 +16,7 @@ import com.example.foodhero.adapter.RestaurantMenuAdapter
 import com.example.foodhero.databinding.FragmentHomeBinding
 import com.example.foodhero.global.FragmentInstance
 import com.example.foodhero.global.downloadImageFromStorage
+import com.example.foodhero.global.logMessage
 import com.example.foodhero.struct.Restaurant
 
 

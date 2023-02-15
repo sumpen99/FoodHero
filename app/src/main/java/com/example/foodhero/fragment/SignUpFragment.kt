@@ -11,6 +11,7 @@ import com.example.foodhero.activity.LoginActivity
 import com.example.foodhero.databinding.FragmentSignupBinding
 import com.example.foodhero.global.FragmentInstance
 import com.example.foodhero.global.hideKeyboard
+import com.example.foodhero.struct.User
 
 
 class SignUpFragment:BaseFragment() {
@@ -43,6 +44,10 @@ class SignUpFragment:BaseFragment() {
 
     override fun parentFragment(): FragmentInstance? {
         return FragmentInstance.FRAGMENT_LOGIN_HOME
+    }
+
+    private fun getLoginActivity():LoginActivity{
+        return parentActivity as LoginActivity
     }
 
     /*
@@ -78,23 +83,24 @@ class SignUpFragment:BaseFragment() {
     }
 
     private fun signUp(){
-        if( illegalUserInput()){return}
-        (parentActivity as LoginActivity)
-            .loginWithCredentials(
-                emailField.text.toString(),
-                phoneNumberField.text.toString()
-            )
+        if(illegalUserInput()){return}
+        getLoginActivity().signUpUser(createUser(),passwordField.text.toString())
+    }
 
+    private fun createUser():User{
+        return User(
+            emailField.text.toString(),
+            phoneNumberField.text.toString(),
+            adressField.text.toString()
+        )
     }
 
 
     private fun illegalUserInput():Boolean{
-        return (
-                emailField.text.toString().isEmpty() ||
-                        phoneNumberField.text.toString().isEmpty() ||
-                        adressField.text.toString().isEmpty() ||
-                        passwordField.text.toString().isEmpty()
-
+        return (emailField.text.toString().isEmpty() ||
+                phoneNumberField.text.toString().isEmpty() ||
+                adressField.text.toString().isEmpty() ||
+                passwordField.text.toString().isEmpty()
                 )
     }
 

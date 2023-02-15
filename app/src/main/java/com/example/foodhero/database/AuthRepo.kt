@@ -1,6 +1,5 @@
 package com.example.foodhero.database
-
-import com.example.foodhero.global.RESTAURANT_COLLECTION
+import com.example.foodhero.global.USER_COLLECTION
 import com.example.foodhero.struct.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -16,6 +15,8 @@ class AuthRepo {
     private var auth : FirebaseAuth = Firebase.auth
     private val firestoreDB = FirebaseFirestore.getInstance()
     private val firestoreStorage = Firebase.storage.reference
+
+
 
     fun signIn(callback : AuthCallback, email : String, password : String) {
         if (email.isEmpty() || password.isEmpty()) {
@@ -39,12 +40,11 @@ class AuthRepo {
         }
 
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
-                task -> if (task.isSuccessful) {
-            firestoreDB.collection(RESTAURANT_COLLECTION)
-                .document(user.email!!)
-                .set(user)
-
-            callback.isSuccessful(true, "Konto skapat.")
+                task -> if(task.isSuccessful) {
+                    firestoreDB.collection(USER_COLLECTION)
+                    .document(user.email!!)
+                    .set(user)
+                    callback.isSuccessful(true, "Konto skapat.")
         } else {
             callback.isSuccessful(false, task.exception.toString())
         }

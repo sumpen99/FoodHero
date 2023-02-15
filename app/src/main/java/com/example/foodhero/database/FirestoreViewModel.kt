@@ -41,6 +41,10 @@ class FirestoreViewModel {
         //return serverDetails.isEmpty()
     }
 
+    fun saveUserToFirebase(user:User):Task<Void>{
+        return firebaseRepository.saveUser(user)
+    }
+
     private suspend fun saveRestaurantInfo(pos:Int,restaurant:Restaurant){
         firebaseRepository.saveRestaurant(restaurant).addOnCompleteListener { task->
             if(!task.isSuccessful){
