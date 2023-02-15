@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
+import com.example.foodhero.MainActivity
 import com.example.foodhero.R
 import com.example.foodhero.fragment.HomeFragment
 import com.example.foodhero.fragment.LoginMainFragment
+import com.example.foodhero.global.moveToActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class ProfilActivity : AppCompatActivity() {
@@ -55,16 +57,16 @@ class ProfilActivity : AppCompatActivity() {
 
 
     fun goBack(){
-        val intent = Intent(this,HomeFragment(intent)::class.java)
-        HomeFragment(intent)
+        val intent = Intent(this,MainActivity::class.java)
+        moveToActivity(intent)
 
     }
 
     fun signOut(){
 
         FirebaseAuth.getInstance().signOut()
-        val intent = Intent(this, LoginMainFragment(intent)::class.java)
-         LoginMainFragment(intent)
+        val intent = Intent(this, LoginActivity::class.java)
+         moveToActivity(intent)
 
     }
 }
