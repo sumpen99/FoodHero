@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.appcompat.widget.LinearLayoutCompat
 import com.example.foodhero.R
 import com.example.foodhero.activity.LoginActivity
 import com.example.foodhero.databinding.FragmentLoginmainBinding
@@ -57,7 +59,7 @@ class LoginMainFragment(intent: Intent) : BaseFragment() {
     */
     @SuppressLint("ClickableViewAccessibility")
     private fun setEventListener(view: View?){
-        val userEnterButton = loginMainBinding().userEnterButton
+        val userEnterButton = loginMainBinding().loginButtonLayout
         //val userLogInBtn = bottomSheetDialog.findViewById<AppCompatButton>(R.id.userLoginButton)
         //val userSignUpBtn = bottomSheetDialog.findViewById<AppCompatButton>(R.id.userSignUpButton)
         //val userEnterAsGuestBtn = bottomSheetDialog.findViewById<AppCompatButton>(R.id.userEnterAsGuestButton)
@@ -71,28 +73,21 @@ class LoginMainFragment(intent: Intent) : BaseFragment() {
     }
 
     private fun setBottomSheetEventButtons(){
-        val userLogInBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.userLoginButton)
-        val userSignUpBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.userSignUpButton)
-        val userEnterAsGuestBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.userEnterAsGuestButton)
+        val userLogInBtn = bottomSheetDialog.findViewById<LinearLayoutCompat>(R.id.userLoginLayout)
+        val userSignUpBtn = bottomSheetDialog.findViewById<LinearLayoutCompat>(R.id.userSignUpLayout)
+        val userEnterAsGuestBtn = bottomSheetDialog.findViewById<LinearLayoutCompat>(R.id.enterAsGuestLayout)
 
         userEnterAsGuestBtn.setOnClickListener{
             bottomSheetDialog.dismiss()
             (parentActivity as LoginActivity).loginAsGuest()
         }
 
-        userLogInBtn.setOnClickListener {
-            bottomSheetDialog.dismiss()
-            (parentActivity as LoginActivity).navigateToFragment(FragmentInstance.FRAGMENT_LOGIN_HOME)
-                 }
-
-        userSignUpBtn.setOnClickListener {
-
-        }
         userLogInBtn.setOnClickListener{
             bottomSheetDialog.dismiss()
             (parentActivity as LoginActivity).navigateToFragment(FragmentInstance.FRAGMENT_LOGIN_USER)
 
         }
+
         userSignUpBtn.setOnClickListener {
             bottomSheetDialog.dismiss()
             (parentActivity as LoginActivity).navigateToFragment(FragmentInstance.FRAGMENT_SIGN_UP)

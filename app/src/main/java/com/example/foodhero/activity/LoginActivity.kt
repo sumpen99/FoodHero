@@ -81,8 +81,8 @@ class LoginActivity: AppCompatActivity() {
    fun navigateToFragment(fragment: FragmentInstance){
         when(fragment){
             FragmentInstance.FRAGMENT_LOGIN_HOME->applyTransaction(LoginMainFragment(intent))
+            FragmentInstance.FRAGMENT_LOGIN_USER->applyTransaction(LoginUserFragment())
             FragmentInstance.FRAGMENT_SIGN_UP->applyTransaction(SignUpFragment())
-            FragmentInstance.FRAGMENT_LOGIN_OPTIONS->{}
             else -> {}
         }
     }
