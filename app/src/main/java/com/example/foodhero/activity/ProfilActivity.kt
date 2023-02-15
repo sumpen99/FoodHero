@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import com.example.foodhero.MainActivity
 import com.example.foodhero.R
 import com.example.foodhero.fragment.HomeFragment
@@ -24,8 +25,7 @@ class ProfilActivity : AppCompatActivity() {
     lateinit var EditPasswordText : EditText
 
 
-
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint("MissingInflatedId", "SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profil)
@@ -51,6 +51,13 @@ class ProfilActivity : AppCompatActivity() {
             signOut()
         }
 
+        val imageAccountView = findViewById<ImageView>(R.id.imageAccountView)
+            imageAccountView.animate().apply {
+
+                duration = 1000
+                rotationXBy(360f)
+
+            } .start()
 
 
     }
