@@ -84,16 +84,16 @@
             android:id="@+id/enterAsGuestLayout"
             android:layout_width="200dp"
             android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
             android:layout_below="@+id/userLoginLayout"
-            android:background="@drawable/rounded_corner_black">
+            android:layout_marginTop="13dp"
+            android:background="@drawable/rounded_corner_black"
+            android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="    Guest Mode"
                 android:fontFamily="sans-serif-light"
+                android:text="    Guest Mode"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
@@ -109,8 +109,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="2dp"
                 android:background="@drawable/rounded_corner_black"
-                android:src="@drawable/baseline_arrow_right_24"
-                />
+                android:src="@drawable/baseline_arrow_right_24" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
