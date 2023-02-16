@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.ProfilActivity">
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".activity.AdminActivity">
+
+    <ImageView
+        android:id="@+id/LogoImageView"
+        android:layout_width="59dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="106dp"
+        app:layout_constraintEnd_toStartOf="@+id/LogoutImageButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/applogowhite" />
+
+    <ImageButton
+        android:id="@+id/BackButtonImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="30dp"
+
+        android:layout_marginTop="25dp"
+        android:background="#08FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_arrow_back_24" />
 
     <EditText
         android:id="@+id/ResturantNameEditText"
@@ -16,7 +38,7 @@
         android:layout_marginBottom="4dp"
         android:ems="10"
         android:hint="...."
-        android:inputType="textPersonName"
+        android:inputType="textShortMessage"
         app:layout_constraintBottom_toTopOf="@+id/locationTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.439"
@@ -33,7 +55,7 @@
         android:layout_marginBottom="4dp"
         android:ems="10"
         android:hint="...."
-        android:inputType="textPersonName"
+        android:inputType="textShortMessage"
         app:layout_constraintBottom_toTopOf="@+id/DescriptionTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.439"
@@ -47,45 +69,14 @@
         android:layout_marginStart="80dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="80dp"
-        android:layout_marginBottom="4dp"
         android:ems="10"
         android:hint="...."
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/textPasswordView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.439"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DescriptionTextView" />
-
-    <EditText
-        android:id="@+id/EditPasswordText"
-        android:layout_width="216dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="80dp"
-        android:layout_marginBottom="21dp"
-        android:ems="10"
-        android:hint="...."
-        android:inputType="textPersonName"
+        android:inputType="textLongMessage|textMultiLine"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.439"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textPasswordView" />
-
-    <ImageView
-        android:id="@+id/imageAccountView"
-        android:layout_width="205dp"
-        android:layout_height="222dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/ResturantNameTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/baseline_account_box_24" />
+        app:layout_constraintTop_toBottomOf="@+id/DescriptionTextView" />
 
     <TextView
         android:id="@+id/ResturantNameTextView"
@@ -96,12 +87,12 @@
         android:layout_marginEnd="188dp"
         android:layout_marginBottom="5dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Förnamn/efternamn"
+        android:text="Resturang namn"
         app:layout_constraintBottom_toTopOf="@+id/ResturantNameEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageAccountView" />
+        app:layout_constraintTop_toBottomOf="@+id/LogoImageView" />
 
     <TextView
         android:id="@+id/DescriptionTextView"
@@ -112,7 +103,7 @@
         android:layout_marginEnd="200dp"
         android:layout_marginBottom="2dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Mailadress"
+        android:text="Beskrivning"
         app:layout_constraintBottom_toTopOf="@+id/DescriptionEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -128,41 +119,12 @@
         android:layout_marginEnd="212dp"
         android:layout_marginBottom="2dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Telefonnummer"
+        android:text="Plats"
         app:layout_constraintBottom_toTopOf="@+id/LocationEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ResturantNameEditText" />
-
-    <TextView
-        android:id="@+id/textPasswordView"
-        android:layout_width="159dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="210dp"
-        android:layout_marginBottom="2dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Lösenord"
-        app:layout_constraintBottom_toTopOf="@+id/EditPasswordText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DescriptionEditText" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="67dp"
-        android:layout_height="59dp"
-        android:layout_marginStart="116dp"
-        android:layout_marginBottom="64dp"
-        android:clickable="true"
-        app:backgroundTint="#DD18EC82"
-        app:layout_constraintBottom_toTopOf="@+id/ResturantNameTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:rippleColor="#100F0F"
-        app:srcCompat="@drawable/logo_bank_id" />
 
     <ImageButton
         android:id="@+id/LogoutImageButton"
@@ -174,29 +136,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_logout_24" />
-
-    <ImageButton
-        android:id="@+id/imageBackButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="30dp"
-
-        android:layout_marginTop="25dp"
-        android:background="#08FFFFFF"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_arrow_back_24" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="59dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="106dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="106dp"
-        app:layout_constraintEnd_toStartOf="@+id/LogoutImageButton"
-        app:layout_constraintStart_toEndOf="@+id/imageBackButton"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/applogowhite" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
