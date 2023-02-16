@@ -19,4 +19,5 @@
     <string name="error_login_password_is_weak">The given password is invalid.</string>
     <string name="error_login_user_token_expired">The user\'s credential is no longer valid. The user must sign in again</string>
     <string name="error_login_invalid_user_token">The user\'s credential is no longer valid. The user must sign in again.</string>
+    <string name="back">Back</string>
 </resources>
