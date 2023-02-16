@@ -199,13 +199,8 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:listitem="@layout/menu_item_card" />
-
                     </RelativeLayout>
-
-
                 </LinearLayout>
-
-
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

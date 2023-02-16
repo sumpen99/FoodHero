@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity() {
     private var loadRestaurantsGeo = false
     private var currentFragment:FragmentInstance? = null
 
-
     private var permissionsStr = arrayOf<String>(
         android.Manifest.permission.ACCESS_FINE_LOCATION,
         android.Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -72,22 +71,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(auth.isUserLoggedIn()){
-            //auth.signOut()
-            //return
             setContentView(R.layout.activity_main)
             setViewModel()
             setDataBinding()
             setBottomNavigationMenu()
             setOnBackNavigation()
             launchPermissionRequest()
-            //navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
             Toast.makeText(applicationContext, "Välkommen tillbaka ${auth.getEmail()}.", Toast.LENGTH_SHORT).show()
         }
         else{
-            moveToActivity(Intent(this,LoginActivity::class.java))
+            moveToActivityAndFinish(Intent(this,LoginActivity::class.java))
         }
     }
-
+    
     /*
     *   ##########################################################################
     *               SET BINDING AND OTHER STUFF
@@ -110,8 +106,8 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId){
                 R.id.navigateHome->navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
                 //R.id.navigateSearch->SEARCH BOX
-                R.id.navigateCart->moveToActivity(Intent(this,OrderActivity::class.java))
-                R.id.navigateProfile->moveToActivity(Intent(this, ProfilActivity::class.java))
+                R.id.navigateCart->moveToActivityAndPutOnTop(Intent(this,OrderActivity::class.java))
+                R.id.navigateProfile->moveToActivityAndPutOnTop(Intent(this, ProfilActivity::class.java))
 
             }
             true
@@ -197,8 +193,8 @@ class MainActivity : AppCompatActivity() {
     */
 
     private fun navigateOnResume(){
-        if(auth.isUserLoggedIn()){
-            moveToActivity(Intent(this,LoginActivity::class.java))
+        if(!auth.isUserLoggedIn()){
+            moveToActivityAndFinish(Intent(this,LoginActivity::class.java))
         }
         else{
             navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
@@ -234,6 +230,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun loadRestaurantsByCathegory(ids:List<String>,restaurantAdapter: RestaurantAdapter){
+        firestoreViewModel.getRestaurantsByIds(ids,restaurantAdapter)
+    }
+
     private fun loadRestaurantsByDefault(restaurantAdapter:RestaurantAdapter){
         //val userLocation = getCenterOfStockholm()
         //val radiusKm = 20.0
@@ -250,19 +250,19 @@ class MainActivity : AppCompatActivity() {
     override fun onResume(){
         super.onResume()
         //navigateOnResume()
-        logMessage("on resume main")
+        //logMessage("on resume main")
 
     }
 
     override fun onPause(){
         super.onPause()
-        logMessage("on pause main")
+        //logMessage("on pause main")
 
     }
 
     override fun onStop(){
         super.onStop()
-        logMessage("on stop main")
+        //logMessage("on stop main")
 
     }
 

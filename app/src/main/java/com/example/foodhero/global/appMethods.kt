@@ -2,26 +2,23 @@ package com.example.foodhero.global
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Location
 import android.location.LocationManager
 import android.util.Log
-import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.example.foodhero.R
 import com.firebase.geofire.GeoLocation
-import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.storage.StorageReference
 
 /*
@@ -63,7 +60,12 @@ fun Activity.downloadImageFromStorage(storeRef: StorageReference, imageView: Ima
 *
 * */
 
-fun Activity.moveToActivity(intent: Intent){
+fun Activity.moveToActivityAndPutOnTop(intent: Intent){
+    startActivity(intent)
+    intent.flags = FLAG_ACTIVITY_PREVIOUS_IS_TOP
+}
+
+fun Activity.moveToActivityAndFinish(intent: Intent){
     startActivity(intent)
     finish()
 }

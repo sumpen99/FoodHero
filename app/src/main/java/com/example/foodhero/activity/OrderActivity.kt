@@ -1,18 +1,11 @@
 package com.example.foodhero.activity
-
 import android.annotation.SuppressLint
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageButton
-import com.example.foodhero.MainActivity
 import com.example.foodhero.R
-import com.example.foodhero.databinding.ActivityMainBinding
 import com.example.foodhero.databinding.ActivityOrderBinding
-import com.example.foodhero.global.FragmentInstance
-import com.example.foodhero.global.moveToActivity
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class OrderActivity : AppCompatActivity() {
@@ -38,17 +31,13 @@ class OrderActivity : AppCompatActivity() {
             goBackTwo()
 
         }
-
-
-
-
-
-
     }
 
     fun goBackTwo(){
-        val intent = Intent(this, MainActivity::class.java)
-        moveToActivity(intent)
+        //super.onBackPressed() is deprecated but works
+        finish()
+        //val intent = Intent(this, MainActivity::class.java)
+        //moveToActivity(intent)
 
     }
     private fun setBottomOrderNavigationMenu(){

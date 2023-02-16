@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="150dp"
+    android:layout_height="200dp"
+    android:layout_gravity="center"
+    android:layout_marginEnd="20dp"
+    android:orientation="vertical"
+    android:background="@drawable/layout_rounded_background">
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    </Space>
+    <androidx.cardview.widget.CardView
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_gravity="center"
+        android:elevation="10dp"
+        android:padding="10dp"
+        app:cardBackgroundColor="@color/snow"
+        app:cardCornerRadius="100dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/catFoodImg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/appbackgroundimage" />
+    </androidx.cardview.widget.CardView>
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    </Space>
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@drawable/layout_rounded_background_snow"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/catFoodCat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:text="Hamburgare"
+            android:textStyle="bold"
+            android:textColor="@color/background_medium_dark"
+            android:textSize="@dimen/cardText" />
+
+        <TextView
+            android:id="@+id/catFoodCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:text="25 places"
+            android:textColor="@color/background_medium_dark"
+            android:textSize="@dimen/userCardText"/>
+
+    </LinearLayout>
+
+</LinearLayout>

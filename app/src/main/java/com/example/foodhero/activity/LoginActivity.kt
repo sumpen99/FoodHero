@@ -7,12 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.foodhero.MainActivity
 import com.example.foodhero.R
+import com.example.foodhero.database.FirestoreViewModel
 import com.example.foodhero.databinding.ActivityLoginBinding
 import com.example.foodhero.fragment.LoginMainFragment
 import com.example.foodhero.fragment.LoginUserFragment
 import com.example.foodhero.fragment.SignUpFragment
 import com.example.foodhero.global.*
-import com.example.foodhero.interfaces.IFragment
+import com.example.foodhero.struct.User
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuthException
@@ -21,12 +22,14 @@ import com.google.firebase.ktx.Firebase
 
 class LoginActivity: AppCompatActivity() {
     private lateinit var onBackPressedCallback: OnBackPressedCallback
+    private lateinit var firestoreViewModel: FirestoreViewModel
     private var _binding: ActivityLoginBinding? = null
     private val binding get() = _binding!!
     public override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         setDataBinding()
+        setViewModel()
         setOnBackNavigation()
         navigateToFragment(FragmentInstance.FRAGMENT_LOGIN_HOME)
     }
@@ -40,6 +43,10 @@ class LoginActivity: AppCompatActivity() {
     private fun setDataBinding(){
         _binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+    }
+
+    private fun setViewModel(){
+        firestoreViewModel = FirestoreViewModel()
     }
 
     /*
@@ -58,18 +65,7 @@ class LoginActivity: AppCompatActivity() {
     }
 
     private fun navigateOnBackPressed(){
-        val moveToParent = getFragmentParent()
-        moveToParent?:return
-        navigateToFragment(moveToParent)
-    }
-
-    private fun getFragmentParent():FragmentInstance?{
-        return try{
-            val size = supportFragmentManager.fragments.size
-            (supportFragmentManager.fragments[size-1] as IFragment).parentFragment()
-        }catch(err:Exception){
-            null
-        }
+        navigateToFragment(FragmentInstance.FRAGMENT_LOGIN_HOME)
     }
 
     /*
@@ -88,7 +84,7 @@ class LoginActivity: AppCompatActivity() {
     }
 
     private fun navigateOnLogin(){
-        moveToActivity(Intent(this, MainActivity::class.java))
+        moveToActivityAndFinish(Intent(this, MainActivity::class.java))
     }
 
     private fun applyTransaction(frag: Fragment){
@@ -102,28 +98,14 @@ class LoginActivity: AppCompatActivity() {
     *               FIREBASE LOGIN SIGN UP
     *   ##########################################################################
     */
-    //firebase.auth().signInAnonymously()
-    //firebase.auth().currentUser.isAnonymous
-    //if (firebase.auth().currentUser.isAnonymous) {
-    //  var cred = firebase.auth.EmailAuthProvider.credential(email, password);
-    //  firebase.auth().currentUser.linkAndRetrieveDataWithCredential(cred);
-    //}
     fun loginAsGuest(){
         Firebase.auth.signInAnonymously().addOnCompleteListener(this){  task->
-            if(task.isSuccessful){
-                navigateOnLogin()
-            }
-            else{
-                showUserException(task)
-            }
-
+            if(task.isSuccessful){ navigateOnLogin()}
+            else{showUserException(task)}
         }
     }
 
-    fun loginWithCredentials(
-        email: String,
-        password: String
-    ){
+    fun loginWithCredentials(email: String,password: String){
         Firebase.auth.signInWithEmailAndPassword(email,password)
             .addOnCompleteListener(this) { task ->
                 if(task.isSuccessful){navigateOnLogin()}
@@ -131,12 +113,19 @@ class LoginActivity: AppCompatActivity() {
             }
     }
 
-    fun logIn(){
-
-    }
-
-    fun signUp(){
-
+    fun signUpUser(user: User, password: String){
+        Firebase.auth.createUserWithEmailAndPassword(user.email!!,password)
+            .addOnCompleteListener(this) { task ->
+                if(task.isSuccessful){
+                    firestoreViewModel.saveUserToFirebase(user).addOnCompleteListener{task->
+                        if(task.isSuccessful){navigateOnLogin()}
+                        else{showMessage("UnExpected Error",Toast.LENGTH_SHORT)}
+                    }
+                }
+                else{
+                    showUserException(task)
+                }
+            }
     }
 
     private fun showUserException(task: Task<AuthResult>){
@@ -156,19 +145,13 @@ class LoginActivity: AppCompatActivity() {
     */
     override fun onResume(){
         super.onResume()
-        logMessage("on resume login")
-
     }
 
     override fun onPause(){
         super.onPause()
-        logMessage("on pause login")
-
     }
 
     override fun onStop(){
         super.onStop()
-        logMessage("on stop login")
-
     }
 }
