@@ -16,6 +16,9 @@
         android:theme="@style/Theme.FoodHero"
         tools:targetApi="31">
         <activity
+            android:name=".FvoritesActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.ProfilActivity"
             android:exported="false" />
         <activity
@@ -47,9 +50,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths">
-
-            </meta-data>
+                android:resource="@xml/file_paths"></meta-data>
         </provider>
     </application>
 
