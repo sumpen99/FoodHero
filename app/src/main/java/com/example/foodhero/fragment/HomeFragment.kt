@@ -2,9 +2,11 @@ package com.example.foodhero.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,10 +17,7 @@ import com.example.foodhero.activity.OrderActivity
 import com.example.foodhero.adapter.RestaurantAdapter
 import com.example.foodhero.adapter.RestaurantMenuAdapter
 import com.example.foodhero.databinding.FragmentHomeBinding
-import com.example.foodhero.global.FragmentInstance
-import com.example.foodhero.global.downloadImageFromStorage
-import com.example.foodhero.global.logMessage
-import com.example.foodhero.global.moveToActivityAndPutOnTop
+import com.example.foodhero.global.*
 import com.example.foodhero.struct.CathegoryCounter
 import com.example.foodhero.struct.Restaurant
 import com.example.foodhero.widgets.CathegoryItem
@@ -29,12 +28,15 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     private lateinit var recyclerViewMenu: RecyclerView
     private lateinit var restaurantAdapter: RestaurantAdapter
     private lateinit var restaurantMenuAdapter: RestaurantMenuAdapter
+    private lateinit var menuItemSearch: AppCompatEditText
     private var lastShownId:String = ""
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBottomSheetDialog(R.layout.bottom_sheet_restaurant)
+        setSearchKeyboard()
         setRefreshButton()
         setRecyclerView()
+        setEventListener(view)
         setBottomSheetEvent()
         loadRestaurants()
    }
@@ -66,9 +68,45 @@ class HomeFragment(intent: Intent) : BaseFragment() {
 
     /*
     *   ##########################################################################
-    *               BOTTOM SHEET
+    *               SET SEARCH KEYBOARD AND CLOSE
     *   ##########################################################################
     */
+
+    private fun setSearchKeyboard(){
+        menuItemSearch = getHomeBinding().menuItemSearch
+    }
+
+    private fun closeSearchKeyboard(){
+        menuItemSearch.hideKeyboard()
+    }
+
+    private fun keyBoardIsFocused():Boolean{
+        if(menuItemSearch.isFocused){
+            closeSearchKeyboard()
+            return true
+        }
+        return false
+    }
+
+    /*
+    *   ##########################################################################
+    *               BOTTOM SHEET AND EVENTLISTENER
+    *   ##########################################################################
+    */
+
+
+    private fun setEventListener(view:View){
+        view.setOnTouchListener { v, event ->
+            when(event.actionMasked){
+                MotionEvent.ACTION_UP -> {
+                    closeSearchKeyboard()
+                }
+            }
+            view.performClick()
+            true
+        }
+
+    }
 
     private fun setBottomSheetEvent(){
         val closeBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.closeMenuBtn)
@@ -175,6 +213,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     */
 
     private fun sortRestaurantsByCat(ids:List<String>){
+        if(keyBoardIsFocused())return
         clearRestaurantAdapter()
         getMainActivity().loadRestaurantsByCathegory(ids,restaurantAdapter)
     }
@@ -186,6 +225,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     */
 
     fun showRestaurant(restaurant: Restaurant){
+        if(keyBoardIsFocused())return
         if(sameRestaurantAsBefore(restaurant.restaurantId!!)){
             bottomSheetDialog.show()
             return

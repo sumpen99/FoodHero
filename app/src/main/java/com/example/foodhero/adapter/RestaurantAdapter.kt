@@ -106,7 +106,7 @@ class RestaurantAdapter(private val activity:MainActivity,private val fragment: 
         val deliveryTypeImageView: ImageView = itemView.findViewById(R.id.restaurantDeliveryTypeImage)
 
         init{
-            loggoImageView.setOnClickListener{
+            ItemView.setOnClickListener{
                 showRestaurantMenu(bindingAdapterPosition)
             }
         }
