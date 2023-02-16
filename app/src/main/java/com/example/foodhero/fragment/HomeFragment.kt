@@ -18,6 +18,7 @@ import com.example.foodhero.databinding.FragmentHomeBinding
 import com.example.foodhero.global.FragmentInstance
 import com.example.foodhero.global.downloadImageFromStorage
 import com.example.foodhero.global.logMessage
+import com.example.foodhero.global.moveToActivityAndPutOnTop
 import com.example.foodhero.struct.CathegoryCounter
 import com.example.foodhero.struct.Restaurant
 import com.example.foodhero.widgets.CathegoryItem
@@ -83,7 +84,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         }
         showInfoBtn.setOnClickListener{
             bottomSheetDialog.dismiss()
-            parentActivity.moveToActivity(Intent(parentActivity,OrderActivity::class.java))
+            parentActivity.moveToActivityAndPutOnTop(Intent(parentActivity,OrderActivity::class.java))
            // R.id.navigateProfile->moveToActivityAndPutOnTop(Intent(this, OrderActivity::class.java))
 
         }
