@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:fontFamily="sans-serif-thin"
+                android:fontFamily="sans-serif-light"
                 android:padding="10dp"
                 android:text="Salt peppar mm\n\n\nMore salt peppar"
                 android:textColor="@color/black"
@@ -51,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:padding="10dp"
+                android:fontFamily="sans-serif-medium"
                 android:text="140 kr"
                 android:textColor="@color/background_medium_dark"
                 android:textSize="@dimen/cardText" />
@@ -59,12 +60,12 @@
                 android:id="@+id/floatingActionButtonBasket"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#F6F3F3"
+                android:background="@color/snow"
                 android:clickable="true"
-                android:tint="#FAFAFA"
-                app:backgroundTint="#C6FFFDFD"
-                app:rippleColor="#F3F0F0"
-                app:srcCompat="@drawable/baseline_shopping_basket_24" />
+                android:tint="@color/snow"
+                app:backgroundTint="@color/snow"
+                app:rippleColor="@color/snow"
+                app:srcCompat="@drawable/outline_shopping_basket_24" />
 
         </LinearLayout>
         <androidx.appcompat.widget.AppCompatImageView
