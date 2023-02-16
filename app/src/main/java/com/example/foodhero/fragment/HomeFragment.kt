@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodhero.MainActivity
 import com.example.foodhero.R
+import com.example.foodhero.activity.OrderActivity
 import com.example.foodhero.adapter.RestaurantAdapter
 import com.example.foodhero.adapter.RestaurantMenuAdapter
 import com.example.foodhero.databinding.FragmentHomeBinding
@@ -82,6 +83,9 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         }
         showInfoBtn.setOnClickListener{
             bottomSheetDialog.dismiss()
+            parentActivity.moveToActivity(Intent(parentActivity,OrderActivity::class.java))
+           // R.id.navigateProfile->moveToActivityAndPutOnTop(Intent(this, OrderActivity::class.java))
+
         }
     }
 
