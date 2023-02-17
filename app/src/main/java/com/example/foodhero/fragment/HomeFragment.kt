@@ -1,14 +1,14 @@
 package com.example.foodhero.fragment
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.view.inputmethod.EditorInfo
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodhero.MainActivity
@@ -33,7 +33,8 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBottomSheetDialog(R.layout.bottom_sheet_restaurant)
-        setSearchKeyboard()
+        setBottomSheetSearchDialog(R.layout.bottom_sheet_search)
+        //setSearchKeyboard()
         setRefreshButton()
         setRecyclerView()
         setEventListener(view)
@@ -72,7 +73,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     *   ##########################################################################
     */
 
-    private fun setSearchKeyboard(){
+    /*private fun setSearchKeyboard(){
         menuItemSearch = getHomeBinding().menuItemSearch
     }
 
@@ -86,7 +87,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
             return true
         }
         return false
-    }
+    }*/
 
     /*
     *   ##########################################################################
@@ -96,15 +97,38 @@ class HomeFragment(intent: Intent) : BaseFragment() {
 
 
     private fun setEventListener(view:View){
-        view.setOnTouchListener { v, event ->
+        val topSearchMenu = getHomeBinding().userPositionLayout
+        topSearchMenu.setOnClickListener {
+            bottomSheetSearchDialog.show()
+
+        }
+        /*bottomSheetSearchDialog.findViewById<LinearLayout>(R.id.searchDialogLayout).setOnTouchListener { v, event ->
+            when(event.actionMasked){
+                MotionEvent.ACTION_UP -> {
+                    bottomSheetSearchDialog.dismiss()
+                }
+            }
+            v.performClick()
+            true
+        }
+
+        nestedScrollView.setOnTouchListener { v, event ->
             when(event.actionMasked){
                 MotionEvent.ACTION_UP -> {
                     closeSearchKeyboard()
                 }
             }
-            view.performClick()
+            nestedScrollView.performClick()
             true
         }
+
+        menuItemSearch.setOnEditorActionListener { _, keyCode, event ->
+            if (((event?.action ?: -1) == KeyEvent.ACTION_DOWN) || keyCode == EditorInfo.IME_ACTION_SEARCH) {
+                closeSearchKeyboard()
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }*/
 
     }
 
@@ -213,7 +237,6 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     */
 
     private fun sortRestaurantsByCat(ids:List<String>){
-        if(keyBoardIsFocused())return
         clearRestaurantAdapter()
         getMainActivity().loadRestaurantsByCathegory(ids,restaurantAdapter)
     }
@@ -225,7 +248,6 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     */
 
     fun showRestaurant(restaurant: Restaurant){
-        if(keyBoardIsFocused())return
         if(sameRestaurantAsBefore(restaurant.restaurantId!!)){
             bottomSheetDialog.show()
             return

@@ -177,7 +177,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun applyTransaction(frag: Fragment){
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.homeLayout,frag).commit()
+            add(R.id.homeLayout,frag).commit()
         }
     }
 

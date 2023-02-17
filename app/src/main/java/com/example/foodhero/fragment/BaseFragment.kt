@@ -20,6 +20,7 @@ abstract class BaseFragment: Fragment(), IFragment {
     protected lateinit var parentActivity: Activity
     protected lateinit var messageToUser: MessageToUser
     protected lateinit var bottomSheetDialog: Dialog
+    protected lateinit var bottomSheetSearchDialog: Dialog
     protected var baseView: View? = null
     protected var _binding: ViewBinding? = null
     protected val binding get() = _binding!!
@@ -58,6 +59,15 @@ abstract class BaseFragment: Fragment(), IFragment {
         bottomSheetDialog.window?:return
         bottomSheetDialog.window!!.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         bottomSheetDialog.window!!.setGravity(Gravity.BOTTOM)
+    }
+
+    open fun setBottomSheetSearchDialog(layoutID:Int){
+        bottomSheetSearchDialog = Dialog(parentActivity,R.style.MaterialDialogSheet)
+        bottomSheetSearchDialog.setContentView(layoutID)
+        bottomSheetSearchDialog.setCancelable(true)
+        bottomSheetSearchDialog.window?:return
+        bottomSheetSearchDialog.window!!.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+        bottomSheetSearchDialog.window!!.setGravity(Gravity.BOTTOM)
     }
 
     /*
