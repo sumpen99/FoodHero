@@ -17,7 +17,6 @@ class MyOrdersActivity : AppCompatActivity() {
 
 
 
-
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
