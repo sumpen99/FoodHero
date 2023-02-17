@@ -3,10 +3,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.foodhero.R
+import com.example.foodhero.activity.LoginActivity
 import com.example.foodhero.fragment.BaseFragment
+import com.example.foodhero.global.moveToActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MyOrdersActivity : AppCompatActivity() {
@@ -17,7 +21,7 @@ class MyOrdersActivity : AppCompatActivity() {
 
 
 
-    @SuppressLint("WrongViewCast")
+    @SuppressLint("WrongViewCast", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_orders)
@@ -29,6 +33,12 @@ class MyOrdersActivity : AppCompatActivity() {
         val backButton: Button = findViewById(R.id.back_button)
         backButton.setOnClickListener {
             onBackPressed()
+        }
+
+        val imageLogOutButton = findViewById<ImageButton>(R.id.imageLogOutButton)
+
+        imageLogOutButton.setOnClickListener {
+            signOut()
         }
 
 
@@ -75,6 +85,14 @@ class MyOrdersActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 Log.w("MyOrdersActivity", "Error retrieving last orders", e)
             }
+    }
+
+    fun signOut(){
+
+        FirebaseAuth.getInstance().signOut()
+        val intent = Intent(this, LoginActivity::class.java)
+        moveToActivity(intent)
+
     }
 
 }
