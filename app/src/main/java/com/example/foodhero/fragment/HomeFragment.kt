@@ -1,9 +1,11 @@
 package com.example.foodhero.fragment
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
+import android.widget.Space
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageButton
@@ -97,32 +99,12 @@ class HomeFragment(intent: Intent) : BaseFragment() {
 
 
     private fun setEventListener(view:View){
-        val topSearchMenu = getHomeBinding().userPositionLayout
+        val topSearchMenu = getHomeBinding().openSearchWindow
         topSearchMenu.setOnClickListener {
             bottomSheetSearchDialog.show()
-
-        }
-        /*bottomSheetSearchDialog.findViewById<LinearLayout>(R.id.searchDialogLayout).setOnTouchListener { v, event ->
-            when(event.actionMasked){
-                MotionEvent.ACTION_UP -> {
-                    bottomSheetSearchDialog.dismiss()
-                }
-            }
-            v.performClick()
-            true
         }
 
-        nestedScrollView.setOnTouchListener { v, event ->
-            when(event.actionMasked){
-                MotionEvent.ACTION_UP -> {
-                    closeSearchKeyboard()
-                }
-            }
-            nestedScrollView.performClick()
-            true
-        }
-
-        menuItemSearch.setOnEditorActionListener { _, keyCode, event ->
+        /*menuItemSearch.setOnEditorActionListener { _, keyCode, event ->
             if (((event?.action ?: -1) == KeyEvent.ACTION_DOWN) || keyCode == EditorInfo.IME_ACTION_SEARCH) {
                 closeSearchKeyboard()
                 return@setOnEditorActionListener true
@@ -132,9 +114,13 @@ class HomeFragment(intent: Intent) : BaseFragment() {
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setBottomSheetEvent(){
         val closeBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.closeMenuBtn)
         val showInfoBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.showInfoBtn)
+        val goBackBtn = bottomSheetSearchDialog.findViewById<AppCompatImageButton>(R.id.goBackBtn)
+        val searchField = bottomSheetSearchDialog.findViewById<AppCompatEditText>(R.id.menuItemSearch)
+        val searchLayout = bottomSheetSearchDialog.findViewById<LinearLayout>(R.id.searchDialogLayout)
         recyclerViewMenu = bottomSheetDialog.findViewById<RecyclerView>(R.id.menuItemsRecyclerview)
 
         restaurantMenuAdapter = RestaurantMenuAdapter(getMainActivity(),this)
@@ -150,6 +136,30 @@ class HomeFragment(intent: Intent) : BaseFragment() {
            // R.id.navigateProfile->moveToActivityAndPutOnTop(Intent(this, OrderActivity::class.java))
 
         }
+        goBackBtn.setOnClickListener {
+            searchField.text?.clear()
+            bottomSheetSearchDialog.dismiss()
+        }
+
+        searchLayout.setOnTouchListener { v, event ->
+            when(event.actionMasked){
+                MotionEvent.ACTION_UP -> {
+                    searchField.hideKeyboard()
+                }
+            }
+            v.performClick()
+            true
+        }
+
+        searchField.setOnEditorActionListener { _, keyCode, event ->
+            if (((event?.action ?: -1) == KeyEvent.ACTION_DOWN) || keyCode == EditorInfo.IME_ACTION_SEARCH) {
+                searchField.hideKeyboard()
+                //closeSearchKeyboard()
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
+
     }
 
     /*

@@ -16,18 +16,33 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/menuItemSearch"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:fontFamily="sans-serif"
             android:hint="@string/user_search_hint"
             android:imeOptions="actionSearch"
             android:inputType="text"
+            android:layout_weight="1"
             android:background="@color/transparent"
             android:textColor="@color/background_medium_dark"
             android:textSize="@dimen/cardTextHeader"
             android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/goBackBtn"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:src="@drawable/ic_user_go_back_foreground" />
     </LinearLayout>
 
+    <Space
+        android:id="@+id/emptySpaceLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </Space>
 
 </LinearLayout>
