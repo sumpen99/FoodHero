@@ -105,7 +105,6 @@ class MainActivity : AppCompatActivity() {
         bottomNavMenu.setOnItemSelectedListener {it: MenuItem ->
             when(it.itemId){
                 R.id.navigateHome->navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
-                //R.id.navigateSearch->SEARCH BOX
                 R.id.navigateCart->moveToActivityAndPutOnTop(Intent(this,OrderActivity::class.java))
                 R.id.navigateProfile->moveToActivityAndPutOnTop(Intent(this, ProfilActivity::class.java))
 

@@ -23,3 +23,10 @@ enum class ServerResult {
     UPLOAD_ERROR,
     UPLOAD_OK
 }
+
+enum class DialogInstance {
+    BOTTOM_SHEET_SEARCH,
+    BOTTOM_SHEET_PICK_LOCATION,
+    BOTTOM_SHEET_RESTAURANT,
+    BOTOOM_SHEET_LOGIN
+}

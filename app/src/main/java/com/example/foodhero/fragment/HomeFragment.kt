@@ -3,14 +3,14 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
-import android.widget.Space
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodhero.MainActivity
@@ -30,17 +30,11 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     private lateinit var recyclerViewMenu: RecyclerView
     private lateinit var restaurantAdapter: RestaurantAdapter
     private lateinit var restaurantMenuAdapter: RestaurantMenuAdapter
-    private lateinit var menuItemSearch: AppCompatEditText
-    private var lastShownId:String = ""
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setBottomSheetDialog(R.layout.bottom_sheet_restaurant)
-        setBottomSheetSearchDialog(R.layout.bottom_sheet_search)
-        //setSearchKeyboard()
         setRefreshButton()
         setRecyclerView()
         setEventListener(view)
-        setBottomSheetEvent()
         loadRestaurants()
    }
 
@@ -100,8 +94,15 @@ class HomeFragment(intent: Intent) : BaseFragment() {
 
     private fun setEventListener(view:View){
         val topSearchMenu = getHomeBinding().openSearchWindow
+        val pickLocationBtn = getHomeBinding().openPickLocationWindow
         topSearchMenu.setOnClickListener {
-            bottomSheetSearchDialog.show()
+            setBottomSheetDialog(R.layout.bottom_sheet_search,MATCH_PARENT,DialogInstance.BOTTOM_SHEET_SEARCH)
+            setBottomSheetSearchEvent()
+            bottomSheetDialog.show()
+        }
+        pickLocationBtn.setOnClickListener {
+            setBottomSheetDialog(R.layout.bottom_sheet_position,WRAP_CONTENT,DialogInstance.BOTTOM_SHEET_PICK_LOCATION)
+            bottomSheetDialog.show()
         }
 
         /*menuItemSearch.setOnEditorActionListener { _, keyCode, event ->
@@ -118,9 +119,6 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     private fun setBottomSheetEvent(){
         val closeBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.closeMenuBtn)
         val showInfoBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.showInfoBtn)
-        val goBackBtn = bottomSheetSearchDialog.findViewById<AppCompatImageButton>(R.id.goBackBtn)
-        val searchField = bottomSheetSearchDialog.findViewById<AppCompatEditText>(R.id.menuItemSearch)
-        val searchLayout = bottomSheetSearchDialog.findViewById<LinearLayout>(R.id.searchDialogLayout)
         recyclerViewMenu = bottomSheetDialog.findViewById<RecyclerView>(R.id.menuItemsRecyclerview)
 
         restaurantMenuAdapter = RestaurantMenuAdapter(getMainActivity(),this)
@@ -136,9 +134,17 @@ class HomeFragment(intent: Intent) : BaseFragment() {
            // R.id.navigateProfile->moveToActivityAndPutOnTop(Intent(this, OrderActivity::class.java))
 
         }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setBottomSheetSearchEvent(){
+        val goBackBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.goBackBtn)
+        val searchField = bottomSheetDialog.findViewById<AppCompatEditText>(R.id.menuItemSearch)
+        val searchLayout = bottomSheetDialog.findViewById<LinearLayout>(R.id.searchDialogLayout)
+
         goBackBtn.setOnClickListener {
             searchField.text?.clear()
-            bottomSheetSearchDialog.dismiss()
+            bottomSheetDialog.dismiss()
         }
 
         searchLayout.setOnTouchListener { v, event ->
@@ -158,6 +164,29 @@ class HomeFragment(intent: Intent) : BaseFragment() {
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
+        }
+
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setBottomSheetPickLocationEvent(){
+        val goBackBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.goBackBtn)
+        val searchField = bottomSheetDialog.findViewById<AppCompatEditText>(R.id.menuItemSearch)
+        val searchLayout = bottomSheetDialog.findViewById<LinearLayout>(R.id.searchDialogLayout)
+
+        goBackBtn.setOnClickListener {
+            searchField.text?.clear()
+            bottomSheetDialog.dismiss()
+        }
+
+        searchLayout.setOnTouchListener { v, event ->
+            when(event.actionMasked){
+                MotionEvent.ACTION_UP -> {
+                    searchField.hideKeyboard()
+                }
+            }
+            v.performClick()
+            true
         }
 
     }
@@ -226,7 +255,9 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     }
 
     private fun sameRestaurantAsBefore(newRestaurantId:String):Boolean{
-        return newRestaurantId == lastShownId
+        return isBottomSheetInitialized() &&
+                (newRestaurantId == bottomSheetDialog.lastId) &&
+                bottomSheetDialog.dialogInstance == DialogInstance.BOTTOM_SHEET_RESTAURANT
     }
 
     fun addCathegorysToView(listOfCat:MutableMap<String,CathegoryCounter>){
@@ -262,10 +293,18 @@ class HomeFragment(intent: Intent) : BaseFragment() {
             bottomSheetDialog.show()
             return
         }
-        lastShownId = restaurant.restaurantId
+        else if(isBottomSheetInitialized() && bottomSheetDialog.dialogInstance == DialogInstance.BOTTOM_SHEET_RESTAURANT){
+            clearRestaurantMenuAdapter()
+        }
+        else{
+            setBottomSheetDialog(R.layout.bottom_sheet_restaurant, MATCH_PARENT,DialogInstance.BOTTOM_SHEET_RESTAURANT)
+            setBottomSheetEvent()
+        }
+        bottomSheetDialog.lastId = restaurant.restaurantId
+        populateBottomSheetWithRestaurant(restaurant)
+    }
 
-        clearRestaurantMenuAdapter()
-
+    private fun populateBottomSheetWithRestaurant(restaurant:Restaurant){
         getMainActivity().downloadImageFromStorage(
             getMainActivity().getRestaurantLoggoRef(restaurant.loggoDownloadUrl),
             bottomSheetDialog.findViewById<AppCompatImageView>(R.id.restImage))
@@ -277,8 +316,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         bottomSheetDialog.findViewById<TextView>(R.id.restDeliveryTime).text = restaurant.getDeliveryTime()
 
         bottomSheetDialog.show()
-        getMainActivity().loadRestaurantMenu(restaurant.restaurantId,restaurantMenuAdapter)
-
+        getMainActivity().loadRestaurantMenu(restaurant.restaurantId!!,restaurantMenuAdapter)
     }
 
 
