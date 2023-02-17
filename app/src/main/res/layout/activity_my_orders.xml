@@ -8,58 +8,30 @@
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="548dp"
-        android:layout_height="929dp"
+        android:layout_width="480dp"
+        android:layout_height="813dp"
+        android:layout_marginTop="24dp"
         android:src="@drawable/two_phone_mockup_download_app_instagram_post_1_"
-        tools:layout_editor_absoluteX="-69dp"
-        tools:layout_editor_absoluteY="-11dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView12"
-        android:layout_width="311dp"
-        android:layout_height="552dp"
-        android:layout_marginTop="100dp"
+        android:layout_width="345dp"
+        android:layout_height="543dp"
+        android:layout_marginTop="140dp"
         android:alpha="0.7"
         android:src="@drawable/rounded_corner_black"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textview1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="160dp"
-        android:fontFamily="@font/roboto_medium"
-        android:text="YOUR FAVORITE DISHES"
-        android:textColor="#FCF8F8"
-        android:textColorHint="#FFFFFF"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textview2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:fontFamily="@font/roboto_medium"
-        android:text="YOUR LAST ORDERS"
-        android:textColor="#F1EDED"
-        android:textColorHint="#FFFFFF"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview1" />
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="110dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="59dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="25dp"
         android:src="@drawable/applogowhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,6 +44,7 @@
         android:id="@+id/imageView3"
         android:layout_width="59dp"
         android:layout_height="43dp"
+        android:layout_marginTop="100dp"
         android:src="@drawable/baseline_favorite_24"
         app:layout_constraintBottom_toTopOf="@+id/textview1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,11 +56,27 @@
         android:id="@+id/favorite_dishes_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:fontFamily="@font/roboto_medium"
         android:text="TextView"
         android:textColor="#F1EDED"
         android:textColorHint="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview1" />
+
+    <TextView
+        android:id="@+id/textview2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="116dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="YOUR LAST ORDERS"
+        android:textColor="#F1EDED"
+        android:textColorHint="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview1" />
@@ -96,27 +85,55 @@
         android:id="@+id/last_orders_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/roboto_medium"
         android:text="TextView"
         android:textColor="#F1EDED"
         android:textColorHint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview2" />
 
+    <TextView
+        android:id="@+id/textview1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="YOUR FAVORITE DISHES"
+        android:textColor="#FCF8F8"
+        android:textColorHint="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageButton
         android:id="@+id/back_button"
-        android:layout_width="48dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="59dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="25dp"
         android:background="#050505"
         android:contentDescription="@string/back"
         android:contextClickable="false"
         android:src="@drawable/baseline_arrow_back_24"
         android:text="@string/back"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageLogOutButton"
+        android:layout_width="59dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="30dp"
+        android:background="#0B0B0B"
+        android:src="@drawable/baseline_logout_24"
+        android:tint="#FAFAFA"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
