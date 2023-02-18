@@ -7,9 +7,14 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.LightingColorFilter
+import android.graphics.PorterDuff
 import android.location.Location
 import android.location.LocationManager
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -19,6 +24,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.example.foodhero.R
 import com.firebase.geofire.GeoLocation
+import com.google.firebase.database.collection.LLRBNode
 import com.google.firebase.storage.StorageReference
 
 /*
@@ -126,6 +132,29 @@ fun View.hideKeyboard() {
     clearFocus()
 }
 
+/*
+*   ##########################################################################
+*                                CLICK EFFECT
+*   ##########################################################################
+*
+* */
+
+fun View.clickEffect(){
+    this.setOnTouchListener { v, event ->
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                v.background.colorFilter = LightingColorFilter(Color.WHITE,Color.LTGRAY)
+                v.invalidate()
+            }
+            MotionEvent.ACTION_UP -> {
+                v.background.clearColorFilter()
+                v.invalidate()
+            }
+        }
+        v.performClick()
+        false
+    }
+}
 
 /*
 *   ##########################################################################

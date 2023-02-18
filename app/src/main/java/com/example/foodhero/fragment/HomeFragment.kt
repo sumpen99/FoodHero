@@ -96,13 +96,22 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         val topSearchMenu = getHomeBinding().openSearchWindow
         val pickLocationBtn = getHomeBinding().openPickLocationWindow
         topSearchMenu.setOnClickListener {
-            setBottomSheetDialog(R.layout.bottom_sheet_search,MATCH_PARENT,DialogInstance.BOTTOM_SHEET_SEARCH)
-            setBottomSheetSearchEvent()
-            bottomSheetDialog.show()
+            if(!dismissOpenBottomSheetDialog()){
+                if(!dismissNewBottomSheetDialogLayout(DialogInstance.BOTTOM_SHEET_SEARCH)){
+                    setBottomSheetDialog(R.layout.bottom_sheet_search,MATCH_PARENT,DialogInstance.BOTTOM_SHEET_SEARCH)
+                    setBottomSheetSearchEvent()
+                }
+                bottomSheetDialog.show()
+            }
         }
         pickLocationBtn.setOnClickListener {
-            setBottomSheetDialog(R.layout.bottom_sheet_position,WRAP_CONTENT,DialogInstance.BOTTOM_SHEET_PICK_LOCATION)
-            bottomSheetDialog.show()
+            if(!dismissOpenBottomSheetDialog()){
+                if(!dismissNewBottomSheetDialogLayout(DialogInstance.BOTTOM_SHEET_PICK_LOCATION)){
+                    setBottomSheetDialog(R.layout.bottom_sheet_position,WRAP_CONTENT,DialogInstance.BOTTOM_SHEET_PICK_LOCATION)
+                    setBottomSheetPickLocationEvent()
+                }
+                bottomSheetDialog.show()
+            }
         }
 
         /*menuItemSearch.setOnEditorActionListener { _, keyCode, event ->
@@ -170,23 +179,10 @@ class HomeFragment(intent: Intent) : BaseFragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setBottomSheetPickLocationEvent(){
-        val goBackBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.goBackBtn)
-        val searchField = bottomSheetDialog.findViewById<AppCompatEditText>(R.id.menuItemSearch)
-        val searchLayout = bottomSheetDialog.findViewById<LinearLayout>(R.id.searchDialogLayout)
-
-        goBackBtn.setOnClickListener {
-            searchField.text?.clear()
-            bottomSheetDialog.dismiss()
-        }
-
-        searchLayout.setOnTouchListener { v, event ->
-            when(event.actionMasked){
-                MotionEvent.ACTION_UP -> {
-                    searchField.hideKeyboard()
-                }
-            }
-            v.performClick()
-            true
+        val pickLocation = bottomSheetDialog.findViewById<LinearLayout>(R.id.pickLocationLayout)
+        pickLocation.clickEffect()
+        pickLocation.setOnClickListener {
+            //bottomSheetDialog.dismiss()
         }
 
     }
@@ -327,14 +323,17 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     */
 
     /*override fun onResume(){
+        logMessage("on resume")
         super.onResume()
     }
 
     override fun onPause(){
+        logMessage("on paus")
         super.onPause()
     }
 
     override fun onStop(){
+        logMessage("on stop")
         super.onStop()
     }*/
 }

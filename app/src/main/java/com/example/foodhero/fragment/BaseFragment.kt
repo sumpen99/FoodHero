@@ -35,6 +35,7 @@ abstract class BaseFragment: Fragment(), IFragment {
         setParentActivity()
         setActivityContext()
         setInfoToUser()
+        initBottomSheetDialog()
         return getFragmentView()
     }
 
@@ -54,13 +55,24 @@ abstract class BaseFragment: Fragment(), IFragment {
         messageToUser = MessageToUser(parentActivity,null)
     }
 
+    private fun initBottomSheetDialog(){
+        bottomSheetDialog = BottomSheetDialog(parentActivity,R.style.MaterialDialogSheet, DialogInstance.BOTTOM_SHEET_INIT)
+    }
+
     open fun setBottomSheetDialog(layoutID:Int,width:Int,dialogInstance:DialogInstance){
-        bottomSheetDialog = BottomSheetDialog(parentActivity,R.style.MaterialDialogSheet,dialogInstance)
         bottomSheetDialog.setContentView(layoutID)
         bottomSheetDialog.setCancelable(true)
         bottomSheetDialog.window?:return
         bottomSheetDialog.window!!.setLayout(LinearLayout.LayoutParams.MATCH_PARENT,width)
         bottomSheetDialog.window!!.setGravity(Gravity.BOTTOM)
+    }
+
+    open fun dismissOpenBottomSheetDialog():Boolean{
+        return (isBottomSheetInitialized() && bottomSheetDialog.isShowing)
+    }
+
+    open fun dismissNewBottomSheetDialogLayout(dialogInstance:DialogInstance):Boolean{
+        return (isBottomSheetInitialized() && bottomSheetDialog.dialogInstance == dialogInstance)
     }
 
     /*open fun setBottomSheetDialog1(layoutID:Int){

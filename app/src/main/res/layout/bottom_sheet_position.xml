@@ -45,7 +45,7 @@
             android:text="@string/user_allowed_position"
             android:textStyle="bold"
             android:textColor="@color/background_medium_dark"
-            android:textSize="20sp"/>
+            android:textSize="18sp"/>
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/gpsEnabledImageView"
             android:layout_width="50dp"
@@ -53,10 +53,11 @@
             android:layout_gravity="center_vertical"
             android:background="@drawable/ic_filter_state"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_user_position_blue_foreground" />
+            android:src="@drawable/ic_check_marker_foreground" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/pickLocationLayout"
         android:layout_below="@+id/gpsLayout"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="20dp"
@@ -71,9 +72,8 @@
             android:layout_height="50dp"
             android:layout_gravity="center_vertical"
             android:scaleType="centerCrop"
-            android:rotation="45"
             android:background="@drawable/ic_filter_state"
-            android:src="@drawable/ic_user_position_blue_foreground" />
+            android:src="@drawable/ic_user_pic_location_foreground" />
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -82,14 +82,7 @@
             android:text="@string/user_pick_location"
             android:textStyle="bold"
             android:textColor="@color/background_medium_dark"
-            android:textSize="20sp"/>
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/ic_filter_state"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_user_position_blue_foreground" />
+            android:textSize="18sp"/>
     </LinearLayout>
 
 

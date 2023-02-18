@@ -9,4 +9,8 @@ class BottomSheetDialog(
     val dialogInstance: DialogInstance):
     Dialog(context,themeResId) {
         var lastId = ""
+
+    override fun show() {
+        super.show()
+    }
 }
