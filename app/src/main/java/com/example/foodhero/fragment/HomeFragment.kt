@@ -81,8 +81,8 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     */
     private fun setRecyclerView(){
         recyclerViewRestaurant = getHomeBinding().restaurantRecyclerview
-        restaurantAdapter = RestaurantAdapter(getMainActivity(),this)
-        recyclerViewRestaurant.layoutManager = LinearLayoutManager(activityContext)
+        restaurantAdapter = RestaurantAdapter(this)
+        recyclerViewRestaurant.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewRestaurant.adapter = restaurantAdapter
     }
 
@@ -182,8 +182,8 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         val showInfoBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.showInfoBtn)
         recyclerViewMenu = bottomSheetDialog.findViewById<RecyclerView>(R.id.menuItemsRecyclerview)
 
-        restaurantMenuAdapter = RestaurantMenuAdapter(getMainActivity(),this)
-        recyclerViewMenu.layoutManager = LinearLayoutManager(activityContext)
+        restaurantMenuAdapter = RestaurantMenuAdapter(this)
+        recyclerViewMenu.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewMenu.adapter = restaurantMenuAdapter
 
         closeBtn.setOnClickListener{
@@ -191,7 +191,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         }
         showInfoBtn.setOnClickListener{
             bottomSheetDialog.dismiss()
-            parentActivity.moveToActivityAndPutOnTop(Intent(parentActivity,OrderActivity::class.java))
+            getMainActivity().moveToActivityAndPutOnTop(Intent(getMainActivity(),OrderActivity::class.java))
         }
     }
 
@@ -292,7 +292,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         listOfCitys.cities?:return
         for(city:String in listOfCitys.cities!!){
             val selected = city == citySelected
-            val c = CityItem(city,selected,::uncheckItems,parentActivity,null)
+            val c = CityItem(city,selected,::uncheckItems,getMainActivity(),null)
             cityContainer.addView(c,cityContainer.childCount)
         }
     }
@@ -319,8 +319,8 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         return binding as FragmentHomeBinding
     }
 
-    private fun getMainActivity():MainActivity{
-        return activity as MainActivity
+    fun getMainActivity():MainActivity{
+        return requireActivity() as MainActivity
     }
 
     /*
@@ -365,7 +365,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         for(lbl in listOfCat.keys){
             val catCounter = listOfCat[lbl]
             catCounter?:continue
-            val cat = CathegoryItem(lbl,catCounter,::sortRestaurantsByCat,parentActivity,null)
+            val cat = CathegoryItem(lbl,catCounter,::sortRestaurantsByCat,getMainActivity(),null)
             //cat.setImageResource()
             catContainer.addView(cat,catContainer.childCount)
         }

@@ -1,5 +1,4 @@
 package com.example.foodhero.adapter
-
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
@@ -7,14 +6,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.foodhero.MainActivity
 import com.example.foodhero.R
 import com.example.foodhero.fragment.HomeFragment
 import com.example.foodhero.global.downloadImageFromStorage
 import com.example.foodhero.struct.MenuItem
 
 class RestaurantMenuAdapter(
-    private val activity: MainActivity,
     private val fragment: HomeFragment):
     RecyclerView.Adapter<RestaurantMenuAdapter.ViewHolder>() {
 
@@ -53,7 +50,7 @@ class RestaurantMenuAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(menuList.isEmpty()){return}
         val itemsViewModel = menuList[position]
-        activity.downloadImageFromStorage(activity.getRestaurantMenuItemLoggoRef(itemsViewModel.loggoDownloadUrl),holder.loggoImageView)
+        fragment.getMainActivity().downloadImageFromStorage(fragment.getMainActivity().getRestaurantMenuItemLoggoRef(itemsViewModel.loggoDownloadUrl),holder.loggoImageView)
         holder.nameTextView.text = itemsViewModel.name
         holder.ingredientsTextView.text = itemsViewModel.getIngredients()
         holder.priceTextView.text = itemsViewModel.getCurrentPrice()

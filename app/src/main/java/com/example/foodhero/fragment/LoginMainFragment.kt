@@ -12,6 +12,7 @@ import com.example.foodhero.activity.LoginActivity
 import com.example.foodhero.databinding.FragmentLoginmainBinding
 import com.example.foodhero.global.DialogInstance
 import com.example.foodhero.global.FragmentInstance
+import javax.security.auth.login.LoginException
 
 class LoginMainFragment(intent: Intent) : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,6 +53,10 @@ class LoginMainFragment(intent: Intent) : BaseFragment() {
         return binding as FragmentLoginmainBinding
     }
 
+    private fun getLoginActivity():LoginActivity{
+        return requireActivity() as LoginActivity
+    }
+
     /*
     *   ##########################################################################
     *               SET EVENTLISTENER FOR BUTTON
@@ -73,18 +78,18 @@ class LoginMainFragment(intent: Intent) : BaseFragment() {
 
         userEnterAsGuestBtn.setOnClickListener{
             bottomSheetDialog.dismiss()
-            (parentActivity as LoginActivity).loginAsGuest()
+            getLoginActivity().loginAsGuest()
         }
 
         userLogInBtn.setOnClickListener{
             bottomSheetDialog.dismiss()
-            (parentActivity as LoginActivity).navigateToFragment(FragmentInstance.FRAGMENT_LOGIN_USER)
+            getLoginActivity().navigateToFragment(FragmentInstance.FRAGMENT_LOGIN_USER)
 
         }
 
         userSignUpBtn.setOnClickListener {
             bottomSheetDialog.dismiss()
-            (parentActivity as LoginActivity).navigateToFragment(FragmentInstance.FRAGMENT_SIGN_UP)
+            getLoginActivity().navigateToFragment(FragmentInstance.FRAGMENT_SIGN_UP)
         }
     }
 

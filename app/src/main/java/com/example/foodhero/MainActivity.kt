@@ -281,7 +281,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loadRestaurantsByCity(){
-
+        
     }
 
     fun loadRestaurantsByCathegory(ids:List<String>,restaurantAdapter: RestaurantAdapter){

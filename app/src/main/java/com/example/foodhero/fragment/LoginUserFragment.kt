@@ -43,6 +43,10 @@ class LoginUserFragment:BaseFragment() {
         return FragmentInstance.FRAGMENT_LOGIN_HOME
     }
 
+    private fun getLoginActivity():LoginActivity{
+        return requireActivity() as LoginActivity
+    }
+
     /*
     *   ##########################################################################
     *               GET CORRECT BINDING
@@ -71,7 +75,7 @@ class LoginUserFragment:BaseFragment() {
 
     private fun logIn(){
         if( illegalUserInput()){return}
-        (parentActivity as LoginActivity).loginWithCredentials(
+        getLoginActivity().loginWithCredentials(
             emailField.text.toString(),
             passwordField.text.toString()
         )

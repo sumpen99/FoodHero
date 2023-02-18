@@ -47,7 +47,7 @@ class SignUpFragment:BaseFragment() {
     }
 
     private fun getLoginActivity():LoginActivity{
-        return parentActivity as LoginActivity
+        return requireActivity() as LoginActivity
     }
 
     /*

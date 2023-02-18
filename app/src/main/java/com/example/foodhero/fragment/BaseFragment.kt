@@ -1,7 +1,4 @@
 package com.example.foodhero.fragment
-import android.app.Activity
-import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -18,8 +15,6 @@ import com.example.foodhero.widgets.BottomSheetDialog
 import com.example.foodhero.widgets.MessageToUser
 
 abstract class BaseFragment: Fragment(), IFragment {
-    protected lateinit var activityContext: Context
-    protected lateinit var parentActivity: Activity
     protected lateinit var messageToUser: MessageToUser
     protected lateinit var bottomSheetDialog: BottomSheetDialog
     protected var baseView: View? = null
@@ -32,19 +27,9 @@ abstract class BaseFragment: Fragment(), IFragment {
         if(baseView!=null){return baseView!!}
         setFragmentBinding(inflater,container)
         setFragmentView()
-        setParentActivity()
-        setActivityContext()
         setInfoToUser()
         initBottomSheetDialog()
         return getFragmentView()
-    }
-
-    private fun setParentActivity(){
-        parentActivity = requireActivity()
-    }
-
-    private fun setActivityContext(){
-        activityContext = requireContext()
     }
 
     private fun getFragmentView(): View {
@@ -52,11 +37,11 @@ abstract class BaseFragment: Fragment(), IFragment {
     }
 
     private fun setInfoToUser(){
-        messageToUser = MessageToUser(parentActivity,null)
+        messageToUser = MessageToUser(requireActivity(),null)
     }
 
     private fun initBottomSheetDialog(){
-        bottomSheetDialog = BottomSheetDialog(parentActivity,R.style.MaterialDialogSheet, DialogInstance.BOTTOM_SHEET_INIT)
+        bottomSheetDialog = BottomSheetDialog(requireActivity(),R.style.MaterialDialogSheet, DialogInstance.BOTTOM_SHEET_INIT)
     }
 
     open fun setBottomSheetDialog(layoutID:Int,width:Int,dialogInstance:DialogInstance){
@@ -75,15 +60,6 @@ abstract class BaseFragment: Fragment(), IFragment {
     open fun dismissNewBottomSheetDialogLayout(dialogInstance:DialogInstance):Boolean{
         return (isBottomSheetInitialized() && bottomSheetDialog.dialogInstance == dialogInstance)
     }
-
-    /*open fun setBottomSheetDialog1(layoutID:Int){
-        bottomSheetDialog = Dialog(parentActivity,R.style.MaterialDialogSheet)
-        bottomSheetDialog.setContentView(layoutID)
-        bottomSheetDialog.setCancelable(true)
-        bottomSheetDialog.window?:return
-        bottomSheetDialog.window!!.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        bottomSheetDialog.window!!.setGravity(Gravity.BOTTOM)
-    }*/
 
     /*
     *   ##########################################################################
