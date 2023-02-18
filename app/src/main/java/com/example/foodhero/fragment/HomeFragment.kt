@@ -3,6 +3,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.inputmethod.EditorInfo
@@ -30,13 +32,43 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     private lateinit var recyclerViewMenu: RecyclerView
     private lateinit var restaurantAdapter: RestaurantAdapter
     private lateinit var restaurantMenuAdapter: RestaurantMenuAdapter
+    private var checkMarkerVisibility:Int = GONE
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRefreshButton()
         setRecyclerView()
         setEventListener(view)
         loadRestaurants()
+        setUserLocationText()
+
+        /*
+        * private fun setUserTag(){
+        userNameTag = parentActivity.getUserNameTag()
+        userIconTag = parentActivity.getUserIconTag()
+        * private fun setUserName(){
+        if(binding.userNameTextView.text.isEmpty()){return}
+        parentActivity.writeToSharedPreference(userNameTag,binding.userNameTextView.text.toString())
+    }
+
+    private fun loadUserName(){
+        binding.userNameTextView.hint = parentActivity.retrieveFromSharedPreference(userNameTag,"UserName").toString()
+    }
+    * fun getUserIconTag():String{
+        return Firebase.auth.currentUser!!.uid + getString(R.string.user_icon)
+    }
+
+    fun getUserNameTag():String{
+        return Firebase.auth.currentUser!!.uid + getString(R.string.user_name)
+    }
+    }
+        *
+        * */
    }
+
+    private fun setUserLocationText(){
+        val userLocText = getHomeBinding().menuItemSearch
+        userLocText.hint = getMainActivity().getCityOfChoice()
+    }
 
     /*
     *   ##########################################################################
@@ -125,7 +157,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun setBottomSheetEvent(){
+    private fun setBottomSheetRestaurantEvent(){
         val closeBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.closeMenuBtn)
         val showInfoBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.showInfoBtn)
         recyclerViewMenu = bottomSheetDialog.findViewById<RecyclerView>(R.id.menuItemsRecyclerview)
@@ -179,11 +211,37 @@ class HomeFragment(intent: Intent) : BaseFragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setBottomSheetPickLocationEvent(){
+        val locationOfChoice = getMainActivity().getLocationOfChoice()
+        val pickGps = bottomSheetDialog.findViewById<LinearLayout>(R.id.pickGpsLayout)
         val pickLocation = bottomSheetDialog.findViewById<LinearLayout>(R.id.pickLocationLayout)
+        val pickGpsImg = bottomSheetDialog.findViewById<AppCompatImageView>(R.id.gpsEnabledImageView)
+        pickGpsImg.visibility = getMainActivity().getCheckMarkerVisibility()
         pickLocation.clickEffect()
+        pickGps.clickEffect()
         pickLocation.setOnClickListener {
             //bottomSheetDialog.dismiss()
         }
+        pickGps.setOnClickListener {
+            if(getMainActivity().locationPermissionIsProvided()){
+                if(pickGpsImg.visibility == VISIBLE){
+                    pickGpsImg.visibility = GONE
+                    getMainActivity().setLocationOfChoice(false)
+                }
+                else{
+                    pickGpsImg.visibility = VISIBLE
+                    getMainActivity().setLocationOfChoice(true)
+                }
+                setUserLocationText()
+            }
+            else{
+                updateMessageDialog("Aktivera platsinfo i inställningar")
+                showMessage()
+            }
+       }
+
+    }
+
+    private fun updateSharedPreference(){
 
     }
 
@@ -289,12 +347,12 @@ class HomeFragment(intent: Intent) : BaseFragment() {
             bottomSheetDialog.show()
             return
         }
-        else if(isBottomSheetInitialized() && bottomSheetDialog.dialogInstance == DialogInstance.BOTTOM_SHEET_RESTAURANT){
+        else if(dismissNewBottomSheetDialogLayout(DialogInstance.BOTTOM_SHEET_RESTAURANT)){
             clearRestaurantMenuAdapter()
         }
         else{
             setBottomSheetDialog(R.layout.bottom_sheet_restaurant, MATCH_PARENT,DialogInstance.BOTTOM_SHEET_RESTAURANT)
-            setBottomSheetEvent()
+            setBottomSheetRestaurantEvent()
         }
         bottomSheetDialog.lastId = restaurant.restaurantId
         populateBottomSheetWithRestaurant(restaurant)

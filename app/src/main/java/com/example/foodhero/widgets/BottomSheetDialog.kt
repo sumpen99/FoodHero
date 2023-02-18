@@ -6,7 +6,7 @@ import com.example.foodhero.global.DialogInstance
 class BottomSheetDialog(
     context: Context,
     themeResId:Int,
-    val dialogInstance: DialogInstance):
+    var dialogInstance: DialogInstance):
     Dialog(context,themeResId) {
         var lastId = ""
 

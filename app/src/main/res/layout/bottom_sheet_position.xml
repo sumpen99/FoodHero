@@ -18,7 +18,7 @@
         android:textStyle="bold" />
 
     <LinearLayout
-        android:id="@+id/gpsLayout"
+        android:id="@+id/pickGpsLayout"
         android:layout_below="@+id/textviewPlats"
         android:layout_marginTop="50dp"
         android:padding="10dp"
@@ -53,12 +53,13 @@
             android:layout_gravity="center_vertical"
             android:background="@drawable/ic_filter_state"
             android:scaleType="centerCrop"
+            android:visibility="gone"
             android:src="@drawable/ic_check_marker_foreground" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/pickLocationLayout"
-        android:layout_below="@+id/gpsLayout"
+        android:layout_below="@+id/pickGpsLayout"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="20dp"
         android:padding="10dp"

@@ -59,6 +59,15 @@ class AuthRepo {
         return auth.currentUser != null
     }
 
+    fun userUid():String{
+        return if(isUserLoggedIn()){
+            auth.currentUser!!.uid
+        }
+        else{
+            return ""
+        }
+    }
+
     fun getEmail() : String {
         val email = auth.currentUser?.email ?: "Gäst"
         if (email.isEmpty()) {

@@ -1,21 +1,24 @@
 package com.example.foodhero.global
 import android.Manifest
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.content.res.Resources
 import android.graphics.Color
-import android.graphics.ColorFilter
 import android.graphics.LightingColorFilter
-import android.graphics.PorterDuff
 import android.location.Location
 import android.location.LocationManager
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.Toast
@@ -24,7 +27,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.example.foodhero.R
 import com.firebase.geofire.GeoLocation
-import com.google.firebase.database.collection.LLRBNode
 import com.google.firebase.storage.StorageReference
 
 /*
@@ -41,6 +43,43 @@ fun Activity.showPermissionDialog() {
         .setPositiveButton("Settings") { dialog, which -> dialog.dismiss() }
     alertDialog = builder.create()
     alertDialog.show()
+}
+
+/*
+*   ##########################################################################
+*                            SHARED PREFERENCE
+*   ##########################################################################
+*
+* */
+
+fun Activity.writeStringToSharedPreference(tag:String,value:String):Boolean{
+    val sharedPref = getPreferences(Context.MODE_PRIVATE) ?:return false
+    with(sharedPref.edit()){
+        putString(tag,value)
+        apply()
+    }
+    return true
+}
+
+fun Activity.writeBooleanToSharedPreference(tag:String,value:Boolean):Boolean{
+    val sharedPref = getPreferences(Context.MODE_PRIVATE) ?:return false
+    with(sharedPref.edit()){
+        putBoolean(tag,value)
+        apply()
+    }
+    return true
+}
+
+fun Activity.retrieveStringFromSharedPreference(tag:String,default:String?=null):String?{
+    val def = default?:""
+    val sharedPref = getPreferences(Context.MODE_PRIVATE) ?:return null
+    return sharedPref.getString(tag,def)
+}
+
+fun Activity.retrieveBooleanFromSharedPreference(tag:String,default:Boolean?=null):Boolean?{
+    val def = default?:false
+    val sharedPref = getPreferences(Context.MODE_PRIVATE) ?:return null
+    return sharedPref.getBoolean(tag,def)
 }
 
 /*
@@ -94,6 +133,14 @@ fun Activity.showMessage(msg:String,duration:Int){
 *
 * */
 
+fun Activity.locationPermissionIsProvided():Boolean {
+    return (checkGpsProviderStatus() &&
+            ContextCompat.checkSelfPermission(this,
+                ACCESS_FINE_LOCATION) == PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(this,
+                ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED)
+}
+
 fun Activity.getUserLocation(): GeoLocation {
     val location: Location?
     if(checkGpsProviderStatus() &&
@@ -139,6 +186,7 @@ fun View.hideKeyboard() {
 *
 * */
 
+@SuppressLint("ClickableViewAccessibility")
 fun View.clickEffect(){
     this.setOnTouchListener { v, event ->
         when (event.action) {
@@ -151,8 +199,25 @@ fun View.clickEffect(){
                 v.invalidate()
             }
         }
-        v.performClick()
         false
+    }
+}
+
+/*
+*   ##########################################################################
+*                                CLEAR CHILDREN
+*   ##########################################################################
+*
+* */
+
+fun ViewGroup.clearChildren(childrenToNotRemove:Int){
+    while(childCount>childrenToNotRemove){
+        var i = childrenToNotRemove
+        val childCount = childCount
+        while(i<childCount){
+            removeView(getChildAt(i))
+            i++
+        }
     }
 }
 

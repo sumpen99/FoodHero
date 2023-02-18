@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultCallback
@@ -36,7 +38,6 @@ class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
     private val auth = AuthRepo()
-    private var loadRestaurantsGeo = false
     private var currentFragment:FragmentInstance? = null
 
     private var permissionsStr = arrayOf<String>(
@@ -61,10 +62,10 @@ class MainActivity : AppCompatActivity() {
                     askForPermissions(permissionsList)
                 } else if (permissionsCount > 0) {
                     showPermissionDialog()
-                    loadRestaurantsGeo = false
+                    setLocationOfChoice(false)
                     navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
                 }else{
-                    loadRestaurantsGeo = true
+                    setLocationOfChoice(true)
                     navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
                 }
             })
@@ -205,6 +206,44 @@ class MainActivity : AppCompatActivity() {
 
     /*
     *   ##########################################################################
+    *               SHARED PREFERENCE
+    *   ##########################################################################
+    */
+
+    fun setLocationOfChoice(location:Boolean){
+        writeBooleanToSharedPreference(userLocationTag(),location)
+    }
+
+    private fun setCityOfChoice(city:String){
+        writeStringToSharedPreference(userCityTag(),city)
+    }
+
+    private fun userLocationTag():String{
+        return auth.userUid() + getString(R.string.user_location)
+    }
+
+    private fun userCityTag():String{
+        return auth.userUid() + getString(R.string.user_city)
+    }
+
+    fun getCityOfChoice():String{
+        val city = retrieveStringFromSharedPreference(userCityTag(),"")?:""
+        val geo = getLocationOfChoice()
+        if(city == "" && geo)return getString(R.string.user_current_location_geo)
+        else if(city == "")return getString(R.string.user_current_location_set)
+        return city
+    }
+
+    fun getCheckMarkerVisibility():Int{
+        return if(getCityOfChoice() == getString(R.string.user_current_location_geo))VISIBLE else GONE
+    }
+
+    fun getLocationOfChoice():Boolean{
+        return retrieveBooleanFromSharedPreference(userLocationTag(),false)?:false
+    }
+
+    /*
+    *   ##########################################################################
     *               COLLECT RESTAURANTS & MENU
     *   ##########################################################################
     */
@@ -218,7 +257,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loadRestaurants(restaurantAdapter:RestaurantAdapter){
-        if(loadRestaurantsGeo){
+        if(getLocationOfChoice()){
             val userLocation = getCenterOfStockholm()
             val radiusKm = 20.0
             firestoreViewModel.getRestaurantsGeo(userLocation,radiusKm,restaurantAdapter)

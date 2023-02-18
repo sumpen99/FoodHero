@@ -60,6 +60,7 @@ abstract class BaseFragment: Fragment(), IFragment {
     }
 
     open fun setBottomSheetDialog(layoutID:Int,width:Int,dialogInstance:DialogInstance){
+        bottomSheetDialog.dialogInstance = dialogInstance
         bottomSheetDialog.setContentView(layoutID)
         bottomSheetDialog.setCancelable(true)
         bottomSheetDialog.window?:return
@@ -90,11 +91,14 @@ abstract class BaseFragment: Fragment(), IFragment {
     *   ##########################################################################
     */
 
-    open fun updateMessageDialog(message:String,callback:(args:Any?)->Unit){
-        messageToUser = MessageToUser(parentActivity,null)
+    /*open fun updateMessageDialog(message:String,callback:(args:Any?)->Unit){
         messageToUser.setMessage(message)
         messageToUser.setTwoButtons()
         messageToUser.setPositiveCallback(callback)
+    }*/
+
+    open fun updateMessageDialog(message:String){
+        messageToUser.setMessage(message)
     }
 
     open fun showMessage(){
