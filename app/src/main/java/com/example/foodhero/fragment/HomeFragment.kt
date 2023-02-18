@@ -25,6 +25,7 @@ import com.example.foodhero.global.*
 import com.example.foodhero.struct.CathegoryCounter
 import com.example.foodhero.struct.Restaurant
 import com.example.foodhero.widgets.CathegoryItem
+import com.example.foodhero.widgets.CityItem
 
 
 class HomeFragment(intent: Intent) : BaseFragment() {
@@ -32,7 +33,6 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     private lateinit var recyclerViewMenu: RecyclerView
     private lateinit var restaurantAdapter: RestaurantAdapter
     private lateinit var restaurantMenuAdapter: RestaurantMenuAdapter
-    private var checkMarkerVisibility:Int = GONE
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRefreshButton()
@@ -40,34 +40,35 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         setEventListener(view)
         loadRestaurants()
         setUserLocationText()
-
-        /*
-        * private fun setUserTag(){
-        userNameTag = parentActivity.getUserNameTag()
-        userIconTag = parentActivity.getUserIconTag()
-        * private fun setUserName(){
-        if(binding.userNameTextView.text.isEmpty()){return}
-        parentActivity.writeToSharedPreference(userNameTag,binding.userNameTextView.text.toString())
-    }
-
-    private fun loadUserName(){
-        binding.userNameTextView.hint = parentActivity.retrieveFromSharedPreference(userNameTag,"UserName").toString()
-    }
-    * fun getUserIconTag():String{
-        return Firebase.auth.currentUser!!.uid + getString(R.string.user_icon)
-    }
-
-    fun getUserNameTag():String{
-        return Firebase.auth.currentUser!!.uid + getString(R.string.user_name)
-    }
-    }
-        *
-        * */
    }
+
+    /*
+    *   ##########################################################################
+    *               CURRENT LOCATION TO LOAD RESTAURANTS FROM
+    *   ##########################################################################
+    */
 
     private fun setUserLocationText(){
         val userLocText = getHomeBinding().menuItemSearch
         userLocText.hint = getMainActivity().getCityOfChoice()
+    }
+
+    private fun updateUserLocationText(pickGpsImg:AppCompatImageView){
+        if(getMainActivity().locationPermissionIsProvided()){
+            if(pickGpsImg.visibility == VISIBLE){
+                pickGpsImg.visibility = GONE
+                getMainActivity().setLocationOfChoice(false)
+            }
+            else{
+                pickGpsImg.visibility = VISIBLE
+                getMainActivity().setLocationOfChoice(true)
+            }
+            setUserLocationText()
+        }
+        else{
+            updateMessageDialog("Aktivera platsinfo i inställningar")
+            showMessage()
+        }
     }
 
     /*
@@ -123,27 +124,44 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     *   ##########################################################################
     */
 
+    private fun openBottomSheetSearch(){
+        if(!dismissOpenBottomSheetDialog()){
+            if(!dismissNewBottomSheetDialogLayout(DialogInstance.BOTTOM_SHEET_SEARCH)){
+                setBottomSheetDialog(R.layout.bottom_sheet_search,MATCH_PARENT,DialogInstance.BOTTOM_SHEET_SEARCH)
+                setBottomSheetSearchEvent()
+            }
+            bottomSheetDialog.show()
+        }
+    }
+
+    private fun openBottomSheetPosition(){
+        if(!dismissOpenBottomSheetDialog()){
+            if(!dismissNewBottomSheetDialogLayout(DialogInstance.BOTTOM_SHEET_PICK_LOCATION)){
+                setBottomSheetDialog(R.layout.bottom_sheet_position,WRAP_CONTENT,DialogInstance.BOTTOM_SHEET_PICK_LOCATION)
+                setBottomSheetPickLocationEvent()
+            }
+            bottomSheetDialog.show()
+        }
+    }
+
+    private fun openBottomSheetPickCity(){
+        if(!dismissOpenBottomSheetDialog()){
+            if(!dismissNewBottomSheetDialogLayout(DialogInstance.BOTTOM_SHEET_PICK_CITY)){
+                setBottomSheetDialog(R.layout.bottom_sheet_pick_city,MATCH_PARENT,DialogInstance.BOTTOM_SHEET_PICK_CITY)
+                setBottomSheetPickCity()
+            }
+            bottomSheetDialog.show()
+        }
+    }
 
     private fun setEventListener(view:View){
         val topSearchMenu = getHomeBinding().openSearchWindow
         val pickLocationBtn = getHomeBinding().openPickLocationWindow
         topSearchMenu.setOnClickListener {
-            if(!dismissOpenBottomSheetDialog()){
-                if(!dismissNewBottomSheetDialogLayout(DialogInstance.BOTTOM_SHEET_SEARCH)){
-                    setBottomSheetDialog(R.layout.bottom_sheet_search,MATCH_PARENT,DialogInstance.BOTTOM_SHEET_SEARCH)
-                    setBottomSheetSearchEvent()
-                }
-                bottomSheetDialog.show()
-            }
+            openBottomSheetSearch()
         }
         pickLocationBtn.setOnClickListener {
-            if(!dismissOpenBottomSheetDialog()){
-                if(!dismissNewBottomSheetDialogLayout(DialogInstance.BOTTOM_SHEET_PICK_LOCATION)){
-                    setBottomSheetDialog(R.layout.bottom_sheet_position,WRAP_CONTENT,DialogInstance.BOTTOM_SHEET_PICK_LOCATION)
-                    setBottomSheetPickLocationEvent()
-                }
-                bottomSheetDialog.show()
-            }
+            openBottomSheetPosition()
         }
 
         /*menuItemSearch.setOnEditorActionListener { _, keyCode, event ->
@@ -156,7 +174,6 @@ class HomeFragment(intent: Intent) : BaseFragment() {
 
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun setBottomSheetRestaurantEvent(){
         val closeBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.closeMenuBtn)
         val showInfoBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.showInfoBtn)
@@ -172,13 +189,11 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         showInfoBtn.setOnClickListener{
             bottomSheetDialog.dismiss()
             parentActivity.moveToActivityAndPutOnTop(Intent(parentActivity,OrderActivity::class.java))
-           // R.id.navigateProfile->moveToActivityAndPutOnTop(Intent(this, OrderActivity::class.java))
-
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private fun setBottomSheetSearchEvent(){
+   @SuppressLint("ClickableViewAccessibility")
+   private fun setBottomSheetSearchEvent(){
         val goBackBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.goBackBtn)
         val searchField = bottomSheetDialog.findViewById<AppCompatEditText>(R.id.menuItemSearch)
         val searchLayout = bottomSheetDialog.findViewById<LinearLayout>(R.id.searchDialogLayout)
@@ -211,7 +226,6 @@ class HomeFragment(intent: Intent) : BaseFragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setBottomSheetPickLocationEvent(){
-        val locationOfChoice = getMainActivity().getLocationOfChoice()
         val pickGps = bottomSheetDialog.findViewById<LinearLayout>(R.id.pickGpsLayout)
         val pickLocation = bottomSheetDialog.findViewById<LinearLayout>(R.id.pickLocationLayout)
         val pickGpsImg = bottomSheetDialog.findViewById<AppCompatImageView>(R.id.gpsEnabledImageView)
@@ -219,30 +233,31 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         pickLocation.clickEffect()
         pickGps.clickEffect()
         pickLocation.setOnClickListener {
-            //bottomSheetDialog.dismiss()
+            bottomSheetDialog.dismiss()
+            openBottomSheetPickCity()
         }
         pickGps.setOnClickListener {
-            if(getMainActivity().locationPermissionIsProvided()){
-                if(pickGpsImg.visibility == VISIBLE){
-                    pickGpsImg.visibility = GONE
-                    getMainActivity().setLocationOfChoice(false)
-                }
-                else{
-                    pickGpsImg.visibility = VISIBLE
-                    getMainActivity().setLocationOfChoice(true)
-                }
-                setUserLocationText()
-            }
-            else{
-                updateMessageDialog("Aktivera platsinfo i inställningar")
-                showMessage()
-            }
+            updateUserLocationText(pickGpsImg)
        }
 
     }
 
-    private fun updateSharedPreference(){
+    private fun setBottomSheetPickCity(){
+        val cityContainer = bottomSheetDialog.findViewById<LinearLayout>(R.id.cityContainerLayout)
+        val cityClose = bottomSheetDialog.findViewById<AppCompatImageView>(R.id.cityCloseDialog)
 
+        cityClose.clickEffect()
+        cityClose.setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+
+
+        val listOfCitys = listOf<String>("Stockholm","Karlstad","Göteborg")
+
+        for(city:String in listOfCitys){
+            val c = CityItem(city,parentActivity,null)
+            cityContainer.addView(c,cityContainer.childCount)
+        }
     }
 
     /*
@@ -291,12 +306,6 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         catContainer.removeAllViews()
 
     }
-
-    /*
-    *   ##########################################################################
-    *               LOAD RESTAURANTS
-    *   ##########################################################################
-    */
 
     private fun refreshRestaurants(){
         clearCathegorysContainer()

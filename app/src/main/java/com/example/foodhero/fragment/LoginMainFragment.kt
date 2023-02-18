@@ -17,7 +17,7 @@ class LoginMainFragment(intent: Intent) : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setEventListener(view)
-        setBottomSheetDialog(R.layout.bottom_sheet_dialog,WRAP_CONTENT,DialogInstance.BOTOOM_SHEET_LOGIN)
+        setBottomSheetDialog(R.layout.bottom_sheet_dialog,WRAP_CONTENT,DialogInstance.BOTTOM_SHEET_LOGIN)
         setBottomSheetEventButtons()
         setBottomSheetEventButtons()
    }

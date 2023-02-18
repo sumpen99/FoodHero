@@ -6,11 +6,6 @@ import com.example.foodhero.global.DialogInstance
 class BottomSheetDialog(
     context: Context,
     themeResId:Int,
-    var dialogInstance: DialogInstance):
-    Dialog(context,themeResId) {
-        var lastId = ""
-
-    override fun show() {
-        super.show()
-    }
+    var dialogInstance: DialogInstance): Dialog(context,themeResId) {
+    var lastId = ""
 }
