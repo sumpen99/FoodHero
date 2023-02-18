@@ -70,6 +70,10 @@ class FirestoreRepository {
         return firestoreDB.collection(RESTAURANT_COLLECTION).document(restaurant.restaurantId!!).update(updates)
     }
 
+    fun getCitys(): CollectionReference {
+        return firestoreDB.collection(INFO_COLLECTION)
+    }
+
     fun getSavedMenuItems(restaurantId:String): CollectionReference {
         val path = "$RESTAURANT_COLLECTION/${restaurantId}/$MENU_COLLECTION"
         return firestoreDB.collection(path)

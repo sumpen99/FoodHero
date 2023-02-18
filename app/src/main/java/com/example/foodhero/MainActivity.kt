@@ -25,6 +25,7 @@ import com.example.foodhero.database.FirestoreViewModel
 import com.example.foodhero.databinding.ActivityMainBinding
 import com.example.foodhero.fragment.HomeFragment
 import com.example.foodhero.global.*
+import com.example.foodhero.struct.FoodHeroInfo
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.storage.StorageReference
 
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var permissionsList: ArrayList<String>
     private var permissionDialogIsOpen:Boolean = false
     private lateinit var bottomNavMenu: BottomNavigationView
+    private var foodHeroInfo = FoodHeroInfo()
     private var permissionsCount = 0
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
@@ -78,6 +80,7 @@ class MainActivity : AppCompatActivity() {
             setDataBinding()
             setBottomNavigationMenu()
             setOnBackNavigation()
+            loadRestaurantsCities()
             launchPermissionRequest()
             Toast.makeText(applicationContext, "Välkommen tillbaka ${auth.getEmail()}.", Toast.LENGTH_SHORT).show()
         }
@@ -214,7 +217,7 @@ class MainActivity : AppCompatActivity() {
         writeBooleanToSharedPreference(userLocationTag(),location)
     }
 
-    private fun setCityOfChoice(city:String){
+    fun setCityOfChoice(city:String){
         writeStringToSharedPreference(userCityTag(),city)
     }
 
@@ -232,6 +235,10 @@ class MainActivity : AppCompatActivity() {
         if(city == "" && geo)return getString(R.string.user_current_location_geo)
         else if(city == "")return getString(R.string.user_current_location_set)
         return city
+    }
+
+    fun cityNotSetByUser():Boolean{
+        return getCityOfChoice() == getString(R.string.user_current_location_geo)
     }
 
     fun getCheckMarkerVisibility():Int{
@@ -256,8 +263,12 @@ class MainActivity : AppCompatActivity() {
         return firestoreViewModel.firebaseRepository.getMenuItemLoggoReference(downloadUrl)
     }
 
+    fun getCitiesWhereFoodHeroExist():FoodHeroInfo{
+        return foodHeroInfo
+    }
+
     fun loadRestaurants(restaurantAdapter:RestaurantAdapter){
-        if(getLocationOfChoice()){
+        if(getLocationOfChoice() && cityNotSetByUser()){
             val userLocation = getCenterOfStockholm()
             val radiusKm = 20.0
             firestoreViewModel.getRestaurantsGeo(userLocation,radiusKm,restaurantAdapter)
@@ -269,8 +280,16 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun loadRestaurantsByCity(){
+
+    }
+
     fun loadRestaurantsByCathegory(ids:List<String>,restaurantAdapter: RestaurantAdapter){
         firestoreViewModel.getRestaurantsByIds(ids,restaurantAdapter)
+    }
+
+    private fun loadRestaurantsCities(){
+        firestoreViewModel.getCitiesWhereFoodHeroExist(foodHeroInfo)
     }
 
     private fun loadRestaurantsByDefault(restaurantAdapter:RestaurantAdapter){
@@ -286,7 +305,7 @@ class MainActivity : AppCompatActivity() {
     *               ON RESUME ON PAUSE ON STOP
     *   ##########################################################################
     */
-    override fun onResume(){
+    /*override fun onResume(){
         super.onResume()
         //navigateOnResume()
         //logMessage("on resume main")
@@ -307,5 +326,5 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy(){
         super.onDestroy()
-   }
+    }*/
 }

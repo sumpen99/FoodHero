@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    android:background="@drawable/layout_rounded_background">
+    android:background="@drawable/layout_rounded_background_snow">
 
     <LinearLayout
         android:id="@+id/layoutHeaderCountry"
@@ -14,7 +14,7 @@
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:layout_weight="1"
             android:layout_marginTop="10dp"
             android:text="Sverige"
@@ -24,11 +24,12 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/cityCloseDialog"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="bottom"
             android:background="@drawable/ic_filter_state"
             android:scaleType="centerCrop"
+            android:layout_marginEnd="10dp"
             android:src="@drawable/ic_cross_marker_foreground" />
     </LinearLayout>
 
@@ -47,5 +48,25 @@
             android:orientation="vertical">
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/layoutBottomCountry"
+        android:background="@drawable/layout_rounded_background_snow"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:text="Spara"
+            android:textAlignment="center"
+            android:textColor="@color/background_dark"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </RelativeLayout>

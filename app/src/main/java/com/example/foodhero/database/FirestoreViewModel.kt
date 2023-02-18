@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.foodhero.adapter.RestaurantAdapter
 import com.example.foodhero.adapter.RestaurantMenuAdapter
+import com.example.foodhero.global.INFO_DOCUMENT_FOODHERO
 import com.example.foodhero.global.ServerResult
 import com.example.foodhero.global.logMessage
 import com.example.foodhero.struct.*
@@ -29,6 +30,7 @@ class FirestoreViewModel {
         clearServerDetails()
         saveRestaurantInfo(pos,restaurant)
         saveRestaurantLoggoToFirebase(pos,imageUri,restaurant.loggoDownloadUrl!!)
+        //update Info/FoodHero->cities if needed
         return serverDetails.isEmpty()
     }
 
@@ -220,6 +222,20 @@ class FirestoreViewModel {
                     val restaurant = doc.toObject(Restaurant::class.java)
                     restaurantAdapter.addRestaurant(restaurant)
                 }
+            }
+        }
+    }
+
+    fun getCitiesWhereFoodHeroExist(foodHeroInfo: FoodHeroInfo){
+        firebaseRepository
+            .getCitys()
+            .document(INFO_DOCUMENT_FOODHERO)
+            .get()
+            .addOnCompleteListener{task->
+            if(task.isSuccessful){
+                val info = task.result.toObject(FoodHeroInfo::class.java)
+                foodHeroInfo.cities = info?.cities
+                foodHeroInfo.sortListOfCities()
             }
         }
     }

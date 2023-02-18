@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.view.children
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodhero.MainActivity
@@ -62,6 +63,8 @@ class HomeFragment(intent: Intent) : BaseFragment() {
             else{
                 pickGpsImg.visibility = VISIBLE
                 getMainActivity().setLocationOfChoice(true)
+                getMainActivity().setCityOfChoice("")
+                // TODO UPDATE LIST IF NEEDED
             }
             setUserLocationText()
         }
@@ -243,19 +246,53 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     }
 
     private fun setBottomSheetPickCity(){
+        val citySelected = getMainActivity().getCityOfChoice()
         val cityContainer = bottomSheetDialog.findViewById<LinearLayout>(R.id.cityContainerLayout)
         val cityClose = bottomSheetDialog.findViewById<AppCompatImageView>(R.id.cityCloseDialog)
+        val citySave = bottomSheetDialog.findViewById<LinearLayout>(R.id.layoutBottomCountry)
 
-        cityClose.clickEffect()
-        cityClose.setOnClickListener {
-            bottomSheetDialog.dismiss()
+        fun uncheckItems(city:String){
+            for(cityItem in cityContainer.children){
+                if(cityItem is CityItem && cityItem.city!=city){
+                    cityItem.unCheckMe()
+                }
+            }
+        }
+
+        fun getCityToSave():String{
+            for(cityItem in cityContainer.children){
+                if(cityItem is CityItem && cityItem.isActive){
+                    return cityItem.city
+                }
+            }
+            return ""
         }
 
 
-        val listOfCitys = listOf<String>("Stockholm","Karlstad","Göteborg")
+        citySave.clickEffect()
+        cityClose.clickEffect()
+        cityClose.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            openBottomSheetPosition()
+        }
+        citySave.setOnClickListener{
+            val cityToSave = getCityToSave()
+            if(cityToSave != "" && cityToSave != citySelected){
+                getMainActivity().setCityOfChoice(cityToSave)
+                setUserLocationText()
+                bottomSheetDialog.dismiss()
+                // TODO RELOAD RESTAURANTS
+            }
+            else{
+                updateMessageDialog("Inget att spara")
+            }
+        }
 
-        for(city:String in listOfCitys){
-            val c = CityItem(city,parentActivity,null)
+        val listOfCitys = getMainActivity().getCitiesWhereFoodHeroExist()
+        listOfCitys.cities?:return
+        for(city:String in listOfCitys.cities!!){
+            val selected = city == citySelected
+            val c = CityItem(city,selected,::uncheckItems,parentActivity,null)
             cityContainer.addView(c,cityContainer.childCount)
         }
     }

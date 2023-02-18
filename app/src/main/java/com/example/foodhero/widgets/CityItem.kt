@@ -9,19 +9,39 @@ import com.example.foodhero.R
 
 
 @SuppressLint("ViewConstructor")
-class CityItem(city:String,
-                    context: Context?,
-                    attrs: AttributeSet?): LinearLayout(context,attrs) {
+class CityItem(val city:String,
+               var isActive:Boolean,
+               val callbackUnCheck:(args:String)->Unit,
+                context: Context?,
+                attrs: AttributeSet?): LinearLayout(context,attrs) {
+
     init{
         LinearLayout.inflate(context, R.layout.city_card,this)
         val cityIsChecked: AppCompatImageView = this.findViewById(R.id.cityIsChecked)
         val cityLbl: TextView = this.findViewById(R.id.cityLbl)
 
         cityLbl.text = city
+        cityIsChecked.visibility = isVisible()
 
         this.setOnClickListener{
-            cityIsChecked.visibility = if(cityIsChecked.visibility == GONE)VISIBLE else GONE
+            isActive = !isActive
+            cityIsChecked.visibility = isVisible()
+            if(isActive){callbackUnCheck(city)}
         }
 
+    }
+
+    private fun isVisible():Int{
+        return if(isActive)VISIBLE else GONE
+    }
+
+    fun unCheckMe(){
+        isActive = false
+        val cityIsChecked: AppCompatImageView = this.findViewById(R.id.cityIsChecked)
+        cityIsChecked.visibility = GONE
+    }
+
+    fun getMySelection():String{
+        return if(isActive)city else ""
     }
 }
