@@ -24,6 +24,14 @@ enum class ServerResult {
     UPLOAD_OK
 }
 
+enum class SearchQuery{
+    QUERY_GEO,
+    QUERY_CITY,
+    QUERY_CATHEGORY,
+    QUERY_REFRESH,
+    QUERY_FIRST_RUN
+}
+
 enum class DialogInstance {
     BOTTOM_SHEET_SEARCH,
     BOTTOM_SHEET_PICK_LOCATION,

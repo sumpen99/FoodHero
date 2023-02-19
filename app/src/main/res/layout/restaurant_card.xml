@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:src="@drawable/appbackgroundimage"
             android:scaleType="centerCrop"
             />
         <LinearLayout
@@ -32,7 +31,6 @@
                 android:layout_gravity="start"
                 android:fontFamily="sans-serif"
                 android:padding="10dp"
-                android:text="NAME"
                 android:textColor="@color/background_medium_dark"
                 android:textSize="@dimen/cardTextHeader"
                 android:textStyle="bold" />
@@ -44,7 +42,6 @@
                 android:layout_gravity="start"
                 android:fontFamily="sans-serif-thin"
                 android:padding="10dp"
-                android:text="burger,pizza,meat,fish"
                 android:textColor="@color/background_medium_dark"
                 android:textSize="@dimen/cardText"
                 android:textStyle="bold" />
@@ -63,7 +60,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:text="49.00 kr"
                     android:textColor="@color/background_medium_dark"
                     android:padding="10dp"
                     android:textSize="@dimen/cardText"
@@ -77,7 +73,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:text="20 - 30min"
                     android:textColor="@color/background_medium_dark"
                     android:padding="10dp"
                     android:textSize="@dimen/cardText"

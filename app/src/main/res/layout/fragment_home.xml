@@ -91,17 +91,6 @@
                         android:textColor="@color/snow"
                         android:textSize="@dimen/cardTextHeader"
                         android:textStyle="bold" />
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1">
-                    </Space>
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/refreshButton"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/refresh_icon_24" />
                 </LinearLayout>
 
                 <HorizontalScrollView

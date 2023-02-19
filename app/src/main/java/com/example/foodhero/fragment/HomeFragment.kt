@@ -34,9 +34,9 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     private lateinit var recyclerViewMenu: RecyclerView
     private lateinit var restaurantAdapter: RestaurantAdapter
     private lateinit var restaurantMenuAdapter: RestaurantMenuAdapter
+    private val totalCathegoryCounter = CathegoryCounter()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setRefreshButton()
         setRecyclerView()
         setEventListener(view)
         loadRestaurants()
@@ -54,26 +54,6 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         userLocText.hint = getMainActivity().getCityOfChoice()
     }
 
-    private fun updateUserLocationText(pickGpsImg:AppCompatImageView){
-        if(getMainActivity().locationPermissionIsProvided()){
-            if(pickGpsImg.visibility == VISIBLE){
-                pickGpsImg.visibility = GONE
-                getMainActivity().setLocationOfChoice(false)
-            }
-            else{
-                pickGpsImg.visibility = VISIBLE
-                getMainActivity().setLocationOfChoice(true)
-                getMainActivity().setCityOfChoice("")
-                // TODO UPDATE LIST IF NEEDED
-            }
-            setUserLocationText()
-        }
-        else{
-            updateMessageDialog("Aktivera platsinfo i inställningar")
-            showMessage()
-        }
-    }
-
     /*
     *   ##########################################################################
     *               RECYCLER VIEW
@@ -85,41 +65,6 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         recyclerViewRestaurant.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewRestaurant.adapter = restaurantAdapter
     }
-
-    /*
-    *   ##########################################################################
-    *               SET REFRESH BUTTON
-    *   ##########################################################################
-    */
-
-    private fun setRefreshButton(){
-        val refresh = getHomeBinding().refreshButton
-        refresh.setOnClickListener{
-            refreshRestaurants()
-        }
-    }
-
-    /*
-    *   ##########################################################################
-    *               SET SEARCH KEYBOARD AND CLOSE
-    *   ##########################################################################
-    */
-
-    /*private fun setSearchKeyboard(){
-        menuItemSearch = getHomeBinding().menuItemSearch
-    }
-
-    private fun closeSearchKeyboard(){
-        menuItemSearch.hideKeyboard()
-    }
-
-    private fun keyBoardIsFocused():Boolean{
-        if(menuItemSearch.isFocused){
-            closeSearchKeyboard()
-            return true
-        }
-        return false
-    }*/
 
     /*
     *   ##########################################################################
@@ -166,15 +111,6 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         pickLocationBtn.setOnClickListener {
             openBottomSheetPosition()
         }
-
-        /*menuItemSearch.setOnEditorActionListener { _, keyCode, event ->
-            if (((event?.action ?: -1) == KeyEvent.ACTION_DOWN) || keyCode == EditorInfo.IME_ACTION_SEARCH) {
-                closeSearchKeyboard()
-                return@setOnEditorActionListener true
-            }
-            return@setOnEditorActionListener false
-        }*/
-
     }
 
     private fun setBottomSheetRestaurantEvent(){
@@ -219,7 +155,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         searchField.setOnEditorActionListener { _, keyCode, event ->
             if (((event?.action ?: -1) == KeyEvent.ACTION_DOWN) || keyCode == EditorInfo.IME_ACTION_SEARCH) {
                 searchField.hideKeyboard()
-                //closeSearchKeyboard()
+                searchForRestaurantByKeyWord(searchField.text.toString())
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
@@ -234,13 +170,26 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         val pickGpsImg = bottomSheetDialog.findViewById<AppCompatImageView>(R.id.gpsEnabledImageView)
         pickGpsImg.visibility = getMainActivity().getCheckMarkerVisibility()
         pickLocation.clickEffect()
-        pickGps.clickEffect()
         pickLocation.setOnClickListener {
             bottomSheetDialog.dismiss()
             openBottomSheetPickCity()
         }
         pickGps.setOnClickListener {
-            updateUserLocationText(pickGpsImg)
+            if(pickGpsImg.visibility == GONE){
+                bottomSheetDialog.dismiss()
+                if(getMainActivity().locationPermissionIsProvided()){
+                    pickGpsImg.visibility = VISIBLE
+                    getMainActivity().setLocationOfChoice(true)
+                    getMainActivity().setCityOfChoice("")
+                    setUserLocationText()
+                    refreshRestaurants()
+                }
+                else{
+                    updateMessageDialog("Aktivera platsinfo i inställningar")
+                    showMessage()
+                }
+
+            }
        }
 
     }
@@ -249,50 +198,29 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         val citySelected = getMainActivity().getCityOfChoice()
         val cityContainer = bottomSheetDialog.findViewById<LinearLayout>(R.id.cityContainerLayout)
         val cityClose = bottomSheetDialog.findViewById<AppCompatImageView>(R.id.cityCloseDialog)
-        val citySave = bottomSheetDialog.findViewById<LinearLayout>(R.id.layoutBottomCountry)
 
-        fun uncheckItems(city:String){
+        fun saveNewCity(city:String){
             for(cityItem in cityContainer.children){
                 if(cityItem is CityItem && cityItem.city!=city){
                     cityItem.unCheckMe()
                 }
             }
+            getMainActivity().setCityOfChoice(city)
+            setUserLocationText()
+            bottomSheetDialog.dismiss()
+            refreshRestaurants()
         }
 
-        fun getCityToSave():String{
-            for(cityItem in cityContainer.children){
-                if(cityItem is CityItem && cityItem.isActive){
-                    return cityItem.city
-                }
-            }
-            return ""
-        }
-
-
-        citySave.clickEffect()
-        cityClose.clickEffect()
         cityClose.setOnClickListener {
             bottomSheetDialog.dismiss()
-            openBottomSheetPosition()
-        }
-        citySave.setOnClickListener{
-            val cityToSave = getCityToSave()
-            if(cityToSave != "" && cityToSave != citySelected){
-                getMainActivity().setCityOfChoice(cityToSave)
-                setUserLocationText()
-                bottomSheetDialog.dismiss()
-                // TODO RELOAD RESTAURANTS
-            }
-            else{
-                updateMessageDialog("Inget att spara")
-            }
+            //openBottomSheetPosition()
         }
 
         val listOfCitys = getMainActivity().getCitiesWhereFoodHeroExist()
         listOfCitys.cities?:return
         for(city:String in listOfCitys.cities!!){
             val selected = city == citySelected
-            val c = CityItem(city,selected,::uncheckItems,getMainActivity(),null)
+            val c = CityItem(city,selected,::saveNewCity,getMainActivity(),null)
             cityContainer.addView(c,cityContainer.childCount)
         }
     }
@@ -347,11 +275,18 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     private fun refreshRestaurants(){
         clearCathegorysContainer()
         clearRestaurantAdapter()
-        getMainActivity().loadRestaurants(restaurantAdapter)
+        loadRestaurants()
+    }
+
+    private fun searchForRestaurantByKeyWord(keyWord:String){
+        if(keyWord.isNotEmpty()){
+            clearRestaurantAdapter()
+            getMainActivity().loadRestaurantsByKeyWord(totalCathegoryCounter.listOfIds,keyWord,restaurantAdapter)
+        }
     }
 
     private fun loadRestaurants(){
-        refreshRestaurants()
+        getMainActivity().loadRestaurants(restaurantAdapter)
     }
 
     private fun sameRestaurantAsBefore(newRestaurantId:String):Boolean{
@@ -362,25 +297,23 @@ class HomeFragment(intent: Intent) : BaseFragment() {
 
     fun addCathegorysToView(listOfCat:MutableMap<String,CathegoryCounter>){
         val catContainer = getHomeBinding().restaurantCatContainerLayout
+        totalCathegoryCounter.resetValues()
         for(lbl in listOfCat.keys){
             val catCounter = listOfCat[lbl]
             catCounter?:continue
+            totalCathegoryCounter.addIdList(catCounter.listOfIds)
             val cat = CathegoryItem(lbl,catCounter,::sortRestaurantsByCat,getMainActivity(),null)
-            //cat.setImageResource()
             catContainer.addView(cat,catContainer.childCount)
         }
+        val cat = CathegoryItem("Visa Alla",totalCathegoryCounter,::sortRestaurantsByCat,getMainActivity(),null)
+        catContainer.addView(cat,catContainer.childCount)
     }
-
-    /*
-    *   ##########################################################################
-    *               CALLBACK TO SORT RESTAURANT LIST
-    *   ##########################################################################
-    */
 
     private fun sortRestaurantsByCat(ids:List<String>){
         clearRestaurantAdapter()
         getMainActivity().loadRestaurantsByCathegory(ids,restaurantAdapter)
     }
+
 
     /*
     *   ##########################################################################

@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FieldPath
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.tasks.await
 
@@ -133,12 +134,8 @@ class FirestoreViewModel {
         firebaseRepository.getSavedMenuItems(restaurantId).get().addOnCompleteListener{it->
             if(it.isSuccessful){
                 for(doc in it.result){
-                    //menu.add(doc.toObject(MenuItem::class.java))
                     val menuItem = doc.toObject(MenuItem::class.java)
                     menuAdapter.addMenuItem(menuItem)
-                    //menuItem?:continue
-                    //menuList.add(doc.toObject(MenuItem::class.java))
-                    //logMessage(doc.toObject(MenuItem::class.java).toString())
                 }
             }
         }
@@ -224,6 +221,40 @@ class FirestoreViewModel {
                 }
             }
         }
+    }
+
+    fun getRestaurantsByCity(city:String,restaurantAdapter:RestaurantAdapter){
+        firebaseRepository.
+        getSavedRestaurants().
+        whereEqualTo("city",city).
+        get().
+        addOnCompleteListener{ task->
+            if(task.isSuccessful){
+                for(doc in task.result){
+                    val restaurant = doc.toObject(Restaurant::class.java)
+                    restaurantAdapter.addRestaurant(restaurant)
+                    restaurant.cathegoriesDishes?:continue
+                    restaurantAdapter.addNewCathegorie(restaurant)
+                }
+                restaurantAdapter.loadAllCathegories()
+            }
+        }
+    }
+
+    fun getRestaurantsByKeyWord(ids:List<String>,keyWord:String,restaurantAdapter:RestaurantAdapter){
+        firebaseRepository
+            .getSavedRestaurants()
+            .whereIn(FieldPath.documentId(),ids)
+            .whereArrayContains("keyWords",keyWord)
+            .get()
+            .addOnCompleteListener{ task->
+                if(task.isSuccessful){
+                    for(doc in task.result){
+                        val restaurant = doc.toObject(Restaurant::class.java)
+                        restaurantAdapter.addRestaurant(restaurant)
+                    }
+                }
+            }
     }
 
     fun getCitiesWhereFoodHeroExist(foodHeroInfo: FoodHeroInfo){

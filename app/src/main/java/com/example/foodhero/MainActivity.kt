@@ -26,6 +26,7 @@ import com.example.foodhero.databinding.ActivityMainBinding
 import com.example.foodhero.fragment.HomeFragment
 import com.example.foodhero.global.*
 import com.example.foodhero.struct.FoodHeroInfo
+import com.example.foodhero.struct.SearchHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.storage.StorageReference
 
@@ -80,7 +81,7 @@ class MainActivity : AppCompatActivity() {
             setDataBinding()
             setBottomNavigationMenu()
             setOnBackNavigation()
-            loadRestaurantsCities()
+            loadListOfCitiesWhereFoodHeroExist()
             launchPermissionRequest()
             Toast.makeText(applicationContext, "Välkommen tillbaka ${auth.getEmail()}.", Toast.LENGTH_SHORT).show()
         }
@@ -237,7 +238,7 @@ class MainActivity : AppCompatActivity() {
         return city
     }
 
-    fun cityNotSetByUser():Boolean{
+    private fun cityNotSetByUser():Boolean{
         return getCityOfChoice() == getString(R.string.user_current_location_geo)
     }
 
@@ -245,8 +246,14 @@ class MainActivity : AppCompatActivity() {
         return if(getCityOfChoice() == getString(R.string.user_current_location_geo))VISIBLE else GONE
     }
 
-    fun getLocationOfChoice():Boolean{
+    private fun getLocationOfChoice():Boolean{
         return retrieveBooleanFromSharedPreference(userLocationTag(),false)?:false
+    }
+
+    private fun isACorrectCity(city:String):Boolean{
+        return  city != "" &&
+                city != getString(R.string.user_current_location_geo) &&
+                city != getString(R.string.user_current_location_set)
     }
 
     /*
@@ -268,10 +275,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loadRestaurants(restaurantAdapter:RestaurantAdapter){
-        if(getLocationOfChoice() && cityNotSetByUser()){
+        if(getLocationOfChoice() &&
+            cityNotSetByUser()){
             val userLocation = getCenterOfStockholm()
             val radiusKm = 20.0
             firestoreViewModel.getRestaurantsGeo(userLocation,radiusKm,restaurantAdapter)
+        }
+        else{
+            val city = getCityOfChoice()
+            if(isACorrectCity(city)){
+                loadRestaurantsByCity(city,restaurantAdapter)
+            }
         }
     }
 
@@ -280,24 +294,21 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun loadRestaurantsByCity(){
-        
+    private fun loadRestaurantsByCity(city:String,restaurantAdapter: RestaurantAdapter){
+        firestoreViewModel.getRestaurantsByCity(city,restaurantAdapter)
+    }
+
+    fun loadRestaurantsByKeyWord(idList:ArrayList<String>,keyWord:String,restaurantAdapter: RestaurantAdapter){
+        firestoreViewModel.getRestaurantsByKeyWord(idList,keyWord,restaurantAdapter)
     }
 
     fun loadRestaurantsByCathegory(ids:List<String>,restaurantAdapter: RestaurantAdapter){
         firestoreViewModel.getRestaurantsByIds(ids,restaurantAdapter)
     }
 
-    private fun loadRestaurantsCities(){
+    private fun loadListOfCitiesWhereFoodHeroExist(){
         firestoreViewModel.getCitiesWhereFoodHeroExist(foodHeroInfo)
     }
-
-    private fun loadRestaurantsByDefault(restaurantAdapter:RestaurantAdapter){
-        //val userLocation = getCenterOfStockholm()
-        //val radiusKm = 20.0
-        //firestoreViewModel.getRestaurantsGeo(userLocation,radiusKm,restaurantAdapter)
-    }
-
 
 
     /*

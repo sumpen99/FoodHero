@@ -12,6 +12,7 @@ import java.io.InputStream
 
 const val packageName = "com.example.foodhero"
 const val appFileProvider = "com.example.foodhero.fileprovider"
+const val SEARCH_TIME_OUT = 1000
 
 /*
 *   ##########################################################################

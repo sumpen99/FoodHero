@@ -24,9 +24,11 @@ class CityItem(val city:String,
         cityIsChecked.visibility = isVisible()
 
         this.setOnClickListener{
-            isActive = !isActive
-            cityIsChecked.visibility = isVisible()
-            if(isActive){callbackUnCheck(city)}
+            if(!isActive){
+                isActive = true
+                cityIsChecked.visibility = VISIBLE
+                callbackUnCheck(city)
+            }
         }
 
     }
@@ -41,7 +43,4 @@ class CityItem(val city:String,
         cityIsChecked.visibility = GONE
     }
 
-    fun getMySelection():String{
-        return if(isActive)city else ""
-    }
 }

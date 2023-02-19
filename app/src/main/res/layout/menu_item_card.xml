@@ -29,7 +29,6 @@
                 android:layout_gravity="start"
                 android:fontFamily="sans-serif"
                 android:padding="10dp"
-                android:text="Burger Burger"
                 android:textColor="@color/background_medium_dark"
                 android:textSize="@dimen/cardTextHeader"
                 android:textStyle="bold" />
@@ -41,7 +40,6 @@
                 android:layout_gravity="start"
                 android:fontFamily="sans-serif-light"
                 android:padding="10dp"
-                android:text="Salt peppar mm\n\n\nMore salt peppar"
                 android:textColor="@color/black"
                 android:textSize="@dimen/cardText" />
 
@@ -52,7 +50,6 @@
                 android:layout_gravity="start"
                 android:padding="10dp"
                 android:fontFamily="sans-serif-medium"
-                android:text="140 kr"
                 android:textColor="@color/background_medium_dark"
                 android:textSize="@dimen/cardText" />
 
@@ -73,10 +70,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/appbackgroundimage"
-            android:scaleType="centerCrop"
-
-        />
+            android:scaleType="centerCrop"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

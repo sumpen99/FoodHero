@@ -37,6 +37,7 @@ class CathegoryItem(cat:String,
             "Fish"->return R.drawable.cat_fish
             "Meat"->return R.drawable.cat_meat
             "Pizza"->return R.drawable.cat_pizza
+            "Visa Alla"->return R.drawable.applogoblack
         }
 
         return R.drawable.ic_image_error_foreground
@@ -49,6 +50,7 @@ class CathegoryItem(cat:String,
             "Fish"->return "Fisk"
             "Meat"->return "Kött"
             "Pizza"->return "Pizza"
+            "Visa Alla"->return "Visa Alla"
         }
 
         return "Undefined"
