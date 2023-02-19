@@ -199,8 +199,6 @@ class FirestoreViewModel {
                         val restaurant = doc.toObject(Restaurant::class.java)
                         restaurant?:continue
                         restaurantAdapter.addRestaurant(restaurant)
-                        restaurant.cathegoriesDishes?:continue
-                        restaurantAdapter.addNewCathegorie(restaurant)
                     }
                 }
             }
@@ -233,8 +231,6 @@ class FirestoreViewModel {
                 for(doc in task.result){
                     val restaurant = doc.toObject(Restaurant::class.java)
                     restaurantAdapter.addRestaurant(restaurant)
-                    restaurant.cathegoriesDishes?:continue
-                    restaurantAdapter.addNewCathegorie(restaurant)
                 }
                 restaurantAdapter.loadAllCathegories()
             }
@@ -249,8 +245,9 @@ class FirestoreViewModel {
             .get()
             .addOnCompleteListener{ task->
                 if(task.isSuccessful){
-                    for(doc in task.result){
+                    for((i, doc) in task.result.withIndex()){
                         val restaurant = doc.toObject(Restaurant::class.java)
+                        if(i==0){restaurantAdapter.clearView()}
                         restaurantAdapter.addRestaurant(restaurant)
                     }
                 }

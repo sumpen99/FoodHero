@@ -36,4 +36,21 @@
             android:background="@color/transparent"
             android:src="@drawable/ic_user_go_back_foreground" />
     </LinearLayout>
+
+    <ScrollView
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/transparent">
+
+        <LinearLayout
+            android:id="@+id/searchDialogContainerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>

@@ -13,7 +13,7 @@ import com.example.foodhero.struct.CathegoryCounter
 import com.example.foodhero.struct.Restaurant
 
 class RestaurantAdapter(private val fragment: HomeFragment):RecyclerView.Adapter<RestaurantAdapter.ViewHolder>() {
-    private val restaurantList = ArrayList<Restaurant>()
+    val restaurantList = ArrayList<Restaurant>()
     var listOfCathegories = mutableMapOf <String,CathegoryCounter>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -32,6 +32,10 @@ class RestaurantAdapter(private val fragment: HomeFragment):RecyclerView.Adapter
         fragment.showRestaurant(restaurant)
     }
 
+    fun containsKeyWord(){
+
+    }
+
     /*
     *   ##########################################################################
     *               CATEGORIES
@@ -39,7 +43,8 @@ class RestaurantAdapter(private val fragment: HomeFragment):RecyclerView.Adapter
     */
 
     fun addNewCathegorie(restaurant:Restaurant){
-        val cat = restaurant.cathegoriesDishes!![0]
+        restaurant.cathegoriesDishes?:return
+        val cat = restaurant.cathegoriesDishes[0]
         val id = restaurant.restaurantId!!
         if(!listOfCathegories.containsKey(cat)){
             val catCnt = CathegoryCounter()
@@ -55,9 +60,6 @@ class RestaurantAdapter(private val fragment: HomeFragment):RecyclerView.Adapter
     fun loadAllCathegories(){
         if(listOfCathegories.isEmpty())return
         fragment.addCathegorysToView(listOfCathegories)
-    }
-
-    fun clearCathegories(){
         listOfCathegories.clear()
     }
 
@@ -77,6 +79,7 @@ class RestaurantAdapter(private val fragment: HomeFragment):RecyclerView.Adapter
 
     fun addRestaurant(item: Restaurant){
         restaurantList.add(item)
+        addNewCathegorie(item)
         notifyItemInserted(itemCount)
     }
 

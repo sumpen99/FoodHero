@@ -28,6 +28,7 @@ import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.example.foodhero.R
 import com.firebase.geofire.GeoLocation
 import com.google.firebase.storage.StorageReference
+import java.util.*
 
 /*
 *   ##########################################################################
@@ -241,6 +242,15 @@ fun getRandomNumber(maxSize:Int,minValue:Double):Double{
 }
 
 fun Double.format(digits: Int) = "%.${digits}f".format(this)
+
+fun String.capitalizeSentence() = run {
+    val words = this.split(" ")
+    var output = ""
+    for(word in words){
+        output += word.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() } + " "
+    }
+    output.trim()
+}
 
 /*
 *   ##########################################################################

@@ -14,6 +14,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.children
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodhero.MainActivity
@@ -27,6 +28,8 @@ import com.example.foodhero.struct.CathegoryCounter
 import com.example.foodhero.struct.Restaurant
 import com.example.foodhero.widgets.CathegoryItem
 import com.example.foodhero.widgets.CityItem
+import com.example.foodhero.widgets.SearchItem
+import kotlinx.coroutines.launch
 
 
 class HomeFragment(intent: Intent) : BaseFragment() {
@@ -35,6 +38,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     private lateinit var restaurantAdapter: RestaurantAdapter
     private lateinit var restaurantMenuAdapter: RestaurantMenuAdapter
     private val totalCathegoryCounter = CathegoryCounter()
+    private val listOfKeywords = ArrayList<String>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
@@ -136,6 +140,12 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         val goBackBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.goBackBtn)
         val searchField = bottomSheetDialog.findViewById<AppCompatEditText>(R.id.menuItemSearch)
         val searchLayout = bottomSheetDialog.findViewById<LinearLayout>(R.id.searchDialogLayout)
+       /*val searchContainer = bottomSheetDialog.findViewById<LinearLayout>(R.id.searchDialogContainerLayout)
+       for(keyWord in listOfKeywords){
+           val searchItem = SearchItem(keyWord,::searchForRestaurantByKeyWord,requireContext(),null)
+           searchContainer.addView(searchItem,searchContainer.childCount)
+       }*/
+
 
         goBackBtn.setOnClickListener {
             searchField.text?.clear()
@@ -154,8 +164,8 @@ class HomeFragment(intent: Intent) : BaseFragment() {
 
         searchField.setOnEditorActionListener { _, keyCode, event ->
             if (((event?.action ?: -1) == KeyEvent.ACTION_DOWN) || keyCode == EditorInfo.IME_ACTION_SEARCH) {
-                searchField.hideKeyboard()
-                searchForRestaurantByKeyWord(searchField.text.toString())
+                //searchField.hideKeyboard()
+                searchForRestaurantByKeyWord(searchField.text.toString().capitalizeSentence())
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
@@ -259,7 +269,6 @@ class HomeFragment(intent: Intent) : BaseFragment() {
 
     private fun clearRestaurantAdapter(){
         restaurantAdapter.clearView()
-        restaurantAdapter.clearCathegories()
     }
 
     private fun clearRestaurantMenuAdapter(){
@@ -279,8 +288,8 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     }
 
     private fun searchForRestaurantByKeyWord(keyWord:String){
-        if(keyWord.isNotEmpty()){
-            clearRestaurantAdapter()
+        if(keyWord.isNotEmpty() && listOfKeywords.contains(keyWord)){
+            bottomSheetDialog.dismiss()
             getMainActivity().loadRestaurantsByKeyWord(totalCathegoryCounter.listOfIds,keyWord,restaurantAdapter)
         }
     }
@@ -296,17 +305,32 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     }
 
     fun addCathegorysToView(listOfCat:MutableMap<String,CathegoryCounter>){
-        val catContainer = getHomeBinding().restaurantCatContainerLayout
-        totalCathegoryCounter.resetValues()
-        for(lbl in listOfCat.keys){
-            val catCounter = listOfCat[lbl]
-            catCounter?:continue
-            totalCathegoryCounter.addIdList(catCounter.listOfIds)
-            val cat = CathegoryItem(lbl,catCounter,::sortRestaurantsByCat,getMainActivity(),null)
+        viewLifecycleOwner.lifecycleScope.launch{
+            val catContainer = getHomeBinding().restaurantCatContainerLayout
+            totalCathegoryCounter.resetValues()
+            for(lbl in listOfCat.keys){
+                val catCounter = listOfCat[lbl]
+                catCounter?:continue
+                totalCathegoryCounter.addIdList(catCounter.listOfIds)
+                val cat = CathegoryItem(lbl,catCounter,::sortRestaurantsByCat,requireContext(),null)
+                catContainer.addView(cat,catContainer.childCount)
+            }
+            val cat = CathegoryItem("Visa Alla",totalCathegoryCounter,::sortRestaurantsByCat,requireContext(),null)
             catContainer.addView(cat,catContainer.childCount)
+            collectKeyWords()
         }
-        val cat = CathegoryItem("Visa Alla",totalCathegoryCounter,::sortRestaurantsByCat,getMainActivity(),null)
-        catContainer.addView(cat,catContainer.childCount)
+    }
+
+    private fun collectKeyWords(){
+        listOfKeywords.clear()
+        for(restaurant in restaurantAdapter.restaurantList){
+            restaurant.keyWords?:continue
+            for(keyword in restaurant.keyWords){
+                if(!listOfKeywords.contains(keyword)){
+                    listOfKeywords.add(keyword)
+                }
+            }
+        }
     }
 
     private fun sortRestaurantsByCat(ids:List<String>){

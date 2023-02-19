@@ -89,7 +89,8 @@ class MainActivity : AppCompatActivity() {
             moveToActivityAndFinish(Intent(this,LoginActivity::class.java))
         }
     }
-    
+
+
     /*
     *   ##########################################################################
     *               SET BINDING AND OTHER STUFF
