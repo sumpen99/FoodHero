@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:background="@drawable/layout_rounded_background">
+
+
+
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/topImage"
@@ -14,6 +18,16 @@
         android:layout_marginTop="20dp"
         android:scaleType="centerCrop"
         android:src="@drawable/applogoblack" />
+
+    <ImageButton
+        android:id="@+id/navigateAdmin"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="false"
+        android:background="@drawable/baseline_admin_panel_settings_24"
+        android:scaleType="centerCrop"
+        android:title="Admin" />
 
     <TextView
         android:id="@+id/textviewWelcome"

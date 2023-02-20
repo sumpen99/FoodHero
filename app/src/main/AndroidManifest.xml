@@ -16,7 +16,10 @@
         android:theme="@style/Theme.FoodHero"
         tools:targetApi="31" >
         <activity
-            android:name=".FavoriteActivity"
+            android:name=".activity.FavoriteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.BuyActivity"
             android:exported="false" />
         <activity
             android:name=".activity.AdminActivity"

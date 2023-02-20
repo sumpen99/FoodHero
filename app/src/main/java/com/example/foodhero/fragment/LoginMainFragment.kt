@@ -6,12 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.ImageButton
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.example.foodhero.R
+import com.example.foodhero.activity.AdminActivity
 import com.example.foodhero.activity.LoginActivity
 import com.example.foodhero.databinding.FragmentLoginmainBinding
 import com.example.foodhero.global.DialogInstance
 import com.example.foodhero.global.FragmentInstance
+import com.example.foodhero.global.moveToActivityAndFinish
 import javax.security.auth.login.LoginException
 
 class LoginMainFragment(intent: Intent) : BaseFragment() {
@@ -41,7 +44,7 @@ class LoginMainFragment(intent: Intent) : BaseFragment() {
         return  FragmentInstance.FRAGMENT_LOGIN_HOME
     }
 
-
+//
 
     /*
     *   ##########################################################################
@@ -75,6 +78,7 @@ class LoginMainFragment(intent: Intent) : BaseFragment() {
         val userLogInBtn = bottomSheetDialog.findViewById<LinearLayoutCompat>(R.id.userLoginLayout)
         val userSignUpBtn = bottomSheetDialog.findViewById<LinearLayoutCompat>(R.id.userSignUpLayout)
         val userEnterAsGuestBtn = bottomSheetDialog.findViewById<LinearLayoutCompat>(R.id.enterAsGuestLayout)
+        val adminLoginBtn = bottomSheetDialog.findViewById<ImageButton>(R.id.navigateAdmin)
 
         userEnterAsGuestBtn.setOnClickListener{
             bottomSheetDialog.dismiss()
@@ -91,6 +95,13 @@ class LoginMainFragment(intent: Intent) : BaseFragment() {
             bottomSheetDialog.dismiss()
             getLoginActivity().navigateToFragment(FragmentInstance.FRAGMENT_SIGN_UP)
         }
+
+        adminLoginBtn.setOnClickListener{
+            bottomSheetDialog.dismiss()
+            getLoginActivity().moveToActivityAndFinish(Intent(getLoginActivity(),AdminActivity::class.java))
+
+        }
+
     }
 
 
