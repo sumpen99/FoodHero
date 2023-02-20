@@ -30,7 +30,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:fontFamily="sans-serif-light"
-            android:hint="@string/user_current_location"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="normal" />

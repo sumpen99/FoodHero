@@ -9,7 +9,7 @@
         android:icon="@drawable/baseline_home_24"
         />
     <item
-        android:id="@+id/navigateSearch"
+        android:id="@+id/navigateFavorite"
         android:title="Favoriter"
         android:fontFamily="sans-serif"
         android:icon="@drawable/baseline_favorite_24"

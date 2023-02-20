@@ -26,8 +26,6 @@
         <item name="android:windowAnimationStyle">@style/MaterialDialogSheetAnimation</item>
     </style>
 
-
-
     <style name="MaterialDialogSheetAnimation">
         <item name="android:windowEnterAnimation">@anim/popup_show</item>
         <item name="android:windowExitAnimation">@anim/popup_hide</item>

@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.view.View
+import com.example.foodhero.R
 
 class MessageToUser(val context: Context, val view: View?){
     private var positiveCallback:((args:Any?)->Unit) ? = null
@@ -55,7 +56,6 @@ class MessageToUser(val context: Context, val view: View?){
             val negativeButtonClick = { dialog: DialogInterface, which:Int->
                 if(negativeCallback!=null){negativeCallback!!(callbackArgs)}
                 setStatusOpen(false)
-                //dialog.cancel()
             }
             builder.setTitle(message)
             builder.setPositiveButton(posBtnText, DialogInterface.OnClickListener(positiveButtonClick))
@@ -65,4 +65,24 @@ class MessageToUser(val context: Context, val view: View?){
             builder.show().setCanceledOnTouchOutside(false)
         }
     }
+
+    fun showLoginRequiredMessage(){
+        if(!isOpen){
+            setStatusOpen(true)
+            val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+            val positiveButtonClick = { dialog: DialogInterface, which:Int->
+                positiveCallback!!(null)
+                setStatusOpen(false)
+            }
+            val negativeButtonClick = { dialog: DialogInterface, which:Int->
+                setStatusOpen(false)
+            }
+            builder.setTitle("Hoppsan Kerstin")
+            builder.setMessage("Ni behöver registera er för att fortsätta\n")
+            builder.setPositiveButton("Skapa Konto", DialogInterface.OnClickListener(positiveButtonClick))
+            builder.setNegativeButton("Avbryt", DialogInterface.OnClickListener(negativeButtonClick))
+            builder.show().setCanceledOnTouchOutside(false)
+        }
+    }
+
 }

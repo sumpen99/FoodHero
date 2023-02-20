@@ -9,7 +9,12 @@ enum class FragmentInstance {
 
 }
 
-// Hopefully this will not be needed
+enum class ActivityInstance {
+    ACTIVITY_FAVORITE,
+    ACTIVITY_ORDER,
+    ACTIVITY_PROFILE,
+}
+
 enum class SortOperation{
     SORT_ON_PRICE,
     SORT_ON_NAME,

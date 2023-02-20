@@ -62,7 +62,8 @@
                 android:tint="@color/snow"
                 app:backgroundTint="@color/snow"
                 app:rippleColor="@color/snow"
-                app:srcCompat="@drawable/outline_shopping_basket_24" />
+                app:srcCompat="@drawable/outline_shopping_basket_24"
+                android:focusable="true" />
 
         </LinearLayout>
         <androidx.appcompat.widget.AppCompatImageView
