@@ -6,15 +6,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.foodhero.MainActivity
 import com.example.foodhero.R
 import com.example.foodhero.fragment.HomeFragment
 import com.example.foodhero.global.downloadImageFromStorage
 import com.example.foodhero.struct.CathegoryCounter
 import com.example.foodhero.struct.Restaurant
 
-class RestaurantAdapter(private val activity:MainActivity,private val fragment: HomeFragment):RecyclerView.Adapter<RestaurantAdapter.ViewHolder>() {
-    private val restaurantList = ArrayList<Restaurant>()
+class RestaurantAdapter(private val fragment: HomeFragment):RecyclerView.Adapter<RestaurantAdapter.ViewHolder>() {
+    val restaurantList = ArrayList<Restaurant>()
     var listOfCathegories = mutableMapOf <String,CathegoryCounter>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -33,6 +32,10 @@ class RestaurantAdapter(private val activity:MainActivity,private val fragment: 
         fragment.showRestaurant(restaurant)
     }
 
+    fun containsKeyWord(){
+
+    }
+
     /*
     *   ##########################################################################
     *               CATEGORIES
@@ -40,7 +43,8 @@ class RestaurantAdapter(private val activity:MainActivity,private val fragment: 
     */
 
     fun addNewCathegorie(restaurant:Restaurant){
-        val cat = restaurant.cathegoriesDishes!![0]
+        restaurant.cathegoriesDishes?:return
+        val cat = restaurant.cathegoriesDishes[0]
         val id = restaurant.restaurantId!!
         if(!listOfCathegories.containsKey(cat)){
             val catCnt = CathegoryCounter()
@@ -56,9 +60,6 @@ class RestaurantAdapter(private val activity:MainActivity,private val fragment: 
     fun loadAllCathegories(){
         if(listOfCathegories.isEmpty())return
         fragment.addCathegorysToView(listOfCathegories)
-    }
-
-    fun clearCathegories(){
         listOfCathegories.clear()
     }
 
@@ -78,6 +79,7 @@ class RestaurantAdapter(private val activity:MainActivity,private val fragment: 
 
     fun addRestaurant(item: Restaurant){
         restaurantList.add(item)
+        addNewCathegorie(item)
         notifyItemInserted(itemCount)
     }
 
@@ -85,7 +87,7 @@ class RestaurantAdapter(private val activity:MainActivity,private val fragment: 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(restaurantList.isEmpty()){return}
         val itemsViewModel = restaurantList[position]
-        activity.downloadImageFromStorage(activity.getRestaurantLoggoRef(itemsViewModel.loggoDownloadUrl),holder.loggoImageView)
+        fragment.getMainActivity().downloadImageFromStorage(fragment.getMainActivity().getRestaurantLoggoRef(itemsViewModel.loggoDownloadUrl),holder.loggoImageView)
         holder.nameTextView.text = itemsViewModel.name
         holder.categoryTextView.text = itemsViewModel.getCategoriesString()
         // holder.deliveryTypeImageView set image
@@ -106,7 +108,7 @@ class RestaurantAdapter(private val activity:MainActivity,private val fragment: 
         val deliveryTypeImageView: ImageView = itemView.findViewById(R.id.restaurantDeliveryTypeImage)
 
         init{
-            loggoImageView.setOnClickListener{
+            ItemView.setOnClickListener{
                 showRestaurantMenu(bindingAdapterPosition)
             }
         }

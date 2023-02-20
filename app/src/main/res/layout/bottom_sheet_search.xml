@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/searchDialogLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/layout_rounded_background_snow"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/menuItemSearch"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:fontFamily="sans-serif"
+            android:hint="@string/user_search_hint"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:textColor="@color/background_medium_dark"
+            android:textSize="@dimen/cardTextHeader"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/goBackBtn"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:src="@drawable/ic_user_go_back_foreground" />
+    </LinearLayout>
+</LinearLayout>

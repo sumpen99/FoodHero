@@ -23,3 +23,20 @@ enum class ServerResult {
     UPLOAD_ERROR,
     UPLOAD_OK
 }
+
+enum class SearchQuery{
+    QUERY_GEO,
+    QUERY_CITY,
+    QUERY_CATHEGORY,
+    QUERY_REFRESH,
+    QUERY_FIRST_RUN
+}
+
+enum class DialogInstance {
+    BOTTOM_SHEET_SEARCH,
+    BOTTOM_SHEET_PICK_LOCATION,
+    BOTTOM_SHEET_RESTAURANT,
+    BOTTOM_SHEET_LOGIN,
+    BOTTOM_SHEET_PICK_CITY,
+    BOTTOM_SHEET_INIT
+}

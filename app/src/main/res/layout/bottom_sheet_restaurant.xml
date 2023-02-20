@@ -51,7 +51,6 @@
                 android:id="@+id/restImage"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/appbackgroundimage"
                 android:scaleType="centerCrop"
                 />
 
@@ -82,7 +81,6 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:paddingBottom="20dp"
-                            android:text="RESTAURANG NAMN"
                             android:textAlignment="center"
                             android:textColor="@color/background_medium_dark"
                             android:textSize="@dimen/cardTextHeader"
@@ -94,7 +92,6 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:paddingBottom="20dp"
-                            android:text="RESTAURANT INFO\n\n\n\nRESTAURANG INFO"
                             android:textAlignment="center"
                             android:textColor="@color/background_medium_dark"
                             android:textSize="@dimen/cardText" />
@@ -115,7 +112,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
                                 android:padding="10dp"
-                                android:text="Omdöme : 4.9"
                                 android:textColor="@color/background_medium_dark"
                                 android:textSize="@dimen/cardText" />
                         </LinearLayout>
@@ -135,7 +131,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
                                 android:padding="10dp"
-                                android:text="Öppetider: 06.00 - 22.00"
                                 android:textColor="@color/background_medium_dark"
                                 android:textSize="@dimen/cardText" />
                         </LinearLayout>
@@ -155,7 +150,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
                                 android:padding="10dp"
-                                android:text="Leveranstid: 15 - 30min"
                                 android:textColor="@color/background_medium_dark"
                                 android:textSize="@dimen/cardText" />
                         </LinearLayout>

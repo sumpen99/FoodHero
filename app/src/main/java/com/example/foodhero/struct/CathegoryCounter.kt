@@ -9,6 +9,16 @@ class CathegoryCounter() {
         increaseIndex()
     }
 
+    fun addIdList(idList:ArrayList<String>){
+        listOfIds.addAll(idList)
+        sumOfItems+=idList.size
+    }
+
+    fun resetValues(){
+        sumOfItems = 0
+        listOfIds.clear()
+    }
+
     private fun appendNewId(id:String){
         listOfIds.add(id)
     }
@@ -16,4 +26,5 @@ class CathegoryCounter() {
     private fun increaseIndex(){
         sumOfItems++
     }
+
 }

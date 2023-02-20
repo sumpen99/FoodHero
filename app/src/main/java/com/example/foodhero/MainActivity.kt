@@ -1,10 +1,13 @@
 package com.example.foodhero
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultCallback
@@ -22,6 +25,8 @@ import com.example.foodhero.database.FirestoreViewModel
 import com.example.foodhero.databinding.ActivityMainBinding
 import com.example.foodhero.fragment.HomeFragment
 import com.example.foodhero.global.*
+import com.example.foodhero.struct.FoodHeroInfo
+import com.example.foodhero.struct.SearchHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.storage.StorageReference
 
@@ -31,11 +36,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var permissionsList: ArrayList<String>
     private var permissionDialogIsOpen:Boolean = false
     private lateinit var bottomNavMenu: BottomNavigationView
+    private var foodHeroInfo = FoodHeroInfo()
     private var permissionsCount = 0
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
     private val auth = AuthRepo()
-    private var loadRestaurantsGeo = false
     private var currentFragment:FragmentInstance? = null
 
     private var permissionsStr = arrayOf<String>(
@@ -60,14 +65,17 @@ class MainActivity : AppCompatActivity() {
                     askForPermissions(permissionsList)
                 } else if (permissionsCount > 0) {
                     showPermissionDialog()
-                    loadRestaurantsGeo = false
+                    setLocationOfChoice(false)
                     navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
                 }else{
-                    loadRestaurantsGeo = true
+                    setLocationOfChoice(true)
                     navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
                 }
             })
-
+    /*
+    * remove this comment
+    * remove this too
+    * */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(auth.isUserLoggedIn()){
@@ -76,6 +84,7 @@ class MainActivity : AppCompatActivity() {
             setDataBinding()
             setBottomNavigationMenu()
             setOnBackNavigation()
+            loadListOfCitiesWhereFoodHeroExist()
             launchPermissionRequest()
             Toast.makeText(applicationContext, "Välkommen tillbaka ${auth.getEmail()}.", Toast.LENGTH_SHORT).show()
         }
@@ -83,7 +92,8 @@ class MainActivity : AppCompatActivity() {
             moveToActivityAndFinish(Intent(this,LoginActivity::class.java))
         }
     }
-    
+
+
     /*
     *   ##########################################################################
     *               SET BINDING AND OTHER STUFF
@@ -105,7 +115,6 @@ class MainActivity : AppCompatActivity() {
         bottomNavMenu.setOnItemSelectedListener {it: MenuItem ->
             when(it.itemId){
                 R.id.navigateHome->navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
-                //R.id.navigateSearch->SEARCH BOX
                 R.id.navigateCart->moveToActivityAndPutOnTop(Intent(this,OrderActivity::class.java))
                 R.id.navigateProfile->moveToActivityAndPutOnTop(Intent(this, ProfilActivity::class.java))
 
@@ -177,7 +186,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun applyTransaction(frag: Fragment){
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.homeLayout,frag).commit()
+            add(R.id.homeLayout,frag).commit()
         }
     }
 
@@ -205,6 +214,54 @@ class MainActivity : AppCompatActivity() {
 
     /*
     *   ##########################################################################
+    *               SHARED PREFERENCE
+    *   ##########################################################################
+    */
+
+    fun setLocationOfChoice(location:Boolean){
+        writeBooleanToSharedPreference(userLocationTag(),location)
+    }
+
+    fun setCityOfChoice(city:String){
+        writeStringToSharedPreference(userCityTag(),city)
+    }
+
+    private fun userLocationTag():String{
+        return auth.userUid() + getString(R.string.user_location)
+    }
+
+    private fun userCityTag():String{
+        return auth.userUid() + getString(R.string.user_city)
+    }
+
+    fun getCityOfChoice():String{
+        val city = retrieveStringFromSharedPreference(userCityTag(),"")?:""
+        val geo = getLocationOfChoice()
+        if(city == "" && geo)return getString(R.string.user_current_location_geo)
+        else if(city == "")return getString(R.string.user_current_location_set)
+        return city
+    }
+
+    private fun cityNotSetByUser():Boolean{
+        return getCityOfChoice() == getString(R.string.user_current_location_geo)
+    }
+
+    fun getCheckMarkerVisibility():Int{
+        return if(getCityOfChoice() == getString(R.string.user_current_location_geo))VISIBLE else GONE
+    }
+
+    private fun getLocationOfChoice():Boolean{
+        return retrieveBooleanFromSharedPreference(userLocationTag(),false)?:false
+    }
+
+    private fun isACorrectCity(city:String):Boolean{
+        return  city != "" &&
+                city != getString(R.string.user_current_location_geo) &&
+                city != getString(R.string.user_current_location_set)
+    }
+
+    /*
+    *   ##########################################################################
     *               COLLECT RESTAURANTS & MENU
     *   ##########################################################################
     */
@@ -217,11 +274,22 @@ class MainActivity : AppCompatActivity() {
         return firestoreViewModel.firebaseRepository.getMenuItemLoggoReference(downloadUrl)
     }
 
+    fun getCitiesWhereFoodHeroExist():FoodHeroInfo{
+        return foodHeroInfo
+    }
+
     fun loadRestaurants(restaurantAdapter:RestaurantAdapter){
-        if(loadRestaurantsGeo){
+        if(getLocationOfChoice() &&
+            cityNotSetByUser()){
             val userLocation = getCenterOfStockholm()
             val radiusKm = 20.0
             firestoreViewModel.getRestaurantsGeo(userLocation,radiusKm,restaurantAdapter)
+        }
+        else{
+            val city = getCityOfChoice()
+            if(isACorrectCity(city)){
+                loadRestaurantsByCity(city,restaurantAdapter)
+            }
         }
     }
 
@@ -230,16 +298,21 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun loadRestaurantsByCity(city:String,restaurantAdapter: RestaurantAdapter){
+        firestoreViewModel.getRestaurantsByCity(city,restaurantAdapter)
+    }
+
+    fun loadRestaurantsByKeyWord(idList:ArrayList<String>,keyWord:String,restaurantAdapter: RestaurantAdapter){
+        firestoreViewModel.getRestaurantsByKeyWord(idList,keyWord,restaurantAdapter)
+    }
+
     fun loadRestaurantsByCathegory(ids:List<String>,restaurantAdapter: RestaurantAdapter){
         firestoreViewModel.getRestaurantsByIds(ids,restaurantAdapter)
     }
 
-    private fun loadRestaurantsByDefault(restaurantAdapter:RestaurantAdapter){
-        //val userLocation = getCenterOfStockholm()
-        //val radiusKm = 20.0
-        //firestoreViewModel.getRestaurantsGeo(userLocation,radiusKm,restaurantAdapter)
+    private fun loadListOfCitiesWhereFoodHeroExist(){
+        firestoreViewModel.getCitiesWhereFoodHeroExist(foodHeroInfo)
     }
-
 
 
     /*
@@ -247,7 +320,7 @@ class MainActivity : AppCompatActivity() {
     *               ON RESUME ON PAUSE ON STOP
     *   ##########################################################################
     */
-    override fun onResume(){
+    /*override fun onResume(){
         super.onResume()
         //navigateOnResume()
         //logMessage("on resume main")
@@ -268,5 +341,5 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy(){
         super.onDestroy()
-   }
+    }*/
 }

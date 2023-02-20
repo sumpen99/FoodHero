@@ -12,6 +12,7 @@ import java.io.InputStream
 
 const val packageName = "com.example.foodhero"
 const val appFileProvider = "com.example.foodhero.fileprovider"
+const val SEARCH_TIME_OUT = 1000
 
 /*
 *   ##########################################################################
@@ -23,6 +24,8 @@ const val appFileProvider = "com.example.foodhero.fileprovider"
 const val RESTAURANT_LOGGO_PATH = "images/restaurant/logo/"
 const val MENUITEM_LOGGO_PATH = "images/restaurant/menu/menuitem/logo/"
 const val RESTAURANT_COLLECTION = "Restaurants"
+const val INFO_COLLECTION = "Info"
+const val INFO_DOCUMENT_FOODHERO = "FoodHero"
 const val MENU_COLLECTION = "Menu"
 const val DRINK_COLLECTION = "DrinkList"
 const val MENU_ITEM_COLLECTION = "MenuItems"

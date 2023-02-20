@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.foodhero.adapter.RestaurantAdapter
 import com.example.foodhero.adapter.RestaurantMenuAdapter
+import com.example.foodhero.global.INFO_DOCUMENT_FOODHERO
 import com.example.foodhero.global.ServerResult
 import com.example.foodhero.global.logMessage
 import com.example.foodhero.struct.*
@@ -13,6 +14,7 @@ import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FieldPath
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.tasks.await
 
@@ -29,6 +31,7 @@ class FirestoreViewModel {
         clearServerDetails()
         saveRestaurantInfo(pos,restaurant)
         saveRestaurantLoggoToFirebase(pos,imageUri,restaurant.loggoDownloadUrl!!)
+        //update Info/FoodHero->cities if needed
         return serverDetails.isEmpty()
     }
 
@@ -131,12 +134,8 @@ class FirestoreViewModel {
         firebaseRepository.getSavedMenuItems(restaurantId).get().addOnCompleteListener{it->
             if(it.isSuccessful){
                 for(doc in it.result){
-                    //menu.add(doc.toObject(MenuItem::class.java))
                     val menuItem = doc.toObject(MenuItem::class.java)
                     menuAdapter.addMenuItem(menuItem)
-                    //menuItem?:continue
-                    //menuList.add(doc.toObject(MenuItem::class.java))
-                    //logMessage(doc.toObject(MenuItem::class.java).toString())
                 }
             }
         }
@@ -200,8 +199,6 @@ class FirestoreViewModel {
                         val restaurant = doc.toObject(Restaurant::class.java)
                         restaurant?:continue
                         restaurantAdapter.addRestaurant(restaurant)
-                        restaurant.cathegoriesDishes?:continue
-                        restaurantAdapter.addNewCathegorie(restaurant)
                     }
                 }
             }
@@ -220,6 +217,53 @@ class FirestoreViewModel {
                     val restaurant = doc.toObject(Restaurant::class.java)
                     restaurantAdapter.addRestaurant(restaurant)
                 }
+            }
+        }
+    }
+
+    fun getRestaurantsByCity(city:String,restaurantAdapter:RestaurantAdapter){
+        firebaseRepository.
+        getSavedRestaurants().
+        whereEqualTo("city",city).
+        get().
+        addOnCompleteListener{ task->
+            if(task.isSuccessful){
+                for(doc in task.result){
+                    val restaurant = doc.toObject(Restaurant::class.java)
+                    restaurantAdapter.addRestaurant(restaurant)
+                }
+                restaurantAdapter.loadAllCathegories()
+            }
+        }
+    }
+
+    fun getRestaurantsByKeyWord(ids:List<String>,keyWord:String,restaurantAdapter:RestaurantAdapter){
+        firebaseRepository
+            .getSavedRestaurants()
+            .whereIn(FieldPath.documentId(),ids)
+            .whereArrayContains("keyWords",keyWord)
+            .get()
+            .addOnCompleteListener{ task->
+                if(task.isSuccessful){
+                    for((i, doc) in task.result.withIndex()){
+                        val restaurant = doc.toObject(Restaurant::class.java)
+                        if(i==0){restaurantAdapter.clearView()}
+                        restaurantAdapter.addRestaurant(restaurant)
+                    }
+                }
+            }
+    }
+
+    fun getCitiesWhereFoodHeroExist(foodHeroInfo: FoodHeroInfo){
+        firebaseRepository
+            .getCitys()
+            .document(INFO_DOCUMENT_FOODHERO)
+            .get()
+            .addOnCompleteListener{task->
+            if(task.isSuccessful){
+                val info = task.result.toObject(FoodHeroInfo::class.java)
+                foodHeroInfo.cities = info?.cities
+                foodHeroInfo.sortListOfCities()
             }
         }
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,29 +18,37 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/openPickLocationWindow"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center_vertical"
              android:src="@drawable/ic_user_position_foreground" />
 
-        <TextView
-            android:id="@+id/menuItemName"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/menuItemSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:fontFamily="sans-serif"
-            android:text="@string/user_allowed_position"
+            android:hint="@string/user_current_location"
             android:textColor="@color/background_medium_dark"
-            android:textSize="@dimen/cardTextHeader"
+            android:textSize="@dimen/userCardText"
             android:textStyle="bold" />
 
+        <Space
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"/>
+
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/openSearchWindow"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_arrow_point_down_foreground" />
+            android:src="@drawable/ic_user_search_foreground" />
     </LinearLayout>
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -82,17 +91,6 @@
                         android:textColor="@color/snow"
                         android:textSize="@dimen/cardTextHeader"
                         android:textStyle="bold" />
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1">
-                    </Space>
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/refreshButton"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/refresh_icon_24" />
                 </LinearLayout>
 
                 <HorizontalScrollView
