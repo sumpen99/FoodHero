@@ -29,11 +29,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:fontFamily="sans-serif"
+            android:fontFamily="sans-serif-light"
             android:hint="@string/user_current_location"
-            android:textColor="@color/background_medium_dark"
+            android:textColor="@color/snow"
             android:textSize="@dimen/userCardText"
-            android:textStyle="bold" />
+            android:textStyle="normal" />
 
         <Space
             android:layout_height="0dp"
@@ -82,15 +82,16 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/userPositionLayout">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:fontFamily="sans-serif"
+                        android:fontFamily="sans-serif-light"
                         android:text="Kategorier"
                         android:textColor="@color/snow"
                         android:textSize="@dimen/cardTextHeader"
-                        android:textStyle="bold" />
+                        android:textStyle="normal" />
                 </LinearLayout>
 
                 <HorizontalScrollView

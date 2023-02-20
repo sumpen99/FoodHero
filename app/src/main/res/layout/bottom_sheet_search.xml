@@ -27,7 +27,7 @@
             android:background="@color/transparent"
             android:textColor="@color/background_medium_dark"
             android:textSize="@dimen/cardTextHeader"
-            android:textStyle="bold" />
+            android:textStyle="normal" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/goBackBtn"
