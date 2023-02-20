@@ -34,6 +34,6 @@
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:background="@color/transparent"
-            android:src="@drawable/ic_user_go_back_foreground" />
+            android:src="@drawable/ic_chevron_left_foreground" />
     </LinearLayout>
 </LinearLayout>
