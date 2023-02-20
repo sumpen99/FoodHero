@@ -48,7 +48,7 @@ class OrderActivity : AppCompatActivity() {
            when(it.itemId){
                // R.id.navigateHome->navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
               R.id.navigateProfile->moveToActivityAndPutOnTop(Intent(this,BuyActivity::class.java))
-               // R.id.navigateProfile->moveToActivity(Intent(this, ProfilActivity::class.java))
+              R.id.navigateSearch->moveToActivityAndPutOnTop(Intent(this, FavoriteActivity::class.java))
 
            }
            true
