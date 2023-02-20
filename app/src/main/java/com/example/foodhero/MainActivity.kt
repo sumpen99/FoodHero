@@ -15,10 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.example.foodhero.activity.AdminActivity
-import com.example.foodhero.activity.LoginActivity
-import com.example.foodhero.activity.OrderActivity
-import com.example.foodhero.activity.ProfilActivity
+import com.example.foodhero.activity.*
 import com.example.foodhero.adapter.RestaurantAdapter
 import com.example.foodhero.adapter.RestaurantMenuAdapter
 import com.example.foodhero.database.AuthRepo
@@ -117,7 +114,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavMenu.setOnItemSelectedListener {it: MenuItem ->
             when(it.itemId){
                 R.id.navigateHome->(FragmentInstance.FRAGMENT_MAIN_HOME)
-              //   R.id.navigateSearch->moveToActivityAndPutOnTop(Intent(this,OrderActivity::class.java))
+                R.id.navigateSearch->moveToActivityAndPutOnTop(Intent(this,FavoriteActivity::class.java))
                 R.id.navigateCart->moveToActivityAndPutOnTop(Intent(this,OrderActivity::class.java))
                 R.id.navigateProfile->moveToActivityAndPutOnTop(Intent(this, ProfilActivity::class.java))
                 R.id.navigateAdmin->moveToActivityAndPutOnTop(Intent(this, AdminActivity::class.java))
