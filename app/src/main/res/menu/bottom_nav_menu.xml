@@ -24,4 +24,9 @@
         android:icon="@drawable/baseline_account_box_24"
         android:title="Profil"
         />
+    <item
+        android:id="@+id/navigateAdmin"
+        android:icon="@drawable/baseline_account_box_24"
+        android:title="Admin"
+        />
 </menu>

@@ -34,15 +34,15 @@ class ProfilActivity : AppCompatActivity() {
 
         }
 
-        EditNameText = findViewById(R.id.EditNameText)
-        EditMailText = findViewById(R.id.EditMailText)
-        EditPhoneText = findViewById(R.id.EditPhoneText)
+        EditNameText = findViewById(R.id.ResturantNameEditText)
+        EditMailText = findViewById(R.id.LocationEditText)
+        EditPhoneText = findViewById(R.id.DescriptionEditText)
         EditPasswordText = findViewById(R.id.EditPasswordText)
 
 
-        imageLogOutButton = findViewById<ImageButton>(R.id.imageLogOutButton)
+        imageLogOutButton = findViewById<ImageButton>(R.id.LogoutImageButton)
 
-        val imageLogOutButton = findViewById<ImageButton>(R.id.imageLogOutButton)
+        val imageLogOutButton = findViewById<ImageButton>(R.id.LogoutImageButton)
 
         imageLogOutButton.setOnClickListener {
             signOut()

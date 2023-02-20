@@ -16,7 +16,7 @@
         android:theme="@style/Theme.FoodHero"
         tools:targetApi="31">
         <activity
-            android:name=".activity.BuyActivity"
+            android:name=".activity.AdminActivity"
             android:exported="false" />
         <activity
             android:name=".activity.OrderActivity"
