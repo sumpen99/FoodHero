@@ -20,20 +20,20 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/openPickLocationWindow"
             android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_gravity="center_vertical"
-             android:src="@drawable/ic_user_position_foreground" />
+            android:src="@drawable/ic_user_position_foreground" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/menuItemSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:fontFamily="sans-serif"
+            android:fontFamily="sans-serif-light"
             android:hint="@string/user_current_location"
-            android:textColor="@color/background_medium_dark"
-            android:textSize="@dimen/userCardText"
-            android:textStyle="bold" />
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="normal" />
 
         <Space
             android:layout_height="0dp"
@@ -43,7 +43,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/openSearchWindow"
             android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_user_search_foreground" />
     </LinearLayout>
@@ -82,15 +82,16 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/userPositionLayout">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:fontFamily="sans-serif"
+                        android:fontFamily="sans-serif-light"
                         android:text="Kategorier"
                         android:textColor="@color/snow"
                         android:textSize="@dimen/cardTextHeader"
-                        android:textStyle="bold" />
+                        android:textStyle="normal" />
                 </LinearLayout>
 
                 <HorizontalScrollView

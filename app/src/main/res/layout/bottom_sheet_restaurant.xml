@@ -33,7 +33,7 @@
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="10dp"
-            android:backgroundTint="#0DFFFFFF"
+            android:backgroundTint="@color/transparent"
             android:src="@drawable/outline_shopping_basket_24" />
     </LinearLayout>
     <ScrollView
@@ -82,9 +82,9 @@
                             android:layout_gravity="center_horizontal"
                             android:paddingBottom="20dp"
                             android:textAlignment="center"
-                            android:textColor="@color/background_medium_dark"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/cardTextHeader"
-                            android:textStyle="bold" />
+                            android:textStyle="normal" />
 
                         <TextView
                             android:id="@+id/restInfo"

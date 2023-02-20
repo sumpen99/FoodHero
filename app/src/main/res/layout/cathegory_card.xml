@@ -44,9 +44,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:textStyle="bold"
-            android:textColor="@color/background_medium_dark"
-            android:textSize="@dimen/cardText" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/cardText"
+            android:textStyle="normal" />
 
         <TextView
             android:id="@+id/catFoodCount"
