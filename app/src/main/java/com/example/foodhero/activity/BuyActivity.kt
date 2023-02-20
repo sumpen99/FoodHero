@@ -39,7 +39,7 @@ class BuyActivity : AppCompatActivity() {
         finish()
         //val intent = Intent(this, MainActivity::class.java)
         //moveToActivity(intent)
-
+     // hem
     }
     private fun setBottomBuyNavigationMenu(){
         bottomNavBuyMenu = binding.bottomNavBuyMenu
