@@ -78,8 +78,7 @@ class MainActivity : AppCompatActivity() {
     * remove this comment
     * remove this too
     * */
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState)
         if(auth.isUserLoggedIn()){
             setContentView(R.layout.activity_main)
             setViewModel()
@@ -120,7 +119,6 @@ class MainActivity : AppCompatActivity() {
               //   R.id.navigateSearch->moveToActivityAndPutOnTop(Intent(this,OrderActivity::class.java))
                 R.id.navigateCart->moveToActivityAndPutOnTop(Intent(this,OrderActivity::class.java))
                 R.id.navigateProfile->moveToActivityAndPutOnTop(Intent(this, ProfilActivity::class.java))
-                R.id.navigateAdmin->moveToActivityAndPutOnTop(Intent(this, AdminActivity::class.java))
             }
             true
         }
@@ -211,8 +209,6 @@ class MainActivity : AppCompatActivity() {
         else{
             navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
         }
-
-
     }
 
     /*
