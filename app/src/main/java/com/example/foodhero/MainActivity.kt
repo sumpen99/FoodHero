@@ -30,6 +30,7 @@ import com.example.foodhero.struct.FoodHeroInfo
 import com.example.foodhero.struct.SearchHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.storage.StorageReference
+import org.checkerframework.checker.units.qual.m
 
 class MainActivity : AppCompatActivity() {
     private lateinit var firestoreViewModel: FirestoreViewModel
@@ -115,7 +116,8 @@ class MainActivity : AppCompatActivity() {
         bottomNavMenu = binding.bottomNavigationView
         bottomNavMenu.setOnItemSelectedListener {it: MenuItem ->
             when(it.itemId){
-                R.id.navigateHome->navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
+                R.id.navigateHome->(FragmentInstance.FRAGMENT_MAIN_HOME)
+              //   R.id.navigateSearch->moveToActivityAndPutOnTop(Intent(this,OrderActivity::class.java))
                 R.id.navigateCart->moveToActivityAndPutOnTop(Intent(this,OrderActivity::class.java))
                 R.id.navigateProfile->moveToActivityAndPutOnTop(Intent(this, ProfilActivity::class.java))
                 R.id.navigateAdmin->moveToActivityAndPutOnTop(Intent(this, AdminActivity::class.java))

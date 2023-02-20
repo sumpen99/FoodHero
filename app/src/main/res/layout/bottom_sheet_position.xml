@@ -14,7 +14,7 @@
         android:fontFamily="sans-serif-light"
         android:text="Din platsinfo"
         android:textAlignment="center"
-        android:textColor="@color/background_dark"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="normal" />
 
