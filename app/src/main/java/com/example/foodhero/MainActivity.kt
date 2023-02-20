@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
             })
     /*
     * remove this comment
-    *
+    * remove this too
     * */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
