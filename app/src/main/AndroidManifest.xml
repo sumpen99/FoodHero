@@ -16,6 +16,9 @@
         android:theme="@style/Theme.FoodHero"
         tools:targetApi="31">
         <activity
+            android:name=".activity.BuyActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.OrderActivity"
             android:exported="false" />
         <activity
@@ -31,8 +34,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/Theme.FoodHero">
+            android:theme="@style/Theme.FoodHero"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

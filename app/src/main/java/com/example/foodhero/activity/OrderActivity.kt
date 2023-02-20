@@ -1,11 +1,13 @@
 package com.example.foodhero.activity
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageButton
 import com.example.foodhero.R
 import com.example.foodhero.databinding.ActivityOrderBinding
+import com.example.foodhero.global.moveToActivityAndPutOnTop
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class OrderActivity : AppCompatActivity() {
@@ -45,7 +47,7 @@ class OrderActivity : AppCompatActivity() {
        bottomOrderNavMenu.setOnItemSelectedListener {it: MenuItem ->
            when(it.itemId){
                // R.id.navigateHome->navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
-              // R.id.navigateCart->moveToActivity(Intent(this,OrderActivity::class.java))
+              R.id.navigateProfile->moveToActivityAndPutOnTop(Intent(this,BuyActivity::class.java))
                // R.id.navigateProfile->moveToActivity(Intent(this, ProfilActivity::class.java))
 
            }
