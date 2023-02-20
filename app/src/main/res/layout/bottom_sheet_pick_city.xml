@@ -15,21 +15,22 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="45dp"
-            android:layout_weight="1"
             android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-light"
             android:text="Sverige"
             android:textColor="@color/background_dark"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="normal" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/cityCloseDialog"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="bottom"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/ic_filter_state"
             android:scaleType="centerCrop"
-            android:layout_marginEnd="10dp"
             android:src="@drawable/ic_cross_marker_foreground" />
     </LinearLayout>
 
