@@ -72,7 +72,10 @@ class MainActivity : AppCompatActivity() {
                     navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
                 }
             })
-
+    /*
+    * remove this comment
+    *
+    * */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(auth.isUserLoggedIn()){
