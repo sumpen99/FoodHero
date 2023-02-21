@@ -16,6 +16,17 @@ app:layout_constraintStart_toStartOf="parent"
 app:layout_constraintTop_toTopOf="parent"
 app:srcCompat="@drawable/baseline_arrow_back_24" />
 
+    <ImageButton
+        android:id="@+id/imageProfileButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="14dp"
+        android:background="#11FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_account_box_24" />
+
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="59dp"
@@ -28,23 +39,106 @@ app:srcCompat="@drawable/baseline_arrow_back_24" />
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/applogowhite" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavBuyMenu"
-        android:layout_width="419dp"
-        android:layout_height="71dp"
-        app:backgroundTint="@color/transparent"
-        app:itemHorizontalTranslationEnabled="false"
-        app:itemIconTint="@drawable/bottom_navigation_selector"
-        app:itemTextColor="@color/white"
-        app:labelVisibilityMode="labeled"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="416dp"
+        android:layout_height="374dp"
+        android:layout_marginTop="140dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_buy" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView5"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/layout_rounded_background_snow" />
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="247dp"
+        android:layout_height="102dp"
+        android:layout_marginStart="82dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="82dp"
+        android:text="240kr"
+        android:textColor="#101010"
+        android:textSize="90sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="86dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toStartOf="@+id/imageView8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageBuyButton"
+        app:layout_constraintVertical_bias="0.891"
+        app:srcCompat="@drawable/swish_logotype_829dad15" />
 
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="219dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toBottomOf="@+id/imageBuyButton"
+        app:layout_constraintVertical_bias="0.911"
+        app:srcCompat="@drawable/visa_mastercard_logo_png_8" />
+
+    <ImageButton
+        android:id="@+id/imageBuyButton"
+        android:layout_width="394dp"
+        android:layout_height="95dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="#0AFFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.521"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.163"
+        app:srcCompat="@drawable/layout_rounded_background_blue" />
+
+    <TextView
+        android:id="@+id/textBuyView"
+        android:layout_width="178dp"
+        android:layout_height="42dp"
+        android:text="Betala nu"
+        android:textColor="#FBFAFA"
+        android:textSize="34sp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="@+id/imageBuyButton"
+        app:layout_constraintEnd_toEndOf="@+id/imageBuyButton"
+        app:layout_constraintHorizontal_bias="0.424"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageBuyButton"
+        app:layout_constraintVertical_bias="0.433" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="53dp"
+        android:layout_height="44dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageBuyButton"
+        app:layout_constraintEnd_toEndOf="@+id/imageBuyButton"
+        app:layout_constraintHorizontal_bias="0.407"
+        app:layout_constraintStart_toEndOf="@+id/textBuyView"
+        app:layout_constraintTop_toTopOf="@+id/imageBuyButton"
+        app:layout_constraintVertical_bias="0.45"
+        app:srcCompat="@drawable/baseline_arrow_forward_ios_24" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

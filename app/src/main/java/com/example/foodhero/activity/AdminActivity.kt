@@ -22,7 +22,7 @@ class AdminActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val backButton = findViewById<ImageButton>(R.id.BackButtonImage)
-        val logoutButton = findViewById<ImageButton>(R.id.LogoutImageButton)
+        val logoutButton = findViewById<ImageButton>(R.id.ImageProfilButton)
         val submitButton = findViewById<Button>(R.id.SubmitButton)
         backButton.setOnClickListener(clickListener)
         logoutButton.setOnClickListener(clickListener)
@@ -34,7 +34,7 @@ class AdminActivity : AppCompatActivity() {
             R.id.BackButtonImage -> {
                 finish()
             }
-            R.id.LogoutImageButton -> {
+            R.id.ImageProfilButton -> {
                 auth.signOut()
             }
             R.id.SubmitButton -> {

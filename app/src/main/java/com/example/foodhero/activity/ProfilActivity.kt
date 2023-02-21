@@ -40,9 +40,9 @@ class ProfilActivity : AppCompatActivity() {
         EditPasswordText = findViewById(R.id.EditPasswordText)
 
 
-        imageLogOutButton = findViewById<ImageButton>(R.id.LogoutImageButton)
+        imageLogOutButton = findViewById<ImageButton>(R.id.ImageProfilButton)
 
-        val imageLogOutButton = findViewById<ImageButton>(R.id.LogoutImageButton)
+        val imageLogOutButton = findViewById<ImageButton>(R.id.ImageProfilButton)
 
         imageLogOutButton.setOnClickListener {
             signOut()
