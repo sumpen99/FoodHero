@@ -1,11 +1,16 @@
 package com.example.foodhero.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageButton
 import android.widget.TextView
+import com.example.foodhero.MainActivity
 import com.example.foodhero.R
+import com.example.foodhero.global.moveToActivityAndFinish
+import com.example.foodhero.global.moveToActivityAndPutOnTop
 import com.google.firebase.firestore.FirebaseFirestore
 
 
@@ -14,8 +19,11 @@ private lateinit var lastOrdersTextView: TextView
 private val db = FirebaseFirestore.getInstance()
 
 class FavoriteActivity : AppCompatActivity() {
+    lateinit var imageBackTwoButton : ImageButton
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorite)
 
@@ -26,7 +34,18 @@ class FavoriteActivity : AppCompatActivity() {
         // retrieve the user's favorite dishes and last orders from the database
         retrieveFavoriteDishes()
         retrieveLastOrders()
+
+
+        imageBackTwoButton = findViewById<ImageButton>(R.id.imageBackTwoButton)
+        imageBackTwoButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            moveToActivityAndPutOnTop(intent)
+
+        }
+
     }
+
+
 
     private fun retrieveFavoriteDishes() {
         // make a database query to retrieve the user's favorite dishes

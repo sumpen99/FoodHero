@@ -49,4 +49,28 @@
         app:layout_constraintBottom_toTopOf="@+id/favorite_dishes_textview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageBackTwoButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="30dp"
+
+        android:layout_marginTop="25dp"
+        android:background="#08FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_arrow_back_24" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="59dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="106dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="106dp"
+        app:layout_constraintStart_toEndOf="@+id/imageBackTwoButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/applogowhite" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
