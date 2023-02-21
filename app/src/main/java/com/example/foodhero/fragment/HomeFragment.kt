@@ -40,6 +40,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     private val listOfKeywords = ArrayList<String>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        logMessage("on create home")
         setRecyclerView()
         setEventListener(view)
         loadRestaurants()
@@ -390,17 +391,22 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     */
 
     /*override fun onResume(){
-        logMessage("on resume")
+        logMessage("on resume fragment resume")
         super.onResume()
     }
 
     override fun onPause(){
-        logMessage("on paus")
+        logMessage("on paus fragment pause")
         super.onPause()
     }
 
     override fun onStop(){
-        logMessage("on stop")
+        logMessage("on stop fragment home")
+        super.onStop()
+    }
+
+    override fun onDestroy(){
+        logMessage("on destroy fragment home")
         super.onStop()
     }*/
 }

@@ -1,7 +1,10 @@
 package com.example.foodhero
+
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
@@ -41,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     private val binding get() = _binding!!
     private val auth = AuthRepo()
     private var currentFragment:FragmentInstance? = null
-
+    private val intentFilter = IntentFilter()
     private var permissionsStr = arrayOf<String>(
         android.Manifest.permission.ACCESS_FINE_LOCATION,
         android.Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -74,6 +77,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState)
         if(auth.isUserLoggedIn()){
+            intentFilter.addAction(APP_ACTION_LOG_OUT)
+            registerReceiver(object : BroadcastReceiver() {
+                override fun onReceive(context: Context, intent: Intent) {
+                    //logMessage("onReceive Logout in progress")
+                    moveToActivityAndFinish(Intent(context,LoginActivity::class.java))
+                }
+            }, intentFilter)
+            //logMessage("on create main")
             setContentView(R.layout.activity_main)
             setMessageToUser()
             setViewModel()
@@ -98,13 +109,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun setMessageToUser(){
         if(auth.userIsAnonymous()){
-        informUserToSignIn = MessageToUser(this,null)
-        informUserToSignIn!!.setPositiveCallback{
-            navigateToSignUpActivity()
+            informUserToSignIn = MessageToUser(this,null)
+            informUserToSignIn!!.setPositiveCallback{
+                navigateToSignUpActivity()
             }
-        }
-        informUserToSignIn!!.setNeutralCallback{
-            navigateToLogInActivity()
+            informUserToSignIn!!.setNeutralCallback{
+                navigateToLogInActivity()
+            }
         }
     }
 
@@ -276,7 +287,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun isACorrectCity(city:String):Boolean{
-        return  city != "" &&
+        return  city.isNotEmpty() &&
                 city != getString(R.string.user_allowed_geo) &&
                 city != getString(R.string.user_did_not_allow_geo)
     }
@@ -352,24 +363,25 @@ class MainActivity : AppCompatActivity() {
     */
     /*override fun onResume(){
         super.onResume()
+        logMessage("on resume main")
         //navigateOnResume()
-        //logMessage("on resume main")
 
     }
 
     override fun onPause(){
         super.onPause()
-        //logMessage("on pause main")
+        logMessage("on pause main")
 
     }
 
     override fun onStop(){
         super.onStop()
-        //logMessage("on stop main")
+        logMessage("on stop main")
 
     }
 
     override fun onDestroy(){
+        logMessage("on destroy main")
         super.onDestroy()
     }*/
 }

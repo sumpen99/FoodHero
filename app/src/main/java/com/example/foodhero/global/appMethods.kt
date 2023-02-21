@@ -120,6 +120,13 @@ fun Activity.moveToActivityAndFinish(intent: Intent){
     finish()
 }
 
+fun Activity.moveToActivityAndClearTop(){
+    val broadcastIntent = Intent()
+    broadcastIntent.action = APP_ACTION_LOG_OUT
+    sendBroadcast(broadcastIntent)
+    finish()
+}
+
 /*
 *   ##########################################################################
 *                            TOAST MESSAGE
@@ -265,20 +272,18 @@ fun String.capitalizeSentence() = run {
 fun checkForSuggestion(strInput: String, wordsOut: ArrayList<String>,wordsToTest:ArrayList<String>): Boolean {
     fun offsetString(str:String,offset:Int,EMPTY_CHAR:Char):Char{
         if(offset >= str.length){return EMPTY_CHAR;}
-        return str[offset];
+        return str[offset]
     }
-
     if(strInput.isEmpty() || wordsToTest.isEmpty())return false
     val EMPTY_CHAR = '\u0000'
-    var la: Int = 0
+    val la = strInput.length
     var lb: Int = 0
     var i: Int = 0
     var j: Int = 0
     var tbl: Array<Edit>
     val strIn = strInput.capitalizeSentence()
     val aContainer = AutoWordContainer(wordsToTest.size)
-    for (k in wordsToTest.indices) {
-        val strOut: String = wordsToTest[k]
+    for((k,strOut) in wordsToTest.withIndex()) {
         lb = strOut.length
         val row = la + 2
         val col = lb + 2
