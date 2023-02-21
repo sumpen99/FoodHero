@@ -27,7 +27,7 @@ class ProfilActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profil)
 
-        imageBackButton = findViewById<ImageButton>(R.id.imageBackButton)
+        imageBackButton = findViewById<ImageButton>(R.id.imageBackTwoButton)
         imageBackButton.setOnClickListener {
 
            goBack()
