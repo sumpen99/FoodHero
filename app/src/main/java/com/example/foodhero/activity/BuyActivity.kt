@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.example.foodhero.R
 import com.example.foodhero.databinding.ActivityBuyBinding
 import com.example.foodhero.global.moveToActivityAndFinish
+import com.example.foodhero.global.moveToActivityAndPutOnTop
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class BuyActivity : AppCompatActivity() {
@@ -40,7 +41,8 @@ class BuyActivity : AppCompatActivity() {
         imageBuyButton.setOnClickListener {
 
             Toast.makeText(applicationContext, "Nu är din mat beställd! Tack för ditt köp önskar FoodHero!", Toast.LENGTH_LONG).show()
-
+            val intent = Intent(this,FavoriteActivity::class.java)
+            moveToActivityAndPutOnTop(intent)
         }
 
         imageProfileButton = findViewById<ImageButton>(R.id.imageProfileButton)
