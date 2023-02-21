@@ -28,7 +28,6 @@ import com.example.foodhero.struct.CathegoryCounter
 import com.example.foodhero.struct.Restaurant
 import com.example.foodhero.widgets.CathegoryItem
 import com.example.foodhero.widgets.CityItem
-import com.example.foodhero.widgets.SearchItem
 import kotlinx.coroutines.launch
 
 
@@ -189,8 +188,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
                 bottomSheetDialog.dismiss()
                 if(getMainActivity().locationPermissionIsProvided()){
                     pickGpsImg.visibility = VISIBLE
-                    getMainActivity().setLocationOfChoice(true)
-                    getMainActivity().setCityOfChoice("")
+                    getMainActivity().setCityOfChoice(getString(R.string.user_allowed_geo))
                     setUserLocationText()
                     refreshRestaurants()
                 }
@@ -338,13 +336,6 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         getMainActivity().loadRestaurantsByCathegory(ids,restaurantAdapter)
     }
 
-
-    /*
-    *   ##########################################################################
-    *               SHOW RESTAURANTS
-    *   ##########################################################################
-    */
-
     fun showRestaurant(restaurant: Restaurant){
         if(sameRestaurantAsBefore(restaurant.restaurantId!!)){
             bottomSheetDialog.show()
@@ -374,6 +365,10 @@ class HomeFragment(intent: Intent) : BaseFragment() {
 
         bottomSheetDialog.show()
         getMainActivity().loadRestaurantMenu(restaurant.restaurantId!!,restaurantMenuAdapter)
+    }
+
+    fun putSelectedFoodInCart(menuItem:com.example.foodhero.struct.MenuItem){
+        getMainActivity().putFoodItemIntoCart(menuItem)
     }
 
 

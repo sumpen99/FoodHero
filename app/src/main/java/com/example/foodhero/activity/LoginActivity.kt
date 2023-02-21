@@ -16,6 +16,7 @@ import com.example.foodhero.global.*
 import com.example.foodhero.struct.User
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -23,6 +24,7 @@ import com.google.firebase.ktx.Firebase
 class LoginActivity: AppCompatActivity() {
     private lateinit var onBackPressedCallback: OnBackPressedCallback
     private lateinit var firestoreViewModel: FirestoreViewModel
+    private var convertAnonumous = false
     private var _binding: ActivityLoginBinding? = null
     private val binding get() = _binding!!
     public override fun onCreate(savedInstanceState: Bundle?){
@@ -31,7 +33,8 @@ class LoginActivity: AppCompatActivity() {
         setDataBinding()
         setViewModel()
         setOnBackNavigation()
-        navigateToFragment(FragmentInstance.FRAGMENT_LOGIN_HOME)
+        navigateOnEnter()
+
     }
 
     /*
@@ -65,7 +68,8 @@ class LoginActivity: AppCompatActivity() {
     }
 
     private fun navigateOnBackPressed(){
-        navigateToFragment(FragmentInstance.FRAGMENT_LOGIN_HOME)
+        if(!convertAnonumous)navigateToFragment(FragmentInstance.FRAGMENT_LOGIN_HOME)
+        else finish()
     }
 
     /*
@@ -73,6 +77,19 @@ class LoginActivity: AppCompatActivity() {
     *               NAVIGATE BETWEEN FRAGMENTS
     *   ##########################################################################
     */
+
+    private fun navigateOnEnter(){
+        var moveToFragment = FragmentInstance.FRAGMENT_LOGIN_HOME
+        val myIntent = intent
+        if(myIntent.hasExtra("Fragment")){
+            val fragmentString = myIntent.getStringExtra("Fragment")
+            if(fragmentString!=null){
+                convertAnonumous = true
+                moveToFragment = FragmentInstance.valueOf(fragmentString)
+            }
+        }
+        navigateToFragment(moveToFragment)
+    }
 
    fun navigateToFragment(fragment: FragmentInstance){
         when(fragment){
@@ -114,18 +131,40 @@ class LoginActivity: AppCompatActivity() {
     }
 
     fun signUpUser(user: User, password: String){
-        Firebase.auth.createUserWithEmailAndPassword(user.email!!,password)
-            .addOnCompleteListener(this) { task ->
-                if(task.isSuccessful){
-                    firestoreViewModel.saveUserToFirebase(user).addOnCompleteListener{task->
-                        if(task.isSuccessful){navigateOnLogin()}
-                        else{showMessage("UnExpected Error",Toast.LENGTH_SHORT)}
+        if(!convertAnonumous){
+            Firebase.auth.createUserWithEmailAndPassword(user.email!!,password)
+                .addOnCompleteListener(this) { task ->
+                    if(task.isSuccessful){
+                        firestoreViewModel.saveUserToFirebase(user).addOnCompleteListener{task->
+                            if(task.isSuccessful){navigateOnLogin()}
+                            else{showMessage("UnExpected Error",Toast.LENGTH_SHORT)}
+                        }
+                    }
+                    else{
+                        showUserException(task)
                     }
                 }
-                else{
-                    showUserException(task)
+        }
+        else{
+            val credential = EmailAuthProvider.getCredential(user.email!!,password)
+            Firebase.auth.currentUser!!.linkWithCredential(credential)
+                .addOnCompleteListener(this){ task ->
+                    if(task.isSuccessful){
+                        firestoreViewModel.saveUserToFirebase(user).addOnCompleteListener{task->
+                            if(task.isSuccessful){
+                                showMessage("Konto Skapat",Toast.LENGTH_SHORT)
+                                finish()
+                            }
+                            else{
+                                showMessage("UnExpected Error",Toast.LENGTH_SHORT)
+                            }
+                        }
+                    }
+                    else{
+                        showUserException(task)
+                    }
                 }
-            }
+        }
     }
 
     private fun showUserException(task: Task<AuthResult>){

@@ -1,6 +1,5 @@
 package com.example.foodhero
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -24,10 +23,10 @@ import com.example.foodhero.databinding.ActivityMainBinding
 import com.example.foodhero.fragment.HomeFragment
 import com.example.foodhero.global.*
 import com.example.foodhero.struct.FoodHeroInfo
-import com.example.foodhero.struct.SearchHelper
+import com.example.foodhero.widgets.MessageToUser
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.storage.StorageReference
-import org.checkerframework.checker.units.qual.m
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var firestoreViewModel: FirestoreViewModel
@@ -37,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomNavMenu: BottomNavigationView
     private var foodHeroInfo = FoodHeroInfo()
     private var permissionsCount = 0
+    private var informUserToSignIn:MessageToUser? = null
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
     private val auth = AuthRepo()
@@ -64,20 +64,18 @@ class MainActivity : AppCompatActivity() {
                     askForPermissions(permissionsList)
                 } else if (permissionsCount > 0) {
                     showPermissionDialog()
-                    setLocationOfChoice(false)
+                    setCityOfChoice(getString(R.string.user_did_not_allow_geo))
                     navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
                 }else{
-                    setLocationOfChoice(true)
+                    shouldSetSharedPreference()
                     navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
                 }
             })
-    /*
-    * remove this comment
-    * remove this too
-    * */
+
     override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState)
         if(auth.isUserLoggedIn()){
             setContentView(R.layout.activity_main)
+            setMessageToUser()
             setViewModel()
             setDataBinding()
             setBottomNavigationMenu()
@@ -98,6 +96,15 @@ class MainActivity : AppCompatActivity() {
     *   ##########################################################################
     */
 
+    private fun setMessageToUser(){
+        if(auth.userIsAnonymous()){
+        informUserToSignIn = MessageToUser(this,null)
+        informUserToSignIn!!.setPositiveCallback{
+            navigateToSignUpActivity()
+            }
+        }
+    }
+
     private fun setDataBinding(){
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -113,12 +120,36 @@ class MainActivity : AppCompatActivity() {
         bottomNavMenu.setOnItemSelectedListener {it: MenuItem ->
             when(it.itemId){
                 R.id.navigateHome->(FragmentInstance.FRAGMENT_MAIN_HOME)
-                R.id.navigateSearch->moveToActivityAndPutOnTop(Intent(this,FavoriteActivity::class.java))
-                R.id.navigateCart->moveToActivityAndPutOnTop(Intent(this,OrderActivity::class.java))
-                R.id.navigateProfile->moveToActivityAndPutOnTop(Intent(this, ProfilActivity::class.java))
+                R.id.navigateFavorite->navigateOnlyIfUserIsAllowed(ActivityInstance.ACTIVITY_FAVORITE)
+                R.id.navigateCart->navigateOnlyIfUserIsAllowed(ActivityInstance.ACTIVITY_ORDER)
+                R.id.navigateProfile->navigateOnlyIfUserIsAllowed(ActivityInstance.ACTIVITY_PROFILE)
             }
             true
         }
+    }
+
+    private fun userNeedToSignUp():Boolean{
+        if(auth.userIsAnonymous()){
+            informUserToSignIn?.showLoginRequiredMessage()
+            return true
+        }
+        return false
+    }
+
+    private fun navigateOnlyIfUserIsAllowed(activityInstance:ActivityInstance){
+        if(!userNeedToSignUp()){
+            when(activityInstance){
+                ActivityInstance.ACTIVITY_FAVORITE->moveToActivityAndPutOnTop(Intent(this,FavoriteActivity::class.java))
+                ActivityInstance.ACTIVITY_ORDER->moveToActivityAndPutOnTop(Intent(this,OrderActivity::class.java))
+                ActivityInstance.ACTIVITY_PROFILE->moveToActivityAndPutOnTop(Intent(this, ProfilActivity::class.java))
+            }
+        }
+    }
+
+    private fun navigateToSignUpActivity(){
+        val intent = Intent(this,LoginActivity::class.java)
+        intent.putExtra("Fragment",FragmentInstance.FRAGMENT_SIGN_UP.toString())
+        moveToActivityAndPutOnTop(intent)
     }
 
     /*
@@ -214,46 +245,31 @@ class MainActivity : AppCompatActivity() {
     *   ##########################################################################
     */
 
-    fun setLocationOfChoice(location:Boolean){
-        writeBooleanToSharedPreference(userLocationTag(),location)
-    }
-
     fun setCityOfChoice(city:String){
         writeStringToSharedPreference(userCityTag(),city)
-    }
-
-    private fun userLocationTag():String{
-        return auth.userUid() + getString(R.string.user_location)
     }
 
     private fun userCityTag():String{
         return auth.userUid() + getString(R.string.user_city)
     }
 
-    fun getCityOfChoice():String{
-        val city = retrieveStringFromSharedPreference(userCityTag(),"")?:""
-        val geo = getLocationOfChoice()
-        if(city == "" && geo)return getString(R.string.user_current_location_geo)
-        else if(city == "")return getString(R.string.user_current_location_set)
-        return city
-    }
-
-    private fun cityNotSetByUser():Boolean{
-        return getCityOfChoice() == getString(R.string.user_current_location_geo)
-    }
-
     fun getCheckMarkerVisibility():Int{
-        return if(getCityOfChoice() == getString(R.string.user_current_location_geo))VISIBLE else GONE
+        return if(getCityOfChoice() == getString(R.string.user_allowed_geo))VISIBLE else GONE
     }
 
-    private fun getLocationOfChoice():Boolean{
-        return retrieveBooleanFromSharedPreference(userLocationTag(),false)?:false
+    fun getCityOfChoice():String{
+        return retrieveStringFromSharedPreference(userCityTag(),"")?:""
+    }
+
+    private fun shouldSetSharedPreference(){
+        if(isACorrectCity(getCityOfChoice()))return
+        setCityOfChoice(getString(R.string.user_allowed_geo))
     }
 
     private fun isACorrectCity(city:String):Boolean{
         return  city != "" &&
-                city != getString(R.string.user_current_location_geo) &&
-                city != getString(R.string.user_current_location_set)
+                city != getString(R.string.user_allowed_geo) &&
+                city != getString(R.string.user_did_not_allow_geo)
     }
 
     /*
@@ -275,17 +291,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loadRestaurants(restaurantAdapter:RestaurantAdapter){
-        if(getLocationOfChoice() &&
-            cityNotSetByUser()){
+        val cityOfChoice = getCityOfChoice()
+        if(cityOfChoice == getString(R.string.user_allowed_geo)){
             val userLocation = getCenterOfStockholm()
             val radiusKm = 20.0
             firestoreViewModel.getRestaurantsGeo(userLocation,radiusKm,restaurantAdapter)
         }
-        else{
-            val city = getCityOfChoice()
-            if(isACorrectCity(city)){
-                loadRestaurantsByCity(city,restaurantAdapter)
-            }
+        else if(isACorrectCity(cityOfChoice)){
+            loadRestaurantsByCity(cityOfChoice,restaurantAdapter)
         }
     }
 
@@ -308,6 +321,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadListOfCitiesWhereFoodHeroExist(){
         firestoreViewModel.getCitiesWhereFoodHeroExist(foodHeroInfo)
+    }
+
+    /*
+    *   ##########################################################################
+    *              PUT FOOD INTO CART
+    *   ##########################################################################
+    */
+
+    fun putFoodItemIntoCart(menuItem:com.example.foodhero.struct.MenuItem){
+        if(!userNeedToSignUp()){
+            //logMessage(menuItem.toString())
+        }
     }
 
 

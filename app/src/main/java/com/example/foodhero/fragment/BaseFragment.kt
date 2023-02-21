@@ -37,11 +37,11 @@ abstract class BaseFragment: Fragment(), IFragment {
     }
 
     private fun setInfoToUser(){
-        messageToUser = MessageToUser(requireActivity(),null)
+        messageToUser = MessageToUser(requireContext(),null)
     }
 
     private fun initBottomSheetDialog(){
-        bottomSheetDialog = BottomSheetDialog(requireActivity(),R.style.MaterialDialogSheet, DialogInstance.BOTTOM_SHEET_INIT)
+        bottomSheetDialog = BottomSheetDialog(requireContext(),R.style.MaterialDialogSheet, DialogInstance.BOTTOM_SHEET_INIT)
     }
 
     open fun setBottomSheetDialog(layoutID:Int,width:Int,dialogInstance:DialogInstance){

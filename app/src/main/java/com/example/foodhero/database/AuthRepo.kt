@@ -59,6 +59,10 @@ class AuthRepo {
         return auth.currentUser != null
     }
 
+    fun userIsAnonymous():Boolean{
+        return auth.currentUser?.isAnonymous?:true
+    }
+
     fun userUid():String{
         return if(isUserLoggedIn()){
             auth.currentUser!!.uid
