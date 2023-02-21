@@ -28,7 +28,9 @@ import com.example.foodhero.struct.CathegoryCounter
 import com.example.foodhero.struct.Restaurant
 import com.example.foodhero.widgets.CathegoryItem
 import com.example.foodhero.widgets.CityItem
+import com.example.foodhero.widgets.SearchItem
 import kotlinx.coroutines.launch
+import java.lang.Integer.min
 
 
 class HomeFragment(intent: Intent) : BaseFragment() {
@@ -40,7 +42,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     private val listOfKeywords = ArrayList<String>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        logMessage("on create home")
+        //logMessage("on create home")
         setRecyclerView()
         setEventListener(view)
         loadRestaurants()
@@ -136,24 +138,21 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         }
     }
 
+
    @SuppressLint("ClickableViewAccessibility")
    private fun setBottomSheetSearchEvent(){
         val goBackBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.goBackBtn)
         val searchField = bottomSheetDialog.findViewById<AppCompatEditText>(R.id.menuItemSearch)
         val searchLayout = bottomSheetDialog.findViewById<LinearLayout>(R.id.searchDialogLayout)
-       /*val searchContainer = bottomSheetDialog.findViewById<LinearLayout>(R.id.searchDialogContainerLayout)
-       for(keyWord in listOfKeywords){
-           val searchItem = SearchItem(keyWord,::searchForRestaurantByKeyWord,requireContext(),null)
-           searchContainer.addView(searchItem,searchContainer.childCount)
-       }*/
-
+        val searchContainer = bottomSheetDialog.findViewById<LinearLayout>(R.id.searchDialogContainerLayout)
 
         goBackBtn.setOnClickListener {
             searchField.text?.clear()
+            searchContainer.removeAllViews()
             bottomSheetDialog.dismiss()
         }
 
-        searchLayout.setOnTouchListener { v, event ->
+        /*searchLayout.setOnTouchListener { v, event ->
             when(event.actionMasked){
                 MotionEvent.ACTION_UP -> {
                     searchField.hideKeyboard()
@@ -161,21 +160,28 @@ class HomeFragment(intent: Intent) : BaseFragment() {
             }
             v.performClick()
             true
-        }
+        }*/
+
+       searchField.afterTextChanged {if(it.isEmpty()){searchContainer.removeAllViews()} }
 
         searchField.setOnEditorActionListener { _, keyCode, event ->
-            if (((event?.action ?: -1) == KeyEvent.ACTION_DOWN) || keyCode == EditorInfo.IME_ACTION_SEARCH) {
-                //searchField.hideKeyboard()
-                //searchForRestaurantByKeyWord(searchField.text.toString().capitalizeSentence())
-                val suggestionList = ArrayList<String>(5)
-                if(checkForSuggestion(
-                    searchField.text.toString().capitalizeSentence(),
-                    suggestionList,
-                    listOfKeywords)){
-                    logMessage("tested")
-                }
-                else{
-                    logMessage("not tested")
+             if (((event?.action ?: -1) == KeyEvent.ACTION_DOWN) || keyCode == EditorInfo.IME_ACTION_SEARCH) {
+                searchContainer.removeAllViews()
+                 searchField.hideKeyboard()
+                val suggestionList:MutableList<String> = MutableList(min(listOfKeywords.size,10)){""}
+                val searchWord = searchField.text.toString().capitalizeSentence()
+                if(searchWord.isNotEmpty() && listOfKeywords.isNotEmpty()){
+                    if(checkForSuggestion(searchWord,suggestionList,listOfKeywords)){
+                        for(keyWord in suggestionList){
+                            val searchItem = SearchItem(keyWord,::searchForRestaurantByKeyWord,requireContext(),null)
+                            searchContainer.addView(searchItem,searchContainer.childCount)
+                        }
+                    }
+                    else{
+                        searchContainer.removeAllViews()
+                        searchForRestaurantByKeyWord(searchWord)
+                        bottomSheetDialog.dismiss()
+                    }
                 }
                 return@setOnEditorActionListener true
             }
@@ -298,10 +304,8 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     }
 
     private fun searchForRestaurantByKeyWord(keyWord:String){
-        if(keyWord.isNotEmpty() && listOfKeywords.contains(keyWord)){
-            bottomSheetDialog.dismiss()
-            getMainActivity().loadRestaurantsByKeyWord(totalCathegoryCounter.listOfIds,keyWord,restaurantAdapter)
-        }
+        bottomSheetDialog.dismiss()
+        getMainActivity().loadRestaurantsByKeyWord(totalCathegoryCounter.listOfIds,keyWord,restaurantAdapter)
     }
 
     private fun loadRestaurants(){

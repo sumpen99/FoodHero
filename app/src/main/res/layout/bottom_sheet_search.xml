@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/transparent">
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,4 +36,20 @@
             android:background="@color/transparent"
             android:src="@drawable/ic_chevron_left_foreground" />
     </LinearLayout>
+
+    <ScrollView
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/transparent">
+
+        <LinearLayout
+            android:id="@+id/searchDialogContainerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

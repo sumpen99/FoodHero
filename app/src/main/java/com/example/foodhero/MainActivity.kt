@@ -77,13 +77,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState)
         if(auth.isUserLoggedIn()){
-            intentFilter.addAction(APP_ACTION_LOG_OUT)
-            registerReceiver(object : BroadcastReceiver() {
-                override fun onReceive(context: Context, intent: Intent) {
-                    //logMessage("onReceive Logout in progress")
-                    moveToActivityAndFinish(Intent(context,LoginActivity::class.java))
-                }
-            }, intentFilter)
+            setCloseAppCallback()
             //logMessage("on create main")
             setContentView(R.layout.activity_main)
             setMessageToUser()
@@ -117,6 +111,16 @@ class MainActivity : AppCompatActivity() {
                 navigateToLogInActivity()
             }
         }
+    }
+
+    private fun setCloseAppCallback(){
+        intentFilter.addAction(APP_ACTION_LOG_OUT)
+        registerReceiver(object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                //logMessage("onReceive Logout in progress")
+                moveToActivityAndFinish(Intent(context,LoginActivity::class.java))
+            }
+        }, intentFilter)
     }
 
     private fun setDataBinding(){

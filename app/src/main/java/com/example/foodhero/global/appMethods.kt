@@ -15,11 +15,14 @@ import android.graphics.Color
 import android.graphics.LightingColorFilter
 import android.location.Location
 import android.location.LocationManager
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -233,6 +236,20 @@ fun ViewGroup.clearChildren(childrenToNotRemove:Int){
     }
 }
 
+fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
+    this.addTextChangedListener(object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        }
+
+        override fun afterTextChanged(editable: Editable?) {
+            afterTextChanged.invoke(editable.toString())
+        }
+    })
+}
+
 /*
 *   ##########################################################################
 *                                LOG MESSAGE TO CONSOLE
@@ -269,7 +286,7 @@ fun String.capitalizeSentence() = run {
 *   ##########################################################################
 *
 * */
-fun checkForSuggestion(strInput: String, wordsOut: ArrayList<String>,wordsToTest:ArrayList<String>): Boolean {
+fun checkForSuggestion(strInput: String, wordsOut: MutableList<String>,wordsToTest:ArrayList<String>): Boolean {
     fun offsetString(str:String,offset:Int,EMPTY_CHAR:Char):Char{
         if(offset >= str.length){return EMPTY_CHAR;}
         return str[offset]
@@ -289,16 +306,11 @@ fun checkForSuggestion(strInput: String, wordsOut: ArrayList<String>,wordsToTest
         val col = lb + 2
         tbl = Array(row*col){Edit()}
         Edit.setRowCol(row, col)
-        i = la
-        while (i >= 0) {
+        for(i in la downTo 0) {
             val aa: Char = offsetString(strIn, i, EMPTY_CHAR)
-            j = lb
-            while (j >= 0) {
+            for(j in lb downTo  0) {
                 val bb: Char = offsetString(strOut, j, EMPTY_CHAR)
-                if (aa.compareTo(EMPTY_CHAR) == 0 && bb.compareTo(EMPTY_CHAR) == 0) {
-                    j--
-                    continue
-                }
+                if (aa == EMPTY_CHAR && bb == EMPTY_CHAR){continue}
                 val e: Edit = tbl[Edit.getIndex(i, j)]
                 val repl: Edit = tbl[Edit.getIndex(i + 1, j + 1)]
                 val dela: Edit = tbl[Edit.getIndex(i + 1, j)]
@@ -308,19 +320,16 @@ fun checkForSuggestion(strInput: String, wordsOut: ArrayList<String>,wordsToTest
                 if(aa == EMPTY_CHAR) {
                     e.next = delb
                     e.n = e.next!!.n + 1
-                    j--
                     continue
                 }
                 if (bb == EMPTY_CHAR) {
                     e.next = dela
                     e.n = e.next!!.n + 1
-                    j--
                     continue
                 }
                 e.next = repl
                 if (aa == bb) {
                     e.n = e.next!!.n
-                    j--
                     continue
                 }
                 if (e.next!!.n > delb.n) {
@@ -333,9 +342,7 @@ fun checkForSuggestion(strInput: String, wordsOut: ArrayList<String>,wordsToTest
                     e.c2 = EMPTY_CHAR
                 }
                 e.n = e.next!!.n + 1
-                j--
             }
-            i--
         }
         if (tbl[0].n == 0) {
             return false
@@ -343,9 +350,7 @@ fun checkForSuggestion(strInput: String, wordsOut: ArrayList<String>,wordsToTest
         aContainer.insertWord(AutoWord(k,tbl[0].n,strOut))
     }
     sortAutoWordContainer(aContainer,0,aContainer.wordCount - 1)
-    logMessage(wordsOut.indices.toString())
-    for (l in wordsOut.indices) {
-        logMessage(aContainer.getWord(l))
+    for(l in 0 until wordsOut.size) {
         wordsOut[l] = aContainer.getWord(l)
     }
     return true
