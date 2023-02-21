@@ -129,8 +129,9 @@ class HomeFragment(intent: Intent) : BaseFragment() {
             bottomSheetDialog.dismiss()
         }
         showInfoBtn.setOnClickListener{
-            bottomSheetDialog.dismiss()
-            getMainActivity().moveToActivityAndPutOnTop(Intent(getMainActivity(),OrderActivity::class.java))
+            //bottomSheetDialog.dismiss()
+            getMainActivity().navigateOnlyIfUserIsAllowed(ActivityInstance.ACTIVITY_ORDER)
+            //getMainActivity().moveToActivityAndPutOnTop(Intent(getMainActivity(),OrderActivity::class.java))
         }
     }
 

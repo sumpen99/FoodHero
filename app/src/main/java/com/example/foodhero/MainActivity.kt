@@ -136,7 +136,7 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
-    private fun navigateOnlyIfUserIsAllowed(activityInstance:ActivityInstance){
+    fun navigateOnlyIfUserIsAllowed(activityInstance:ActivityInstance){
         if(!userNeedToSignUp()){
             when(activityInstance){
                 ActivityInstance.ACTIVITY_FAVORITE->moveToActivityAndPutOnTop(Intent(this,FavoriteActivity::class.java))
