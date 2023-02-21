@@ -103,6 +103,9 @@ class MainActivity : AppCompatActivity() {
             navigateToSignUpActivity()
             }
         }
+        informUserToSignIn!!.setNeutralCallback{
+            navigateToLogInActivity()
+        }
     }
 
     private fun setDataBinding(){
@@ -149,6 +152,12 @@ class MainActivity : AppCompatActivity() {
     private fun navigateToSignUpActivity(){
         val intent = Intent(this,LoginActivity::class.java)
         intent.putExtra("Fragment",FragmentInstance.FRAGMENT_SIGN_UP.toString())
+        moveToActivityAndPutOnTop(intent)
+    }
+
+    private fun navigateToLogInActivity(){
+        val intent = Intent(this,LoginActivity::class.java)
+        intent.putExtra("Fragment",FragmentInstance.FRAGMENT_LOGIN_USER.toString())
         moveToActivityAndPutOnTop(intent)
     }
 

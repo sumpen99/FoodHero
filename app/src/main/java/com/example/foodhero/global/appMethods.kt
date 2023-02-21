@@ -26,9 +26,13 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.example.foodhero.R
+import com.example.foodhero.struct.AutoWord
+import com.example.foodhero.struct.AutoWordContainer
+import com.example.foodhero.struct.Edit
 import com.firebase.geofire.GeoLocation
 import com.google.firebase.storage.StorageReference
 import java.util.*
+
 
 /*
 *   ##########################################################################
@@ -250,6 +254,130 @@ fun String.capitalizeSentence() = run {
         output += word.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() } + " "
     }
     output.trim()
+}
+
+/*
+*   ##########################################################################
+*                           LEVENSTEIN
+*   ##########################################################################
+*
+* */
+fun checkForSuggestion(strInput: String, wordsOut: ArrayList<String>,wordsToTest:ArrayList<String>): Boolean {
+    fun offsetString(str:String,offset:Int,EMPTY_CHAR:Char):Char{
+        if(offset >= str.length){return EMPTY_CHAR;}
+        return str[offset];
+    }
+
+    if(strInput.isEmpty() || wordsToTest.isEmpty())return false
+    val EMPTY_CHAR = '\u0000'
+    var la: Int = 0
+    var lb: Int = 0
+    var i: Int = 0
+    var j: Int = 0
+    var tbl: Array<Edit>
+    val strIn = strInput.capitalizeSentence()
+    val aContainer = AutoWordContainer(wordsToTest.size)
+    for (k in wordsToTest.indices) {
+        val strOut: String = wordsToTest[k]
+        lb = strOut.length
+        val row = la + 2
+        val col = lb + 2
+        tbl = Array(row*col){Edit()}
+        Edit.setRowCol(row, col)
+        i = la
+        while (i >= 0) {
+            val aa: Char = offsetString(strIn, i, EMPTY_CHAR)
+            j = lb
+            while (j >= 0) {
+                val bb: Char = offsetString(strOut, j, EMPTY_CHAR)
+                if (aa.compareTo(EMPTY_CHAR) == 0 && bb.compareTo(EMPTY_CHAR) == 0) {
+                    j--
+                    continue
+                }
+                val e: Edit = tbl[Edit.getIndex(i, j)]
+                val repl: Edit = tbl[Edit.getIndex(i + 1, j + 1)]
+                val dela: Edit = tbl[Edit.getIndex(i + 1, j)]
+                val delb: Edit = tbl[Edit.getIndex(i, j + 1)]
+                e.c1 = aa
+                e.c2 = bb
+                if(aa == EMPTY_CHAR) {
+                    e.next = delb
+                    e.n = e.next!!.n + 1
+                    j--
+                    continue
+                }
+                if (bb == EMPTY_CHAR) {
+                    e.next = dela
+                    e.n = e.next!!.n + 1
+                    j--
+                    continue
+                }
+                e.next = repl
+                if (aa == bb) {
+                    e.n = e.next!!.n
+                    j--
+                    continue
+                }
+                if (e.next!!.n > delb.n) {
+                    e.next = delb
+                    e.c1 = EMPTY_CHAR
+                }
+                if (e.next!!.n > dela.n) {
+                    e.next = dela
+                    e.c1 = aa
+                    e.c2 = EMPTY_CHAR
+                }
+                e.n = e.next!!.n + 1
+                j--
+            }
+            i--
+        }
+        if (tbl[0].n == 0) {
+            return false
+        }
+        aContainer.insertWord(AutoWord(k,tbl[0].n,strOut))
+    }
+    sortAutoWordContainer(aContainer,0,aContainer.wordCount - 1)
+    logMessage(wordsOut.indices.toString())
+    for (l in wordsOut.indices) {
+        logMessage(aContainer.getWord(l))
+        wordsOut[l] = aContainer.getWord(l)
+    }
+    return true
+}
+fun sortAutoWordContainer(aContainer: AutoWordContainer,low: Int, high: Int) {
+    sortWordList(aContainer.bufWords, low, high)
+}
+
+fun sortWordList(wordList: Array<AutoWord?>,low: Int, high: Int) {
+    if (low < high) {
+        val q: Int = partitionWordList(wordList, low, high)
+        sortWordList(wordList, low, q)
+        sortWordList(wordList, q + 1, high)
+    }
+}
+
+fun partitionWordList(wordList: Array<AutoWord?>, low: Int, high: Int):Int {
+    val pivot = wordList[low]!!.edits
+    var i = low - 1
+    var j = high + 1
+    while (true) {
+        while (++i < high && wordList[i]!!.edits < pivot);
+        while (--j > low && wordList[j]!!.edits > pivot);
+        if (i < j) {
+            swapAutoWord(wordList[i]!!, wordList[j]!!)
+        } else {
+            return j
+        }
+    }
+}
+
+fun swapAutoWord(w1: AutoWord, w2: AutoWord) {
+    val index = w1.index
+    val edits = w1.edits
+    val word = w1.word
+    w1.swapValues(w2.index, w2.edits, w2.word)
+    w2.swapValues(index, edits, word)
 }
 
 /*

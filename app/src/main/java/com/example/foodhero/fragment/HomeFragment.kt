@@ -165,7 +165,17 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         searchField.setOnEditorActionListener { _, keyCode, event ->
             if (((event?.action ?: -1) == KeyEvent.ACTION_DOWN) || keyCode == EditorInfo.IME_ACTION_SEARCH) {
                 //searchField.hideKeyboard()
-                searchForRestaurantByKeyWord(searchField.text.toString().capitalizeSentence())
+                //searchForRestaurantByKeyWord(searchField.text.toString().capitalizeSentence())
+                val suggestionList = ArrayList<String>(5)
+                if(checkForSuggestion(
+                    searchField.text.toString().capitalizeSentence(),
+                    suggestionList,
+                    listOfKeywords)){
+                    logMessage("tested")
+                }
+                else{
+                    logMessage("not tested")
+                }
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false

@@ -101,7 +101,10 @@ class LoginActivity: AppCompatActivity() {
     }
 
     private fun navigateOnLogin(){
-        moveToActivityAndFinish(Intent(this, MainActivity::class.java))
+        if(!convertAnonumous){
+            moveToActivityAndFinish(Intent(this, MainActivity::class.java))
+        }
+        else{finish()}
     }
 
     private fun applyTransaction(frag: Fragment){
