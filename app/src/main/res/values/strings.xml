@@ -1,4 +1,5 @@
 <resources>
+    <string name="heart">You &#128151; Me</string>
     <string name="app_name">FoodHero</string>
     <string name="user_location">Location</string>
     <string name="user_allowed_geo">Restauranger i närheten av er position</string>

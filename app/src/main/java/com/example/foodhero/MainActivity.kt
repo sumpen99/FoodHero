@@ -31,6 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.StorageReference
 //https://nominatim.openstreetmap.org/search?street=pilkington%20avenue&city=birmingham&format=json
 //https://nominatim.openstreetmap.org/search?street=pilkington avenue&city=birmingham&format=json
+//https://medium.com/@myohzx/firebase-security-rules-de964fb553cf
 /*
 *   street=<housenumber> <streetname>
     city=<city>

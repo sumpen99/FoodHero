@@ -386,6 +386,13 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         getMainActivity().putFoodItemIntoCart(menuItem)
     }
 
+    fun showSomeLoveBack(menuItem:com.example.foodhero.struct.MenuItem){
+        messageToUser.setPosBtnText(getString(R.string.heart))
+        updateMessageDialog("OOOOOOOOHHHHH")
+        showMessage()
+        messageToUser.setPosBtnText("OK")
+    }
+
 
     /*
     *   ##########################################################################
