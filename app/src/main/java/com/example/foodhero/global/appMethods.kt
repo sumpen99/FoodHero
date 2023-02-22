@@ -236,6 +236,13 @@ fun ViewGroup.clearChildren(childrenToNotRemove:Int){
     }
 }
 
+/*
+*   ##########################################################################
+*                                EDIT TEXT
+*   ##########################################################################
+*
+* */
+
 fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -295,8 +302,6 @@ fun checkForSuggestion(strInput: String, wordsOut: MutableList<String>,wordsToTe
     val EMPTY_CHAR = '\u0000'
     val la = strInput.length
     var lb: Int = 0
-    var i: Int = 0
-    var j: Int = 0
     var tbl: Array<Edit>
     val strIn = strInput.capitalizeSentence()
     val aContainer = AutoWordContainer(wordsToTest.size)

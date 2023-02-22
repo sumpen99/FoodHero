@@ -152,32 +152,31 @@ class HomeFragment(intent: Intent) : BaseFragment() {
             bottomSheetDialog.dismiss()
         }
 
-        /*searchLayout.setOnTouchListener { v, event ->
-            when(event.actionMasked){
-                MotionEvent.ACTION_UP -> {
-                    searchField.hideKeyboard()
-                }
-            }
-            v.performClick()
-            true
-        }*/
-
-       searchField.afterTextChanged {if(it.isEmpty()){searchContainer.removeAllViews()} }
+       searchField.afterTextChanged {
+           searchContainer.removeAllViews()
+           val searchWord = it.capitalizeSentence()
+           if(searchWord.isNotEmpty() && listOfKeywords.isNotEmpty()){
+               val suggestionList:MutableList<String> = MutableList(min(listOfKeywords.size,5)){""}
+               if(checkForSuggestion(searchWord,suggestionList,listOfKeywords)){
+                   for(keyWord in suggestionList){
+                       val searchItem = SearchItem(keyWord,::searchForRestaurantByKeyWord,requireContext(),null)
+                       searchContainer.addView(searchItem,searchContainer.childCount)
+                   }
+               }
+               else{
+                   val searchItem = SearchItem(searchWord,::searchForRestaurantByKeyWord,requireContext(),null)
+                   searchContainer.addView(searchItem,searchContainer.childCount)
+               }
+           }
+       }
 
         searchField.setOnEditorActionListener { _, keyCode, event ->
              if (((event?.action ?: -1) == KeyEvent.ACTION_DOWN) || keyCode == EditorInfo.IME_ACTION_SEARCH) {
-                searchContainer.removeAllViews()
-                 searchField.hideKeyboard()
-                val suggestionList:MutableList<String> = MutableList(min(listOfKeywords.size,10)){""}
+                searchField.hideKeyboard()
+                val suggestionList:MutableList<String> = MutableList(min(listOfKeywords.size,1)){""}
                 val searchWord = searchField.text.toString().capitalizeSentence()
                 if(searchWord.isNotEmpty() && listOfKeywords.isNotEmpty()){
-                    if(checkForSuggestion(searchWord,suggestionList,listOfKeywords)){
-                        for(keyWord in suggestionList){
-                            val searchItem = SearchItem(keyWord,::searchForRestaurantByKeyWord,requireContext(),null)
-                            searchContainer.addView(searchItem,searchContainer.childCount)
-                        }
-                    }
-                    else{
+                    if(!checkForSuggestion(searchWord,suggestionList,listOfKeywords)){
                         searchContainer.removeAllViews()
                         searchForRestaurantByKeyWord(searchWord)
                         bottomSheetDialog.dismiss()
