@@ -3,6 +3,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -69,17 +70,16 @@ class RestaurantMenuAdapter(
     }
     @SuppressLint("ClickableViewAccessibility")
     inner class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-       //val purchaseButton: FloatingActionButton = itemView.findViewById(R.id.floatingActionButtonBasket)
+        val imageOrderButton: ImageButton = itemView.findViewById(R.id.imageOrderButton)
         val loggoImageView: ImageView = itemView.findViewById(R.id.menuItemLoggo)
         val nameTextView: TextView = itemView.findViewById(R.id.menuItemName)
         val ingredientsTextView: TextView = itemView.findViewById(R.id.menuItemIngredients)
         val priceTextView: TextView = itemView.findViewById(R.id.menuItemPrice)
 
-       // init{
-         //   purchaseButton.setOnClickListener{
-          //      putItemInBasket(bindingAdapterPosition)
-
-          //  }
-       // }
+        init{
+            imageOrderButton.setOnClickListener{
+               putItemInBasket(bindingAdapterPosition)
+           }
+        }
     }
 }
