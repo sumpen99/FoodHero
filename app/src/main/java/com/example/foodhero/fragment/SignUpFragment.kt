@@ -16,8 +16,10 @@ import com.example.foodhero.struct.User
 
 class SignUpFragment:BaseFragment() {
     private lateinit var emailField: EditText
+    private lateinit var nameField: EditText
     private lateinit var phoneNumberField: EditText
-    private lateinit var adressField: EditText
+    private lateinit var postalField: EditText
+    private lateinit var cityField: EditText
     private lateinit var passwordField: EditText
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,8 +65,10 @@ class SignUpFragment:BaseFragment() {
     @SuppressLint("ClickableViewAccessibility")
     private fun setEventListener(view: View){
         emailField = signUpUserBinding().userEmail
+        nameField = signUpUserBinding().userName
         phoneNumberField = signUpUserBinding().userPhonenumber
-        adressField = signUpUserBinding().userCity
+        postalField = signUpUserBinding().userPostalCode
+        cityField = signUpUserBinding().userCity
         passwordField = signUpUserBinding().userPassword
 
         val signUpBtn: Button = signUpUserBinding().signUpBtn
@@ -73,9 +77,11 @@ class SignUpFragment:BaseFragment() {
         view.setOnTouchListener { v, event ->
             when(event.actionMasked){
                 MotionEvent.ACTION_DOWN -> {
-                    emailField.hideKeyboard();
-                    phoneNumberField.hideKeyboard();
-                    adressField.hideKeyboard();
+                    emailField.hideKeyboard()
+                    nameField.hideKeyboard()
+                    phoneNumberField.hideKeyboard()
+                    postalField.hideKeyboard()
+                    cityField.hideKeyboard()
                     passwordField.hideKeyboard()}
             }
             true
@@ -90,18 +96,16 @@ class SignUpFragment:BaseFragment() {
     private fun createUser():User{
         return User(
             emailField.text.toString(),
+            nameField.text.toString(),
             phoneNumberField.text.toString(),
-            adressField.text.toString()
+            postalField.text.toString(),
+            cityField.text.toString()
         )
     }
 
 
-    private fun illegalUserInput():Boolean{
-        return (emailField.text.toString().isEmpty() ||
-                phoneNumberField.text.toString().isEmpty() ||
-                adressField.text.toString().isEmpty() ||
-                passwordField.text.toString().isEmpty()
-                )
+    private fun illegalUserInput(): Boolean {
+        return listOf(emailField, nameField, phoneNumberField, postalField, cityField, passwordField)
+            .any { it.text.toString().isEmpty() }
     }
-
 }
