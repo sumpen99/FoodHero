@@ -16,7 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 private lateinit var favoriteDishesTextView: TextView
 private lateinit var lastOrdersTextView: TextView
-private val db = FirebaseFirestore.getInstance()
+val db = FirebaseFirestore.getInstance()
 
 class FavoriteActivity : AppCompatActivity() {
     lateinit var imageBackTwoButton : ImageButton
