@@ -1,6 +1,7 @@
 package com.example.foodhero.activity
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,8 +9,12 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.core.widget.doOnTextChanged
+import com.example.foodhero.MainActivity
 import com.example.foodhero.R
+import com.example.foodhero.global.USER_COLLECTION
 import com.example.foodhero.global.moveToActivityAndClearTop
+import com.example.foodhero.global.moveToActivityAndFinish
+import com.example.foodhero.global.moveToActivityAndPutOnTop
 import com.example.foodhero.struct.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -22,7 +27,8 @@ class ProfilActivity : AppCompatActivity() {
     lateinit var EditNameText : EditText
     lateinit var EditMailText : EditText
     lateinit var EditPhoneText : EditText
-    lateinit var EditPasswordText : EditText
+    lateinit var EditPostalCodeText : EditText
+    lateinit var EditCityText : EditText
     lateinit var auth: FirebaseAuth
     lateinit var db: FirebaseFirestore
 
@@ -51,24 +57,30 @@ class ProfilActivity : AppCompatActivity() {
            goBack()
         }
 
-        EditNameText = findViewById(R.id.ResturantNameEditText)
-        EditNameText.doOnTextChanged { text, start, before, count ->
-            currentText = text.toString()
-
-
-        }
-        EditMailText = findViewById(R.id.LocationEditText)
+        EditMailText = findViewById(R.id.EditMailText)
         EditMailText.doOnTextChanged { text, start, before, count ->
             currentText = text.toString()
 
+
         }
-        EditPhoneText = findViewById(R.id.DescriptionEditText)
+        EditNameText = findViewById(R.id.EditNameText)
+        EditNameText.doOnTextChanged { text, start, before, count ->
+            currentText = text.toString()
+
+        }
+        EditPhoneText = findViewById(R.id.EditPhoneText)
         EditPhoneText.doOnTextChanged { text, start, before, count ->
             currentText = text.toString()
 
         }
-        EditPasswordText = findViewById(R.id.EditPasswordText)
-        EditPasswordText.doOnTextChanged { text, start, before, count ->
+        EditPostalCodeText = findViewById(R.id.EditPostalCodeText)
+        EditPostalCodeText.doOnTextChanged { text, start, before, count ->
+            currentText = text.toString()
+
+
+        }
+        EditCityText = findViewById(R.id.EditCityText)
+        EditCityText.doOnTextChanged { text, start, before, count ->
             currentText = text.toString()
 
 
@@ -106,12 +118,31 @@ class ProfilActivity : AppCompatActivity() {
                 if(it.isSuccessful)
                 {
 
-                    val user = it.result.toObject(User::class.java)
-                    EditMailText.hint = user!!.email
-                    EditPhoneText.hint = user!!.phoneNumber
-                }else{
 
-                }
+                    val docRef = db.collection(USER_COLLECTION).document(mail)
+                    docRef.addSnapshotListener { snapshot, e ->
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed.", e)
+                            return@addSnapshotListener
+                        }
+
+                        if (snapshot != null && snapshot.exists()) {
+                            val user = snapshot.toObject(User::class.java)
+
+                            EditMailText.hint = user!!.email
+                            EditNameText.hint = user!!.name
+                            EditPhoneText.hint = user!!.phoneNumber
+                            EditPostalCodeText.hint = user!!.postalCode
+                            EditCityText.hint = user!!.city
+
+                        } else {
+                            Log.d(TAG, "Current data: null")
+                        }
+                    }
+
+
+
+                    }
             }
 
 
@@ -124,7 +155,9 @@ class ProfilActivity : AppCompatActivity() {
         }
 
     fun goBack(){
-        finish()
+        val intent = Intent(this, MainActivity::class.java)
+        moveToActivityAndPutOnTop(intent)
+
     }
 
     fun signOut(){

@@ -29,7 +29,7 @@ tools:context=".activity.AdminActivity">
         app:srcCompat="@drawable/baseline_arrow_back_24" />
 
     <EditText
-        android:id="@+id/ResturantNameEditText"
+        android:id="@+id/EditMailText"
         android:layout_width="216dp"
         android:layout_height="50dp"
         android:layout_marginStart="80dp"
@@ -39,14 +39,14 @@ tools:context=".activity.AdminActivity">
         android:ems="10"
         android:hint="...."
         android:inputType="textShortMessage"
-        app:layout_constraintBottom_toTopOf="@+id/locationTextView"
+        app:layout_constraintBottom_toTopOf="@+id/textNameView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.439"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ResturantNameTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/textMailView" />
 
     <EditText
-        android:id="@+id/LocationEditText"
+        android:id="@+id/EditNameText"
         android:layout_width="216dp"
         android:layout_height="50dp"
         android:layout_marginStart="80dp"
@@ -56,14 +56,14 @@ tools:context=".activity.AdminActivity">
         android:ems="10"
         android:hint="...."
         android:inputType="textShortMessage"
-        app:layout_constraintBottom_toTopOf="@+id/DescriptionTextView"
+        app:layout_constraintBottom_toTopOf="@+id/textPhoneView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.439"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locationTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/textNameView" />
 
     <EditText
-        android:id="@+id/DescriptionEditText"
+        android:id="@+id/EditPhoneText"
         android:layout_width="216dp"
         android:layout_height="50dp"
         android:layout_marginStart="80dp"
@@ -76,10 +76,10 @@ tools:context=".activity.AdminActivity">
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.439"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DescriptionTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/textPhoneView" />
 
     <TextView
-        android:id="@+id/ResturantNameTextView"
+        android:id="@+id/textMailView"
         android:layout_width="159dp"
         android:layout_height="23dp"
         android:layout_marginStart="96dp"
@@ -88,14 +88,14 @@ tools:context=".activity.AdminActivity">
         android:layout_marginBottom="5dp"
         android:fontFamily="sans-serif-medium"
         android:text="Resturang namn"
-        app:layout_constraintBottom_toTopOf="@+id/ResturantNameEditText"
+        app:layout_constraintBottom_toTopOf="@+id/EditMailText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LogoImageView" />
 
     <TextView
-        android:id="@+id/DescriptionTextView"
+        android:id="@+id/textPhoneView"
         android:layout_width="159dp"
         android:layout_height="23dp"
         android:layout_marginStart="96dp"
@@ -104,14 +104,14 @@ tools:context=".activity.AdminActivity">
         android:layout_marginBottom="2dp"
         android:fontFamily="sans-serif-medium"
         android:text="Beskrivning"
-        app:layout_constraintBottom_toTopOf="@+id/DescriptionEditText"
+        app:layout_constraintBottom_toTopOf="@+id/EditPhoneText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LocationEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/EditNameText" />
 
     <TextView
-        android:id="@+id/locationTextView"
+        android:id="@+id/textNameView"
         android:layout_width="159dp"
         android:layout_height="23dp"
         android:layout_marginStart="96dp"
@@ -120,11 +120,11 @@ tools:context=".activity.AdminActivity">
         android:layout_marginBottom="2dp"
         android:fontFamily="sans-serif-medium"
         android:text="Plats"
-        app:layout_constraintBottom_toTopOf="@+id/LocationEditText"
+        app:layout_constraintBottom_toTopOf="@+id/EditNameText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ResturantNameEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/EditMailText" />
 
     <ImageButton
         android:id="@+id/ImageProfilButton"
@@ -145,7 +145,7 @@ tools:context=".activity.AdminActivity">
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DescriptionEditText"
+        app:layout_constraintTop_toBottomOf="@+id/EditPhoneText"
         app:layout_constraintVertical_bias="1.0"
         tools:text="Spara" />
 

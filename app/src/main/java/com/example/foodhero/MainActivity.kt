@@ -80,8 +80,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState)
         if(auth.isUserLoggedIn()){
+            logMessage(savedInstanceState.toString())
             setCloseAppCallback()
-            //logMessage("on create main")
+            logMessage("on create main")
             setContentView(R.layout.activity_main)
             setMessageToUser()
             setViewModel()
@@ -373,6 +374,7 @@ class MainActivity : AppCompatActivity() {
             //Denna funktionen körs när man klickar på köpknappen och man är inloggad.
 
         }
+
     }
 
 
