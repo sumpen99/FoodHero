@@ -1,12 +1,15 @@
 package com.example.foodhero.activity
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.core.widget.doOnTextChanged
 import com.example.foodhero.R
+import com.example.foodhero.global.USER_COLLECTION
 import com.example.foodhero.global.moveToActivityAndClearTop
 import com.example.foodhero.struct.User
 import com.google.firebase.auth.FirebaseAuth
@@ -111,15 +114,31 @@ class ProfilActivity : AppCompatActivity() {
                 if(it.isSuccessful)
                 {
 
-                    val user = it.result.toObject(User::class.java)
-                    EditMailText.hint = user!!.email
-                    EditNameText.hint = user!!.name
-                    EditPhoneText.hint = user!!.phoneNumber
-                    EditPostalCodeText.hint = user!!.postalCode
-                    EditCityText.hint = user!!.city
-                }else{
 
-                }
+                    val docRef = db.collection(USER_COLLECTION).document(mail)
+                    docRef.addSnapshotListener { snapshot, e ->
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed.", e)
+                            return@addSnapshotListener
+                        }
+
+                        if (snapshot != null && snapshot.exists()) {
+                            val user = snapshot.toObject(User::class.java)
+
+                            EditMailText.hint = user!!.email
+                            EditNameText.hint = user!!.name
+                            EditPhoneText.hint = user!!.phoneNumber
+                            EditPostalCodeText.hint = user!!.postalCode
+                            EditCityText.hint = user!!.city
+
+                        } else {
+                            Log.d(TAG, "Current data: null")
+                        }
+                    }
+
+
+
+                    }
             }
 
 

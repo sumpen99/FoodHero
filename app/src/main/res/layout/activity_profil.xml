@@ -204,11 +204,11 @@
 
     <EditText
         android:id="@+id/EditCityText"
-        android:layout_width="216dp"
+        android:layout_width="203dp"
         android:layout_height="50dp"
         android:layout_marginTop="7dp"
         android:layout_marginBottom="6dp"
-        android:backgroundTint="#07FFFFFF"
+        android:backgroundTint="#0CFFFFFF"
         android:ems="10"
         android:hint="               "
         android:inputType="textPersonName"
@@ -216,6 +216,7 @@
         app:layout_constraintBottom_toTopOf="@+id/imageAccountView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
