@@ -48,22 +48,24 @@
                 android:layout_width="87dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:padding="10dp"
                 android:fontFamily="sans-serif-medium"
+                android:padding="10dp"
                 android:textColor="@color/background_medium_dark"
                 android:textSize="@dimen/cardText" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floatingActionButtonBasket"
-                android:layout_width="match_parent"
+            <ImageButton
+                android:id="@+id/imageOrderButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#05FFFFFF"
+                app:srcCompat="@drawable/baseline_shopping_basket_20" />
+
+            <ImageButton
+                android:id="@+id/imageLikeButton"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@color/snow"
-                android:clickable="true"
-                android:tint="@color/snow"
-                app:backgroundTint="@color/snow"
-                app:rippleColor="@color/snow"
-                app:srcCompat="@drawable/outline_shopping_basket_24"
-                android:focusable="true" />
+                android:backgroundTint="#05FFFFFF"
+                app:srcCompat="@drawable/baseline_favorite_24" />
 
         </LinearLayout>
         <androidx.appcompat.widget.AppCompatImageView

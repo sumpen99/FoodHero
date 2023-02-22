@@ -35,6 +35,7 @@
             android:layout_marginEnd="10dp"
             android:backgroundTint="@color/transparent"
             android:src="@drawable/outline_shopping_basket_24" />
+
     </LinearLayout>
     <ScrollView
         android:layout_width="match_parent"
