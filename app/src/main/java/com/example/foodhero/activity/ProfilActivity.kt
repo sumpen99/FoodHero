@@ -1,6 +1,7 @@
 package com.example.foodhero.activity
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,9 +9,12 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.core.widget.doOnTextChanged
+import com.example.foodhero.MainActivity
 import com.example.foodhero.R
 import com.example.foodhero.global.USER_COLLECTION
 import com.example.foodhero.global.moveToActivityAndClearTop
+import com.example.foodhero.global.moveToActivityAndFinish
+import com.example.foodhero.global.moveToActivityAndPutOnTop
 import com.example.foodhero.struct.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -151,7 +155,9 @@ class ProfilActivity : AppCompatActivity() {
         }
 
     fun goBack(){
-        finish()
+        val intent = Intent(this, MainActivity::class.java)
+        moveToActivityAndPutOnTop(intent)
+
     }
 
     fun signOut(){
