@@ -8,9 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-
+        android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:layout_margin="64dp"
@@ -25,8 +23,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="24dp">
-
-
 
                 <TextView
                     android:layout_width="match_parent"
@@ -52,6 +48,18 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Förnamn/Efternamn"
+                    android:textSize="22sp" />
+
+                <EditText
+                    android:id="@+id/userName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="Telefonnummer"
                     android:textSize="22sp" />
 
@@ -59,26 +67,58 @@
                     android:id="@+id/userPhonenumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword" />
+                    android:inputType="text" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="City"
-                    android:textSize="22sp" />
-
-                <EditText
-                    android:id="@+id/userCity"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword" />
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Postnummer"
+                            android:textSize="22sp"
+                            android:singleLine="true"
+                            android:ellipsize="end" />
+                        <EditText
+                            android:id="@+id/userPostalCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Stad"
+                            android:textSize="22sp" />
+                        <EditText
+                            android:id="@+id/userCity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:layout_weight="2" />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Lösenord"
                     android:textSize="22sp" />
-
 
                 <EditText
                     android:id="@+id/userPassword"
@@ -101,11 +141,6 @@
                     android:textColor="@color/background_medium_dark"
                     android:textSize="22sp" />
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
-
-
-
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
