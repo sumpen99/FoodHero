@@ -38,6 +38,10 @@ class MessageToUser(val context: Context, val view: View?){
         negBtnText = "No"
     }
 
+    fun setPosBtnText(lbl:String){
+        posBtnText = lbl
+    }
+
     fun setTwoButtons(){
         oneButton = false
     }
