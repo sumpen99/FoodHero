@@ -7,64 +7,64 @@
     tools:context=".activity.ProfilActivity">
 
     <EditText
-        android:id="@+id/ResturantNameEditText"
+        android:id="@+id/EditMailText"
         android:layout_width="216dp"
         android:layout_height="50dp"
         android:layout_marginStart="80dp"
-        android:layout_marginTop="5dp"
         android:layout_marginEnd="80dp"
         android:layout_marginBottom="4dp"
+        android:backgroundTint="#6BFFFFFF"
         android:ems="10"
         android:hint="...."
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/locationTextView"
+        app:layout_constraintBottom_toTopOf="@+id/textNameView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.439"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ResturantNameTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/textMailView" />
 
     <EditText
-        android:id="@+id/LocationEditText"
+        android:id="@+id/EditNameText"
         android:layout_width="216dp"
         android:layout_height="50dp"
         android:layout_marginStart="80dp"
-        android:layout_marginTop="5dp"
         android:layout_marginEnd="80dp"
         android:layout_marginBottom="4dp"
+        android:backgroundTint="#66FFFFFF"
         android:ems="10"
         android:hint="...."
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/DescriptionTextView"
+        app:layout_constraintBottom_toTopOf="@+id/textPhoneView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.439"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locationTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/textNameView" />
 
     <EditText
-        android:id="@+id/DescriptionEditText"
+        android:id="@+id/EditPhoneText"
         android:layout_width="216dp"
         android:layout_height="50dp"
         android:layout_marginStart="80dp"
-        android:layout_marginTop="5dp"
         android:layout_marginEnd="80dp"
         android:layout_marginBottom="4dp"
+        android:backgroundTint="#61FFFFFF"
         android:ems="10"
         android:hint="...."
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/textPasswordView"
+        app:layout_constraintBottom_toTopOf="@+id/textPostalCodeView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.439"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DescriptionTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/textPhoneView" />
 
     <EditText
-        android:id="@+id/EditPasswordText"
+        android:id="@+id/EditPostalCodeText"
         android:layout_width="216dp"
         android:layout_height="50dp"
         android:layout_marginStart="80dp"
-        android:layout_marginTop="5dp"
         android:layout_marginEnd="80dp"
         android:layout_marginBottom="21dp"
+        android:backgroundTint="#75FFFFFF"
         android:ems="10"
         android:hint="...."
         android:inputType="textPersonName"
@@ -72,15 +72,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.439"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textPasswordView" />
+        app:layout_constraintTop_toBottomOf="@+id/textPostalCodeView" />
 
     <ImageView
         android:id="@+id/imageAccountView"
-        android:layout_width="205dp"
-        android:layout_height="222dp"
+        android:layout_width="204dp"
+        android:layout_height="190dp"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/ResturantNameTextView"
+        app:layout_constraintBottom_toTopOf="@+id/textMailView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -88,23 +88,22 @@
         app:srcCompat="@drawable/baseline_account_box_24" />
 
     <TextView
-        android:id="@+id/ResturantNameTextView"
+        android:id="@+id/textMailView"
         android:layout_width="159dp"
         android:layout_height="23dp"
         android:layout_marginStart="96dp"
-        android:layout_marginTop="5dp"
         android:layout_marginEnd="188dp"
         android:layout_marginBottom="5dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Förnamn/efternamn"
-        app:layout_constraintBottom_toTopOf="@+id/ResturantNameEditText"
+        android:text="Mailadress"
+        app:layout_constraintBottom_toTopOf="@+id/EditMailText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageAccountView" />
 
     <TextView
-        android:id="@+id/DescriptionTextView"
+        android:id="@+id/textPhoneView"
         android:layout_width="159dp"
         android:layout_height="23dp"
         android:layout_marginStart="96dp"
@@ -112,15 +111,15 @@
         android:layout_marginEnd="200dp"
         android:layout_marginBottom="2dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Mailadress"
-        app:layout_constraintBottom_toTopOf="@+id/DescriptionEditText"
+        android:text="Telefonummer"
+        app:layout_constraintBottom_toTopOf="@+id/EditPhoneText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LocationEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/EditNameText" />
 
     <TextView
-        android:id="@+id/locationTextView"
+        android:id="@+id/textNameView"
         android:layout_width="159dp"
         android:layout_height="23dp"
         android:layout_marginStart="96dp"
@@ -128,15 +127,15 @@
         android:layout_marginEnd="212dp"
         android:layout_marginBottom="2dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Telefonnummer"
-        app:layout_constraintBottom_toTopOf="@+id/LocationEditText"
+        android:text="Förnamn/Efternamn"
+        app:layout_constraintBottom_toTopOf="@+id/EditNameText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ResturantNameEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/EditMailText" />
 
     <TextView
-        android:id="@+id/textPasswordView"
+        android:id="@+id/textPostalCodeView"
         android:layout_width="159dp"
         android:layout_height="23dp"
         android:layout_marginStart="96dp"
@@ -144,22 +143,22 @@
         android:layout_marginEnd="210dp"
         android:layout_marginBottom="2dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Lösenord"
-        app:layout_constraintBottom_toTopOf="@+id/EditPasswordText"
+        android:text="Postnummer"
+        app:layout_constraintBottom_toTopOf="@+id/EditPostalCodeText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DescriptionEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/EditPhoneText" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="67dp"
         android:layout_height="59dp"
-        android:layout_marginStart="116dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginBottom="40dp"
         android:clickable="true"
         app:backgroundTint="#DD18EC82"
-        app:layout_constraintBottom_toTopOf="@+id/ResturantNameTextView"
+        app:layout_constraintBottom_toTopOf="@+id/textMailView"
         app:layout_constraintStart_toStartOf="parent"
         app:rippleColor="#100F0F"
         app:srcCompat="@drawable/logo_bank_id" />
@@ -198,5 +197,19 @@
         app:layout_constraintStart_toEndOf="@+id/imageBackTwoButton"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/applogowhite" />
+
+    <EditText
+        android:id="@+id/EditCityText"
+        android:layout_width="216dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="6dp"
+        android:backgroundTint="#07FFFFFF"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/imageAccountView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

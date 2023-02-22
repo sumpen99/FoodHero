@@ -1,9 +1,7 @@
 package com.example.foodhero.activity
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -22,7 +20,8 @@ class ProfilActivity : AppCompatActivity() {
     lateinit var EditNameText : EditText
     lateinit var EditMailText : EditText
     lateinit var EditPhoneText : EditText
-    lateinit var EditPasswordText : EditText
+    lateinit var EditPostalCodeText : EditText
+    lateinit var EditCityText : EditText
     lateinit var auth: FirebaseAuth
     lateinit var db: FirebaseFirestore
 
@@ -51,24 +50,30 @@ class ProfilActivity : AppCompatActivity() {
            goBack()
         }
 
-        EditNameText = findViewById(R.id.ResturantNameEditText)
-        EditNameText.doOnTextChanged { text, start, before, count ->
-            currentText = text.toString()
-
-
-        }
-        EditMailText = findViewById(R.id.LocationEditText)
+        EditMailText = findViewById(R.id.EditMailText)
         EditMailText.doOnTextChanged { text, start, before, count ->
             currentText = text.toString()
 
+
         }
-        EditPhoneText = findViewById(R.id.DescriptionEditText)
+        EditNameText = findViewById(R.id.EditNameText)
+        EditNameText.doOnTextChanged { text, start, before, count ->
+            currentText = text.toString()
+
+        }
+        EditPhoneText = findViewById(R.id.EditPhoneText)
         EditPhoneText.doOnTextChanged { text, start, before, count ->
             currentText = text.toString()
 
         }
-        EditPasswordText = findViewById(R.id.EditPasswordText)
-        EditPasswordText.doOnTextChanged { text, start, before, count ->
+        EditPostalCodeText = findViewById(R.id.EditPostalCodeText)
+        EditPostalCodeText.doOnTextChanged { text, start, before, count ->
+            currentText = text.toString()
+
+
+        }
+        EditCityText = findViewById(R.id.EditCityText)
+        EditCityText.doOnTextChanged { text, start, before, count ->
             currentText = text.toString()
 
 
@@ -108,7 +113,10 @@ class ProfilActivity : AppCompatActivity() {
 
                     val user = it.result.toObject(User::class.java)
                     EditMailText.hint = user!!.email
+                    EditNameText.hint = user!!.name
                     EditPhoneText.hint = user!!.phoneNumber
+                    EditPostalCodeText.hint = user!!.postalCode
+                    EditCityText.hint = user!!.city
                 }else{
 
                 }

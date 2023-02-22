@@ -38,9 +38,9 @@ class AdminActivity : AppCompatActivity() {
                 auth.signOut()
             }
             R.id.SubmitButton -> {
-                val nameField = findViewById<EditText>(R.id.ResturantNameEditText)
-                val locationField = findViewById<EditText>(R.id.LocationEditText)
-                val descriptionField = findViewById<EditText>(R.id.DescriptionEditText)
+                val nameField = findViewById<EditText>(R.id.EditMailText)
+                val locationField = findViewById<EditText>(R.id.EditNameText)
+                val descriptionField = findViewById<EditText>(R.id.EditPhoneText)
                 val restaurant = Restaurant(name = nameField.text.toString(), adress = locationField.text.toString(), description = descriptionField.text.toString())
                 firestore.saveRestaurant(restaurant)
             }
