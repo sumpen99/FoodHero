@@ -26,11 +26,9 @@ import com.example.foodhero.databinding.ActivityMainBinding
 import com.example.foodhero.fragment.HomeFragment
 import com.example.foodhero.global.*
 import com.example.foodhero.struct.FoodHeroInfo
-import com.example.foodhero.struct.User
 import com.example.foodhero.widgets.MessageToUser
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 //https://nominatim.openstreetmap.org/search?street=pilkington%20avenue&city=birmingham&format=json
 //https://nominatim.openstreetmap.org/search?street=pilkington avenue&city=birmingham&format=json
