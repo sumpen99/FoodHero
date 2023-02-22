@@ -10,6 +10,7 @@ import com.firebase.ui.storage.images.FirebaseImageLoader
 import com.google.firebase.storage.StorageReference
 import java.io.InputStream
 
+const val APP_ACTION_LOG_OUT = "com.example.foodhero.ACTION_LOGOUT"
 const val packageName = "com.example.foodhero"
 const val appFileProvider = "com.example.foodhero.fileprovider"
 const val SEARCH_TIME_OUT = 1000

@@ -8,6 +8,7 @@ import com.example.foodhero.R
 
 class MessageToUser(val context: Context, val view: View?){
     private var positiveCallback:((args:Any?)->Unit) ? = null
+    private var neutralCallback:((args:Any?)->Unit) ? = null
     private var negativeCallback:((args:Any?)->Unit) ? = null
     private var oneButton:Boolean = true
     private var callbackArgs:Any? = null
@@ -22,6 +23,10 @@ class MessageToUser(val context: Context, val view: View?){
 
     fun setPositiveCallback(callback:(args:Any?)->Unit){
         positiveCallback = callback
+    }
+
+    fun setNeutralCallback(callback:(args:Any?)->Unit){
+        neutralCallback = callback
     }
 
     fun setNegativeCallback(callback:(args:Any?)->Unit){
@@ -70,17 +75,22 @@ class MessageToUser(val context: Context, val view: View?){
         if(!isOpen){
             setStatusOpen(true)
             val builder: AlertDialog.Builder = AlertDialog.Builder(context)
-            val positiveButtonClick = { dialog: DialogInterface, which:Int->
+            val signUpButtonClick = { dialog: DialogInterface, which:Int->
                 positiveCallback!!(null)
                 setStatusOpen(false)
             }
-            val negativeButtonClick = { dialog: DialogInterface, which:Int->
+            val logInButtonClick = {dialog: DialogInterface, which:Int->
+                neutralCallback!!(null)
+                setStatusOpen(false)}
+
+            val cancelButtonClick = { dialog: DialogInterface, which:Int->
                 setStatusOpen(false)
             }
             builder.setTitle("Hoppsan Kerstin")
-            builder.setMessage("Ni behöver registera er för att fortsätta\n")
-            builder.setPositiveButton("Skapa Konto", DialogInterface.OnClickListener(positiveButtonClick))
-            builder.setNegativeButton("Avbryt", DialogInterface.OnClickListener(negativeButtonClick))
+            builder.setMessage("För att fortsätta behöver ni vara inloggade\n")
+            builder.setPositiveButton("Skapa Konto", DialogInterface.OnClickListener(signUpButtonClick))
+            builder.setNegativeButton("Logga In",DialogInterface.OnClickListener(logInButtonClick))
+            builder.setNeutralButton("Avbryt", DialogInterface.OnClickListener(cancelButtonClick))
             builder.show().setCanceledOnTouchOutside(false)
         }
     }

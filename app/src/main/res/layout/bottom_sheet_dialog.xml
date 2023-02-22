@@ -7,9 +7,6 @@
     android:padding="10dp"
     android:background="@drawable/layout_rounded_background">
 
-
-
-
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/topImage"
         android:layout_width="118dp"
