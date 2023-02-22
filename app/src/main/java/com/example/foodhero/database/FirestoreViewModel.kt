@@ -260,7 +260,6 @@ class FirestoreViewModel {
             .addOnCompleteListener{task->
             if(task.isSuccessful){
                 val info = task.result.toObject(FoodHeroInfo::class.java)
-                val user = task.result.toObject(User::class.java)
                 foodHeroInfo.cities = info?.cities
                 foodHeroInfo.sortListOfCities()
             }

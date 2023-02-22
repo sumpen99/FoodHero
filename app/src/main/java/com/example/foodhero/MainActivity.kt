@@ -86,7 +86,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState)
         if(auth.isUserLoggedIn()){
-            //logMessage(savedInstanceState.toString())
             setCloseAppCallback()
             //logMessage("on create main")
             setContentView(R.layout.activity_main)
