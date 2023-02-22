@@ -267,6 +267,10 @@ class FirestoreViewModel {
             }
         }
     }
+    fun putMenuItemInToCartOnFirebase(manuItem: MenuItem){
+        firebaseRepository
+
+    }
 
     fun deleteMenuFromFirebase(restaurantId:String,docId:String){
         firebaseRepository.deleteMenuItem(restaurantId,docId).addOnFailureListener {

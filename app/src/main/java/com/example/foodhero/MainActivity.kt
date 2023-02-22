@@ -26,8 +26,11 @@ import com.example.foodhero.databinding.ActivityMainBinding
 import com.example.foodhero.fragment.HomeFragment
 import com.example.foodhero.global.*
 import com.example.foodhero.struct.FoodHeroInfo
+import com.example.foodhero.struct.User
 import com.example.foodhero.widgets.MessageToUser
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 
 
@@ -92,6 +95,8 @@ class MainActivity : AppCompatActivity() {
         else{
             moveToActivityAndFinish(Intent(this,LoginActivity::class.java))
         }
+
+
     }
 
 
@@ -355,7 +360,18 @@ class MainActivity : AppCompatActivity() {
 
     fun putFoodItemIntoCart(menuItem:com.example.foodhero.struct.MenuItem){
         if(!userNeedToSignUp()){
-            //logMessage(menuItem.toString())
+            logMessage(menuItem.toString())
+            val user = auth.getEmail()
+            val db = FirebaseFirestore.getInstance()
+            db.collection("Users").document(user).collection("ShoppingCart")
+                .add(menuItem)
+            logMessage(user)
+
+
+            //Först ska menuItem samlas i varukorgen
+            //Plocka ut menuItem och lägg i någons lista i Favorite klassen när man kör denna funktion.
+            //Denna funktionen körs när man klickar på köpknappen och man är inloggad.
+
         }
     }
 

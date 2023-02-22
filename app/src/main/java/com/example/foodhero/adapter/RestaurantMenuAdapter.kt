@@ -78,6 +78,7 @@ class RestaurantMenuAdapter(
         init{
             purchaseButton.setOnClickListener{
                 putItemInBasket(bindingAdapterPosition)
+
             }
         }
     }
