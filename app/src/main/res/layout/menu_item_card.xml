@@ -48,8 +48,8 @@
                 android:layout_width="87dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:padding="10dp"
                 android:fontFamily="sans-serif-medium"
+                android:padding="10dp"
                 android:textColor="@color/background_medium_dark"
                 android:textSize="@dimen/cardText" />
 

@@ -69,17 +69,17 @@ class RestaurantMenuAdapter(
     }
     @SuppressLint("ClickableViewAccessibility")
     inner class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        val purchaseButton: FloatingActionButton = itemView.findViewById(R.id.floatingActionButtonBasket)
+       //val purchaseButton: FloatingActionButton = itemView.findViewById(R.id.floatingActionButtonBasket)
         val loggoImageView: ImageView = itemView.findViewById(R.id.menuItemLoggo)
         val nameTextView: TextView = itemView.findViewById(R.id.menuItemName)
         val ingredientsTextView: TextView = itemView.findViewById(R.id.menuItemIngredients)
         val priceTextView: TextView = itemView.findViewById(R.id.menuItemPrice)
 
-        init{
-            purchaseButton.setOnClickListener{
-                putItemInBasket(bindingAdapterPosition)
+       // init{
+         //   purchaseButton.setOnClickListener{
+          //      putItemInBasket(bindingAdapterPosition)
 
-            }
-        }
+          //  }
+       // }
     }
 }
