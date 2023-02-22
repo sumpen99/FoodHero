@@ -32,8 +32,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
-
-
+//https://nominatim.openstreetmap.org/search?street=pilkington%20avenue&city=birmingham&format=json
+//https://nominatim.openstreetmap.org/search?street=pilkington avenue&city=birmingham&format=json
+/*
+*   street=<housenumber> <streetname>
+    city=<city>
+    county=<county>
+    state=<state>
+    country=<country>
+    postalcode=<postalcode>
+* */
 class MainActivity : AppCompatActivity() {
     private lateinit var firestoreViewModel: FirestoreViewModel
     private lateinit var onBackPressedCallback: OnBackPressedCallback
@@ -80,9 +88,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState)
         if(auth.isUserLoggedIn()){
-            logMessage(savedInstanceState.toString())
+            //logMessage(savedInstanceState.toString())
             setCloseAppCallback()
-            logMessage("on create main")
+            //logMessage("on create main")
             setContentView(R.layout.activity_main)
             setMessageToUser()
             setViewModel()
@@ -100,8 +108,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-    /*
+      /*
     *   ##########################################################################
     *               SET BINDING AND OTHER STUFF
     *   ##########################################################################
@@ -163,9 +170,9 @@ class MainActivity : AppCompatActivity() {
     fun navigateOnlyIfUserIsAllowed(activityInstance:ActivityInstance){
         if(!userNeedToSignUp()){
             when(activityInstance){
-                ActivityInstance.ACTIVITY_FAVORITE->moveToActivityAndPutOnTop(Intent(this,FavoriteActivity::class.java))
-                ActivityInstance.ACTIVITY_ORDER->moveToActivityAndPutOnTop(Intent(this,OrderActivity::class.java))
-                ActivityInstance.ACTIVITY_PROFILE->moveToActivityAndPutOnTop(Intent(this, ProfilActivity::class.java))
+                ActivityInstance.ACTIVITY_FAVORITE->moveToActivityAndReOrder(Intent(this,FavoriteActivity::class.java))
+                ActivityInstance.ACTIVITY_ORDER->moveToActivityAndReOrder(Intent(this,OrderActivity::class.java))
+                ActivityInstance.ACTIVITY_PROFILE->moveToActivityAndReOrder(Intent(this, ProfilActivity::class.java))
             }
         }
     }
@@ -367,8 +374,6 @@ class MainActivity : AppCompatActivity() {
             db.collection("Users").document(user).collection("ShoppingCart")
                 .add(menuItem)
             logMessage(user)
-
-
             //Först ska menuItem samlas i varukorgen
             //Plocka ut menuItem och lägg i någons lista i Favorite klassen när man kör denna funktion.
             //Denna funktionen körs när man klickar på köpknappen och man är inloggad.

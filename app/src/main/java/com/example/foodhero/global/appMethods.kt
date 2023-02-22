@@ -118,6 +118,11 @@ fun Activity.moveToActivityAndPutOnTop(intent: Intent){
     intent.flags = FLAG_ACTIVITY_PREVIOUS_IS_TOP
 }
 
+fun Activity.moveToActivityAndReOrder(intent: Intent){
+    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+    startActivity(intent)
+}
+
 fun Activity.moveToActivityAndFinish(intent: Intent){
     startActivity(intent)
     finish()

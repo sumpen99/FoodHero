@@ -12,10 +12,8 @@ import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.FieldPath
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.*
 import kotlinx.coroutines.tasks.await
 
 class FirestoreViewModel {
@@ -262,6 +260,7 @@ class FirestoreViewModel {
             .addOnCompleteListener{task->
             if(task.isSuccessful){
                 val info = task.result.toObject(FoodHeroInfo::class.java)
+                val user = task.result.toObject(User::class.java)
                 foodHeroInfo.cities = info?.cities
                 foodHeroInfo.sortListOfCities()
             }

@@ -1,27 +1,32 @@
 package com.example.foodhero.activity
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
 import com.example.foodhero.MainActivity
 import com.example.foodhero.R
-import com.example.foodhero.global.USER_COLLECTION
-import com.example.foodhero.global.moveToActivityAndClearTop
-import com.example.foodhero.global.moveToActivityAndFinish
-import com.example.foodhero.global.moveToActivityAndPutOnTop
+import com.example.foodhero.global.*
 import com.example.foodhero.struct.User
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
 
 class ProfilActivity : AppCompatActivity() {
+    private val intentFilter = IntentFilter()
+    private var firestoreListener: ListenerRegistration?=null
+    private lateinit var onBackPressedCallback: OnBackPressedCallback
     lateinit var imageBackButton : ImageButton
     lateinit var imageLogOutButton: ImageButton
     lateinit var EditNameText : EditText
@@ -38,13 +43,8 @@ class ProfilActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId", "SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*val intentFilter = IntentFilter()
-        intentFilter.addAction("com.example.foodhero.ACTION_LOGOUT")
-        registerReceiver(object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                finish()
-            }
-        }, intentFilter)*/
+        setCloseAppCallback()
+        setOnBackNavigation()
         setContentView(R.layout.activity_profil)
 
         auth = Firebase.auth
@@ -110,64 +110,73 @@ class ProfilActivity : AppCompatActivity() {
     fun getUserData() {
         db = FirebaseFirestore.getInstance()
         val mail = auth.currentUser?.email
-
-
-
         db.collection("Users").document(mail!!)
             .get().addOnCompleteListener {
-                if(it.isSuccessful)
-                {
-
-
+                if(it.isSuccessful) {
                     val docRef = db.collection(USER_COLLECTION).document(mail)
-                    docRef.addSnapshotListener { snapshot, e ->
+                    firestoreListener = docRef.addSnapshotListener { snapshot, e ->
                         if (e != null) {
                             Log.w(TAG, "Listen failed.", e)
                             return@addSnapshotListener
                         }
-
                         if (snapshot != null && snapshot.exists()) {
                             val user = snapshot.toObject(User::class.java)
-
                             EditMailText.hint = user!!.email
                             EditNameText.hint = user!!.name
                             EditPhoneText.hint = user!!.phoneNumber
                             EditPostalCodeText.hint = user!!.postalCode
                             EditCityText.hint = user!!.city
-
                         } else {
                             Log.d(TAG, "Current data: null")
                         }
                     }
-
-
-
-                    }
+                }
             }
-
-
-
-
-
-
-
-
         }
 
-    fun goBack(){
-        val intent = Intent(this, MainActivity::class.java)
-        moveToActivityAndPutOnTop(intent)
+    /*
+    *   ##########################################################################
+    *               SET NAVIGATION IF USER DRAGS LEFT OR RIGHT SIDE OF SCREEN
+    *   ##########################################################################
+    */
 
+    private fun setCloseAppCallback(){
+        intentFilter.addAction(APP_ACTION_LOG_OUT)
+        registerReceiver(object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                finish()
+            }
+        }, intentFilter)
+    }
+
+    private fun setOnBackNavigation(){
+        onBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed(){navigateOnBackPressed()}
+        }
+        onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
+    }
+
+    private fun navigateOnBackPressed(){
+        moveToActivityAndReOrder(Intent(this, MainActivity::class.java))
+    }
+
+    fun goBack(){
+        moveToActivityAndReOrder(Intent(this, MainActivity::class.java))
     }
 
     fun signOut(){
+        closeListener()
         FirebaseAuth.getInstance().signOut()
         moveToActivityAndClearTop()
     }
 
-    /*override fun onDestroy(){
-        logMessage("on destroy profile")
+    fun closeListener(){
+        if(firestoreListener!=null)firestoreListener!!.remove()
+    }
+
+    override fun onDestroy(){
+        closeListener()
         super.onDestroy()
-    }*/
+    }
 
 }

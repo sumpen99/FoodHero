@@ -1,16 +1,20 @@
 package com.example.foodhero.activity
-
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
 import android.widget.ImageButton
 import android.widget.Toast
+import com.example.foodhero.MainActivity
 import com.example.foodhero.R
 import com.example.foodhero.databinding.ActivityBuyBinding
+import com.example.foodhero.global.APP_ACTION_LOG_OUT
 import com.example.foodhero.global.moveToActivityAndFinish
 import com.example.foodhero.global.moveToActivityAndPutOnTop
+import com.example.foodhero.global.moveToActivityAndReOrder
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class BuyActivity : AppCompatActivity() {
@@ -19,8 +23,9 @@ class BuyActivity : AppCompatActivity() {
     lateinit var bottomNavBuyMenu : BottomNavigationView
     private var _binding: ActivityBuyBinding? = null
     private val binding get() = _binding!!
-   lateinit var imageBuyButton: ImageButton
-   lateinit var imageProfileButton : ImageButton
+    lateinit var imageBuyButton: ImageButton
+    lateinit var imageProfileButton : ImageButton
+    private val intentFilter = IntentFilter()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +33,8 @@ class BuyActivity : AppCompatActivity() {
         setContentView(R.layout.activity_buy)
         _binding = ActivityBuyBinding.inflate(layoutInflater)
         setContentView(binding.root)
-    // setBottomBuyNavigationMenu()
+        setCloseAppCallback()
+        // setBottomBuyNavigationMenu()
 
         imageBackOrderButton = findViewById<ImageButton>(R.id.imageBackOrderButton)
         imageBackOrderButton.setOnClickListener {
@@ -47,20 +53,27 @@ class BuyActivity : AppCompatActivity() {
 
         imageProfileButton = findViewById<ImageButton>(R.id.imageProfileButton)
         imageProfileButton.setOnClickListener {
-           val intent = Intent(this,ProfilActivity::class.java)
-            moveToActivityAndFinish(intent)
-
+            moveToActivityAndReOrder(Intent(this, ProfilActivity::class.java))
+            //val intent = Intent(this,ProfilActivity::class.java)
+            //moveToActivityAndFinish(intent)
         }
+    }
 
+    private fun setCloseAppCallback(){
+        intentFilter.addAction(APP_ACTION_LOG_OUT)
+        registerReceiver(object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                finish()
+            }
+        }, intentFilter)
+    }
 
-
-        }
     fun goBack(){
         //super.onBackPressed() is deprecated but works
-        finish()
+        //finish()
+        moveToActivityAndReOrder(Intent(this, OrderActivity::class.java))
         //val intent = Intent(this, MainActivity::class.java)
         //moveToActivity(intent)
-     // hem
     }
     //private fun setBottomBuyNavigationMenu(){
     //    bottomNavBuyMenu = binding.bottomNavBuyMenu
