@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodhero.R
 import com.example.foodhero.fragment.HomeFragment
@@ -76,11 +77,16 @@ class RestaurantMenuAdapter(
         val ingredientsTextView: TextView = itemView.findViewById(R.id.menuItemIngredients)
         val priceTextView: TextView = itemView.findViewById(R.id.menuItemPrice)
 
-       init{
-           imageOrderButton.setOnClickListener{
-               putItemInBasket(bindingAdapterPosition)
 
-           }
+        init{
+            imageOrderButton.setOnClickListener{
+
+                putItemInBasket(bindingAdapterPosition)
+
+            }
+            imageYouHeartMeButton.setOnClickListener{
+                showUserSomeLove(bindingAdapterPosition)
+            }
         }
     }
 }

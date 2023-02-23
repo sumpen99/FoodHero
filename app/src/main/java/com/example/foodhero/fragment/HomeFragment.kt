@@ -10,6 +10,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
@@ -382,12 +383,17 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     }
 
     fun putSelectedFoodInCart(menuItem:com.example.foodhero.struct.MenuItem){
+        Toast.makeText(requireContext(), "Nu är din mat i varukorgen!"+getString(R.string.tumme), Toast.LENGTH_LONG).show()
+
         getMainActivity().putFoodItemIntoCart(menuItem)
+        //messageToUser.setPosBtnText(getString(R.string.tumme))
+       // TACK! :)
+
     }
 
     fun showSomeLoveBack(menuItem:com.example.foodhero.struct.MenuItem){
         messageToUser.setPosBtnText(getString(R.string.heart))
-        updateMessageDialog("OOOOOOOOHHHHH")
+        updateMessageDialog("Bra jobbat Fredrik!")
         showMessage()
         messageToUser.setPosBtnText("OK")
     }
