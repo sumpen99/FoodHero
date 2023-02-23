@@ -7,8 +7,10 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat.registerReceiver
 import androidx.core.widget.doOnTextChanged
 import com.example.foodhero.MainActivity
 import com.example.foodhero.R
@@ -16,6 +18,7 @@ import com.example.foodhero.databinding.ActivityOrderBinding
 import com.example.foodhero.global.*
 import com.example.foodhero.struct.PurchasedItem
 import com.example.foodhero.struct.User
+import com.example.foodhero.widgets.SalmbergsWidget
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -32,9 +35,10 @@ class OrderActivity : AppCompatActivity() {
     private var _binding: ActivityOrderBinding? = null
     private val binding get() = _binding!!
     private val intentFilter = IntentFilter()
-    lateinit var shoppingCartTextView: TextView
     lateinit var auth: FirebaseAuth
     lateinit var db: FirebaseFirestore
+    lateinit var shoppingCartLayout: LinearLayout
+
 
     var currentText = ""
 
@@ -50,10 +54,9 @@ class OrderActivity : AppCompatActivity() {
         setBottomOrderNavigationMenu()
         setCloseAppCallback()
 
-        shoppingCartTextView = findViewById(R.id.shoppingCartTextView)
-        shoppingCartTextView.doOnTextChanged { text, start, before, count ->
-            currentText = text.toString()
-        }
+        shoppingCartLayout = binding.shoppingCartLayout
+
+
 
         imageBackOrderButton = findViewById<ImageButton>(R.id.imageBackOrderButton)
         imageBackOrderButton.setOnClickListener {
@@ -113,9 +116,11 @@ class OrderActivity : AppCompatActivity() {
                             return@addSnapshotListener
                         }
                         if (snapshot != null && !snapshot.isEmpty) {
-                            for (doc in snapshot!!.documents){
+                            for (doc in snapshot.documents){
                                 val purchasedItem = doc.toObject(PurchasedItem::class.java)
-                                shoppingCartTextView.text = purchasedItem!!.foodName.toString()
+                                purchasedItem?:continue
+                                val salmbergsItem = SalmbergsWidget(purchasedItem.foodName!!,purchasedItem.price!!,purchasedItem.itemId!!,this,null)
+                                shoppingCartLayout.addView(salmbergsItem,shoppingCartLayout.childCount)
                                 logMessage(doc.toString())
 
                             }

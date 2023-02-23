@@ -30,7 +30,6 @@ class CityItem(val city:String,
                 callbackUnCheck(city)
             }
         }
-
     }
 
     private fun isVisible():Int{
