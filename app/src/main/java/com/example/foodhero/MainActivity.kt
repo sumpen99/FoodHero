@@ -26,12 +26,12 @@ import com.example.foodhero.databinding.ActivityMainBinding
 import com.example.foodhero.fragment.HomeFragment
 import com.example.foodhero.global.*
 import com.example.foodhero.struct.FoodHeroInfo
-import com.example.foodhero.struct.User
+import com.example.foodhero.struct.PurchasedItem
 import com.example.foodhero.widgets.MessageToUser
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
+import java.util.UUID
 
 
 class MainActivity : AppCompatActivity() {
@@ -359,18 +359,22 @@ class MainActivity : AppCompatActivity() {
     *   ##########################################################################
     */
 
-    fun putFoodItemIntoCart(menuItem:com.example.foodhero.struct.MenuItem){
+    fun putFoodItemIntoCart(PurchasedItem: com.example.foodhero.struct.MenuItem){
         if(!userNeedToSignUp()){
-            logMessage(menuItem.toString())
+            val id = UUID.randomUUID().toString()
+            val foodName = PurchasedItem.name
+            val price = PurchasedItem.price
+            val purchasedItem = PurchasedItem(id,foodName,price)
             val user = auth.getEmail()
             val db = FirebaseFirestore.getInstance()
-            db.collection("Users").document(user).collection("ShoppingCart")
-                .add(menuItem)
+            db.collection("Users").document(user).collection("ShoppingCart").document(id)
+                .set(purchasedItem)
             logMessage(user)
 
 
+
             //Först ska menuItem samlas i varukorgen
-            //Plocka ut menuItem och lägg i någons lista i Favorite klassen när man kör denna funktion.
+            //Plocka ut menuItem och lägg i någon lista i Favorite klassen när man kör denna funktion.
             //Denna funktionen körs när man klickar på köpknappen och man är inloggad.
 
         }

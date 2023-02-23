@@ -33,7 +33,7 @@
         app:menu="@menu/bottom_ordernav_menu" />
 
     <TextView
-        android:id="@+id/textOrderEmptyView"
+        android:id="@+id/shoppingCartTextView"
         android:layout_width="266dp"
         android:layout_height="125dp"
         android:layout_marginStart="83dp"

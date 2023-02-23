@@ -6,6 +6,7 @@ import com.bumptech.glide.Registry
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.module.AppGlideModule
 import com.example.foodhero.R
+import com.example.foodhero.struct.PurchasedItem
 import com.firebase.ui.storage.images.FirebaseImageLoader
 import com.google.firebase.storage.StorageReference
 import java.io.InputStream
@@ -31,6 +32,7 @@ const val MENU_COLLECTION = "Menu"
 const val DRINK_COLLECTION = "DrinkList"
 const val MENU_ITEM_COLLECTION = "MenuItems"
 const val USER_COLLECTION = "Users"
+const val SHOPPINGCART_COLLECTION = "Shoppingcart"
 
 /*
 *   ##########################################################################
