@@ -20,8 +20,9 @@ import com.example.foodhero.global.moveToActivityAndReOrder
 import com.google.firebase.firestore.FirebaseFirestore
 
 
-private lateinit var favoriteDishesTextView: TextView
-private lateinit var lastOrdersTextView: TextView
+//private lateinit var favoriteDishesTextView: TextView
+//private lateinit var lastOrdersTextView: TextView
+@SuppressLint("StaticFieldLeak")
 val db = FirebaseFirestore.getInstance()
 
 class FavoriteActivity : AppCompatActivity() {
@@ -35,8 +36,8 @@ class FavoriteActivity : AppCompatActivity() {
         setCloseAppCallback()
         setOnBackNavigation()
         // find the TextViews in the layout
-        favoriteDishesTextView = findViewById(R.id.favorite_dishes_textview)
-        lastOrdersTextView = findViewById(R.id.last_orders_textview)
+      //  favoriteDishesTextView = findViewById(R.id.favorite_dishes_textview)
+       // lastOrdersTextView = findViewById(R.id.last_orders_textview)
 
         // retrieve the user's favorite dishes and last orders from the database
         retrieveFavoriteDishes()
@@ -81,7 +82,7 @@ class FavoriteActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { documents ->
                 val favoriteDishes = documents.map { it.getString("name") ?: "" }
-                favoriteDishesTextView.text = favoriteDishes.joinToString("\n")
+                //favoriteDishesTextView.text = favoriteDishes.joinToString("\n")
             }
             .addOnFailureListener { e ->
                 Log.w("FavoriteActivity", "Error retrieving favorite dishes", e)
@@ -98,7 +99,7 @@ class FavoriteActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { documents ->
                 val lastOrders = documents.map { it.getString("description") ?: "" }
-                lastOrdersTextView.text = lastOrders.joinToString("\n")
+               // lastOrdersTextView.text = lastOrders.joinToString("\n")
             }
             .addOnFailureListener { e ->
                 Log.w("FavoriteActivity", "Error retrieving last orders", e)
