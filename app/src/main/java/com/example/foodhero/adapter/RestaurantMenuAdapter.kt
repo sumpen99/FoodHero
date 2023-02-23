@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodhero.R
 import com.example.foodhero.fragment.HomeFragment
@@ -85,8 +86,10 @@ class RestaurantMenuAdapter(
 
         init{
             imageOrderButton.setOnClickListener{
-               putItemInBasket(bindingAdapterPosition)
-           }
+
+                putItemInBasket(bindingAdapterPosition)
+
+            }
             imageYouHeartMeButton.setOnClickListener{
                 showUserSomeLove(bindingAdapterPosition)
             }

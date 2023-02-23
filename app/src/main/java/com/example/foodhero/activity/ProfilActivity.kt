@@ -114,6 +114,7 @@ class ProfilActivity : AppCompatActivity() {
             .get().addOnCompleteListener {
                 if(it.isSuccessful) {
                     val docRef = db.collection(USER_COLLECTION).document(mail)
+
                     firestoreListener = docRef.addSnapshotListener { snapshot, e ->
                         if (e != null) {
                             Log.w(TAG, "Listen failed.", e)
