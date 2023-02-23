@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activity.RestAdminActivity"
+    tools:ignore="MissingDefaultResource">
+
+    <EditText
+        android:id="@+id/EditMailText"
+        android:layout_width="216dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="#F7070707"
+        android:ems="10"
+        android:hint="...."
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/textNameView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.439"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textMailView" />
+
+    <EditText
+        android:id="@+id/EditNameText"
+        android:layout_width="216dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="#F5020202"
+        android:ems="10"
+        android:hint="...."
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/textPhoneView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.439"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textNameView" />
+
+    <EditText
+        android:id="@+id/EditPhoneText"
+        android:layout_width="216dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp"
+        android:backgroundTint="#FC0E0E0E"
+        android:ems="10"
+        android:hint="...."
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.439"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textPhoneView" />
+
+    <ImageView
+        android:id="@+id/imageAccountView"
+        android:layout_width="204dp"
+        android:layout_height="190dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/textMailView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/baseline_store_2" />
+
+    <TextView
+        android:id="@+id/textMailView"
+        android:layout_width="159dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginEnd="188dp"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Mailadress"
+        android:textColor="#050505"
+        app:layout_constraintBottom_toTopOf="@+id/EditMailText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageAccountView" />
+
+    <TextView
+        android:id="@+id/textPhoneView"
+        android:layout_width="159dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="200dp"
+        android:layout_marginBottom="2dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Telefonummer"
+        android:textColor="#050505"
+        app:layout_constraintBottom_toTopOf="@+id/EditPhoneText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EditNameText" />
+
+    <TextView
+        android:id="@+id/textNameView"
+        android:layout_width="159dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="212dp"
+        android:layout_marginBottom="2dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Förnamn/Efternamn"
+        android:textColor="#0B0A0A"
+        app:layout_constraintBottom_toTopOf="@+id/EditNameText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EditMailText" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="67dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginBottom="40dp"
+        android:clickable="true"
+        app:backgroundTint="#DD18EC82"
+        app:layout_constraintBottom_toTopOf="@+id/textMailView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:rippleColor="#100F0F"
+        app:srcCompat="@drawable/logo_bank_id" />
+
+    <ImageButton
+        android:id="@+id/ImageProfilButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="30dp"
+        android:background="#11FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_logout_2" />
+
+
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="59dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="106dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="106dp"
+        app:layout_constraintEnd_toStartOf="@+id/ImageProfilButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/applogoblack" />
+
+    <EditText
+        android:id="@+id/EditCityText"
+        android:layout_width="203dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="6dp"
+        android:backgroundTint="#0CFFFFFF"
+        android:ems="10"
+        android:hint="               "
+        android:inputType="textPersonName"
+        android:textColor="#F6F3F3"
+        app:layout_constraintBottom_toTopOf="@+id/imageAccountView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
