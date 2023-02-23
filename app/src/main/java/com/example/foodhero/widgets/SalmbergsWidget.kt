@@ -23,7 +23,7 @@ class SalmbergsWidget(
         val priceTextView: TextView = this.findViewById(R.id.priceTextView)
 
         nameTextView.text = name
-        priceTextView.text = price.format(2)
+        priceTextView.text = price.format(2) + "Kr"
 
     }
 
