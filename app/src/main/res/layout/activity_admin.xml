@@ -28,104 +28,6 @@ tools:context=".activity.AdminActivity">
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_arrow_back_24" />
 
-    <EditText
-        android:id="@+id/ResturantNameEditText"
-        android:layout_width="216dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="80dp"
-        android:layout_marginBottom="4dp"
-        android:ems="10"
-        android:hint="...."
-        android:inputType="textShortMessage"
-        app:layout_constraintBottom_toTopOf="@+id/locationTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.439"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ResturantNameTextView" />
-
-    <EditText
-        android:id="@+id/LocationEditText"
-        android:layout_width="216dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="80dp"
-        android:layout_marginBottom="4dp"
-        android:ems="10"
-        android:hint="...."
-        android:inputType="textShortMessage"
-        app:layout_constraintBottom_toTopOf="@+id/DescriptionTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.439"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locationTextView" />
-
-    <EditText
-        android:id="@+id/DescriptionEditText"
-        android:layout_width="216dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="80dp"
-        android:ems="10"
-        android:hint="...."
-        android:inputType="textLongMessage|textMultiLine"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.439"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DescriptionTextView" />
-
-    <TextView
-        android:id="@+id/ResturantNameTextView"
-        android:layout_width="159dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="188dp"
-        android:layout_marginBottom="5dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Resturang namn"
-        app:layout_constraintBottom_toTopOf="@+id/ResturantNameEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LogoImageView" />
-
-    <TextView
-        android:id="@+id/DescriptionTextView"
-        android:layout_width="159dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="200dp"
-        android:layout_marginBottom="2dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Beskrivning"
-        app:layout_constraintBottom_toTopOf="@+id/DescriptionEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LocationEditText" />
-
-    <TextView
-        android:id="@+id/locationTextView"
-        android:layout_width="159dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="212dp"
-        android:layout_marginBottom="2dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Plats"
-        app:layout_constraintBottom_toTopOf="@+id/LocationEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ResturantNameEditText" />
-
     <ImageButton
         android:id="@+id/ImageProfilButton"
         android:layout_width="40dp"
@@ -145,8 +47,342 @@ tools:context=".activity.AdminActivity">
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DescriptionEditText"
+        app:layout_constraintTop_toBottomOf="@+id/keyWordsEditText"
         app:layout_constraintVertical_bias="1.0"
         tools:text="Spara" />
+
+    <ScrollView
+        android:layout_width="450dp"
+        android:layout_height="582dp"
+        app:layout_constraintBottom_toBottomOf="@+id/keyWordsEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LogoImageView"
+        app:layout_constraintVertical_bias="0.156">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/TextView1"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:layout_marginStart="96dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="212dp"
+                android:layout_marginBottom="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Name" />
+
+            <EditText
+                android:id="@+id/nameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="80dp"
+                android:layout_marginBottom="4dp"
+                android:ems="10"
+                android:hint="...."
+                android:inputType="textShortMessage" />
+
+            <TextView
+                android:id="@+id/TextView2"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:layout_marginStart="96dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="212dp"
+                android:layout_marginBottom="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Country" />
+
+            <EditText
+                android:id="@+id/countryEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="80dp"
+                android:layout_marginBottom="4dp"
+                android:ems="10"
+                android:hint="...."
+                android:inputType="textShortMessage" />
+
+            <TextView
+                android:id="@+id/TextView3"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:layout_marginStart="96dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="212dp"
+                android:layout_marginBottom="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="City" />
+
+            <EditText
+                android:id="@+id/cityEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="80dp"
+                android:layout_marginBottom="4dp"
+                android:ems="10"
+                android:hint="...."
+                android:inputType="textShortMessage" />
+
+            <TextView
+                android:id="@+id/TextView4"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:layout_marginStart="96dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="212dp"
+                android:layout_marginBottom="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="OrgNumber" />
+
+            <EditText
+                android:id="@+id/orgNumberEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="80dp"
+                android:layout_marginBottom="4dp"
+                android:ems="10"
+                android:hint="...."
+                android:inputType="textShortMessage" />
+
+            <TextView
+                android:id="@+id/TextView5"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:layout_marginStart="96dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="212dp"
+                android:layout_marginBottom="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Address" />
+
+            <EditText
+                android:id="@+id/adressEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="80dp"
+                android:layout_marginBottom="4dp"
+                android:ems="10"
+                android:hint="...."
+                android:inputType="textShortMessage" />
+
+            <TextView
+                android:id="@+id/TextView6"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:layout_marginStart="96dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="212dp"
+                android:layout_marginBottom="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Phonenumber" />
+
+            <EditText
+                android:id="@+id/phonenumberEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="80dp"
+                android:layout_marginBottom="4dp"
+                android:ems="10"
+                android:hint="...."
+                android:inputType="textShortMessage" />
+
+            <TextView
+                android:id="@+id/TextView7"
+                android:layout_width="159dp"
+                android:layout_height="23dp"
+                android:layout_marginStart="96dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="212dp"
+                android:layout_marginBottom="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Email" />
+
+            <EditText
+                android:id="@+id/emailEditText"
+                android:layout_width="216dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="80dp"
+                android:layout_marginBottom="4dp"
+                android:ems="10"
+                android:hint="...."
+                android:inputType="textShortMessage" />
+
+            <TextView
+                android:id="@+id/TextView8"
+                android:layout_width="159dp"
+                android:layout_height="23dp"
+                android:layout_marginStart="96dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="188dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Cathegories Dishes " />
+
+            <EditText
+                android:id="@+id/cathegoriesDishesEditText"
+                android:layout_width="216dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="80dp"
+                android:layout_marginBottom="4dp"
+                android:ems="10"
+                android:hint="...."
+                android:inputType="textShortMessage" />
+
+            <TextView
+                android:id="@+id/TextView9"
+                android:layout_width="159dp"
+                android:layout_height="23dp"
+                android:layout_marginStart="96dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="200dp"
+                android:layout_marginBottom="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Key Words" />
+
+            <EditText
+                android:id="@+id/keyWordsEditText"
+                android:layout_width="216dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="80dp"
+                android:ems="10"
+                android:hint="...."
+                android:inputType="textLongMessage|textMultiLine" />
+
+            <TextView
+                android:id="@+id/textViewdescription"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:layout_marginStart="96dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="200dp"
+                android:layout_marginBottom="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Description" />
+
+            <EditText
+                android:id="@+id/descriptionEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="80dp"
+                android:ems="10"
+                android:hint="...."
+                android:inputType="textLongMessage|textMultiLine" />
+
+            <TextView
+                android:id="@+id/textViewgeohash"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:layout_marginStart="96dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="200dp"
+                android:layout_marginBottom="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Geo Hash" />
+
+            <EditText
+                android:id="@+id/geohashEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="80dp"
+                android:ems="10"
+                android:hint="...."
+                android:inputType="textLongMessage|textMultiLine" />
+
+            <TextView
+                android:id="@+id/textViewlat"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:layout_marginStart="96dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="200dp"
+                android:layout_marginBottom="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Latitude" />
+
+            <EditText
+                android:id="@+id/latEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="80dp"
+                android:ems="10"
+                android:hint="...."
+                android:inputType="textLongMessage|textMultiLine" />
+
+            <TextView
+                android:id="@+id/textViewlon"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:layout_marginStart="96dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="200dp"
+                android:layout_marginBottom="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Longitude" />
+
+            <EditText
+                android:id="@+id/lonEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="80dp"
+                android:ems="10"
+                android:hint="...."
+                android:inputType="textLongMessage|textMultiLine" />
+
+            <TextView
+                android:id="@+id/textViewlonrestaurantId"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:layout_marginStart="96dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="200dp"
+                android:layout_marginBottom="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Restaurant ID" />
+
+            <EditText
+                android:id="@+id/restaurantIdEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="80dp"
+                android:ems="10"
+                android:hint="...."
+                android:inputType="textLongMessage|textMultiLine" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

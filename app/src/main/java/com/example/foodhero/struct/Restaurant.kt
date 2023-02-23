@@ -25,6 +25,8 @@ class Restaurant(
     val restaurantId:String?=null,
     val loggoDownloadUrl:String?=null,):java.io.Serializable {
 
+    
+
     fun getOpeningHours():String{
         return "06.00 - 22.00"
     }

@@ -32,9 +32,9 @@ class ProfilActivity : AppCompatActivity() {
            goBack()
         }
 
-        EditNameText = findViewById(R.id.ResturantNameEditText)
-        EditMailText = findViewById(R.id.LocationEditText)
-        EditPhoneText = findViewById(R.id.DescriptionEditText)
+        EditNameText = findViewById(R.id.cathegoriesDishesEditText)
+        EditMailText = findViewById(R.id.emailEditText)
+        EditPhoneText = findViewById(R.id.keyWordsEditText)
         EditPasswordText = findViewById(R.id.EditPasswordText)
 
 

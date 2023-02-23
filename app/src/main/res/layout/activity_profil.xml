@@ -7,7 +7,7 @@
     tools:context=".activity.ProfilActivity">
 
     <EditText
-        android:id="@+id/ResturantNameEditText"
+        android:id="@+id/cathegoriesDishesEditText"
         android:layout_width="216dp"
         android:layout_height="50dp"
         android:layout_marginStart="80dp"
@@ -17,14 +17,14 @@
         android:ems="10"
         android:hint="...."
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/locationTextView"
+        app:layout_constraintBottom_toTopOf="@+id/TextView7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.439"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ResturantNameTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/TextView8" />
 
     <EditText
-        android:id="@+id/LocationEditText"
+        android:id="@+id/emailEditText"
         android:layout_width="216dp"
         android:layout_height="50dp"
         android:layout_marginStart="80dp"
@@ -34,14 +34,14 @@
         android:ems="10"
         android:hint="...."
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/DescriptionTextView"
+        app:layout_constraintBottom_toTopOf="@+id/TextView9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.439"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locationTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/TextView7" />
 
     <EditText
-        android:id="@+id/DescriptionEditText"
+        android:id="@+id/keyWordsEditText"
         android:layout_width="216dp"
         android:layout_height="50dp"
         android:layout_marginStart="80dp"
@@ -55,7 +55,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.439"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DescriptionTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/TextView9" />
 
     <EditText
         android:id="@+id/EditPasswordText"
@@ -80,7 +80,7 @@
         android:layout_height="222dp"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/ResturantNameTextView"
+        app:layout_constraintBottom_toTopOf="@+id/TextView8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -88,7 +88,7 @@
         app:srcCompat="@drawable/baseline_account_box_24" />
 
     <TextView
-        android:id="@+id/ResturantNameTextView"
+        android:id="@+id/TextView8"
         android:layout_width="159dp"
         android:layout_height="23dp"
         android:layout_marginStart="96dp"
@@ -97,14 +97,14 @@
         android:layout_marginBottom="5dp"
         android:fontFamily="sans-serif-medium"
         android:text="Förnamn/efternamn"
-        app:layout_constraintBottom_toTopOf="@+id/ResturantNameEditText"
+        app:layout_constraintBottom_toTopOf="@+id/cathegoriesDishesEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageAccountView" />
 
     <TextView
-        android:id="@+id/DescriptionTextView"
+        android:id="@+id/TextView9"
         android:layout_width="159dp"
         android:layout_height="23dp"
         android:layout_marginStart="96dp"
@@ -113,14 +113,14 @@
         android:layout_marginBottom="2dp"
         android:fontFamily="sans-serif-medium"
         android:text="Mailadress"
-        app:layout_constraintBottom_toTopOf="@+id/DescriptionEditText"
+        app:layout_constraintBottom_toTopOf="@+id/keyWordsEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LocationEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
 
     <TextView
-        android:id="@+id/locationTextView"
+        android:id="@+id/TextView7"
         android:layout_width="159dp"
         android:layout_height="23dp"
         android:layout_marginStart="96dp"
@@ -129,11 +129,11 @@
         android:layout_marginBottom="2dp"
         android:fontFamily="sans-serif-medium"
         android:text="Telefonnummer"
-        app:layout_constraintBottom_toTopOf="@+id/LocationEditText"
+        app:layout_constraintBottom_toTopOf="@+id/emailEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ResturantNameEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/cathegoriesDishesEditText" />
 
     <TextView
         android:id="@+id/textPasswordView"
@@ -149,7 +149,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DescriptionEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/keyWordsEditText" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -159,7 +159,7 @@
         android:layout_marginBottom="64dp"
         android:clickable="true"
         app:backgroundTint="#DD18EC82"
-        app:layout_constraintBottom_toTopOf="@+id/ResturantNameTextView"
+        app:layout_constraintBottom_toTopOf="@+id/TextView8"
         app:layout_constraintStart_toStartOf="parent"
         app:rippleColor="#100F0F"
         app:srcCompat="@drawable/logo_bank_id" />
