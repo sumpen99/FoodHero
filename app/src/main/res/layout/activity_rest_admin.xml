@@ -10,7 +10,7 @@
     tools:ignore="MissingDefaultResource">
 
     <EditText
-        android:id="@+id/EditMailText"
+        android:id="@+id/EditRestNameText"
         android:layout_width="216dp"
         android:layout_height="50dp"
         android:layout_marginStart="80dp"
@@ -20,14 +20,14 @@
         android:ems="10"
         android:hint="...."
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/textNameView"
+        app:layout_constraintBottom_toTopOf="@+id/textRestAdressView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.439"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textMailView" />
+        app:layout_constraintTop_toBottomOf="@+id/textRestNameView" />
 
     <EditText
-        android:id="@+id/EditNameText"
+        android:id="@+id/EditRestAdressText"
         android:layout_width="216dp"
         android:layout_height="50dp"
         android:layout_marginStart="80dp"
@@ -37,34 +37,35 @@
         android:ems="10"
         android:hint="...."
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/textPhoneView"
+        app:layout_constraintBottom_toTopOf="@+id/textRestCityView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.439"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textNameView" />
+        app:layout_constraintTop_toBottomOf="@+id/textRestAdressView" />
 
     <EditText
-        android:id="@+id/EditPhoneText"
+        android:id="@+id/EditRestCityText"
         android:layout_width="216dp"
         android:layout_height="50dp"
         android:layout_marginStart="80dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="80dp"
         android:backgroundTint="#FC0E0E0E"
         android:ems="10"
         android:hint="...."
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.439"
+        app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textPhoneView" />
+        app:layout_constraintTop_toBottomOf="@+id/textRestCityView" />
 
     <ImageView
-        android:id="@+id/imageAccountView"
+        android:id="@+id/imageRestView"
         android:layout_width="204dp"
         android:layout_height="190dp"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/textMailView"
+        app:layout_constraintBottom_toTopOf="@+id/textRestNameView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -72,7 +73,7 @@
         app:srcCompat="@drawable/baseline_store_2" />
 
     <TextView
-        android:id="@+id/textMailView"
+        android:id="@+id/textRestNameView"
         android:layout_width="159dp"
         android:layout_height="23dp"
         android:layout_marginStart="96dp"
@@ -81,14 +82,14 @@
         android:fontFamily="sans-serif-medium"
         android:text="Namn på restaurangen :"
         android:textColor="#050505"
-        app:layout_constraintBottom_toTopOf="@+id/EditMailText"
+        app:layout_constraintBottom_toTopOf="@+id/EditRestNameText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageAccountView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageRestView" />
 
     <TextView
-        android:id="@+id/textPhoneView"
+        android:id="@+id/textRestCityView"
         android:layout_width="159dp"
         android:layout_height="23dp"
         android:layout_marginStart="96dp"
@@ -98,14 +99,14 @@
         android:fontFamily="sans-serif-medium"
         android:text="Stad :"
         android:textColor="#050505"
-        app:layout_constraintBottom_toTopOf="@+id/EditPhoneText"
+        app:layout_constraintBottom_toTopOf="@+id/EditRestCityText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EditNameText" />
+        app:layout_constraintTop_toBottomOf="@+id/EditRestAdressText" />
 
     <TextView
-        android:id="@+id/textNameView"
+        android:id="@+id/textRestAdressView"
         android:layout_width="159dp"
         android:layout_height="23dp"
         android:layout_marginStart="96dp"
@@ -115,11 +116,11 @@
         android:fontFamily="sans-serif-medium"
         android:text="Adress :"
         android:textColor="#0B0A0A"
-        app:layout_constraintBottom_toTopOf="@+id/EditNameText"
+        app:layout_constraintBottom_toTopOf="@+id/EditRestAdressText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EditMailText" />
+        app:layout_constraintTop_toBottomOf="@+id/EditRestNameText" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -129,13 +130,13 @@
         android:layout_marginBottom="40dp"
         android:clickable="true"
         app:backgroundTint="#DD18EC82"
-        app:layout_constraintBottom_toTopOf="@+id/textMailView"
+        app:layout_constraintBottom_toTopOf="@+id/textRestNameView"
         app:layout_constraintStart_toStartOf="parent"
         app:rippleColor="#100F0F"
         app:srcCompat="@drawable/logo_bank_id" />
 
     <ImageButton
-        android:id="@+id/ImageProfilButton"
+        android:id="@+id/ImageRestLogButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="25dp"
@@ -148,50 +149,31 @@
 
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/imageRestLogoView"
         android:layout_width="59dp"
         android:layout_height="44dp"
         android:layout_marginStart="106dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="106dp"
-        app:layout_constraintEnd_toStartOf="@+id/ImageProfilButton"
+        app:layout_constraintEnd_toStartOf="@+id/ImageRestLogButton"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/applogoblack" />
 
-    <EditText
-        android:id="@+id/EditCityText"
-        android:layout_width="203dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="7dp"
-        android:layout_marginBottom="6dp"
-        android:backgroundTint="#0CFFFFFF"
-        android:ems="10"
-        android:hint="               "
-        android:inputType="textPersonName"
-        android:textColor="#F6F3F3"
-        app:layout_constraintBottom_toTopOf="@+id/imageAccountView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="220dp"
-        android:layout_height="63dp"
-        android:background="#FA0C0C0C"
-        android:backgroundTint="#CAC1C1"
-        android:fontFamily="sans-serif-light"
-        android:text="Ladda upp ny restaurang"
-        android:textColor="#0E0E0E"
-        android:textColorHint="#090808"
-        android:textSize="16sp"
-        android:textStyle="normal"
-        app:iconTint="#00121010"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomRestNavMenu"
+        android:layout_width="420dp"
+        android:layout_height="71dp"
+        android:layout_marginTop="86dp"
+        app:backgroundTint="@color/white"
+        app:itemHorizontalTranslationEnabled="false"
+        app:itemIconTint="@drawable/bottom_navigation_selector"
+        app:itemTextColor="@color/black"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EditPhoneText" />
-
+        app:layout_constraintTop_toBottomOf="@+id/EditRestCityText"
+        app:menu="@menu/bottom_nav_rest" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

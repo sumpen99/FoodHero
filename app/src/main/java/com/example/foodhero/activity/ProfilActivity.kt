@@ -17,7 +17,6 @@ import com.example.foodhero.MainActivity
 import com.example.foodhero.R
 import com.example.foodhero.global.*
 import com.example.foodhero.struct.User
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
@@ -57,18 +56,18 @@ class ProfilActivity : AppCompatActivity() {
            goBack()
         }
 
-        EditMailText = findViewById(R.id.EditMailText)
+        EditMailText = findViewById(R.id.EditRestNameText)
         EditMailText.doOnTextChanged { text, start, before, count ->
             currentText = text.toString()
 
 
         }
-        EditNameText = findViewById(R.id.EditNameText)
+        EditNameText = findViewById(R.id.EditRestAdressText)
         EditNameText.doOnTextChanged { text, start, before, count ->
             currentText = text.toString()
 
         }
-        EditPhoneText = findViewById(R.id.EditPhoneText)
+        EditPhoneText = findViewById(R.id.EditRestCityText)
         EditPhoneText.doOnTextChanged { text, start, before, count ->
             currentText = text.toString()
 
@@ -87,15 +86,15 @@ class ProfilActivity : AppCompatActivity() {
         }
 
 
-        imageLogOutButton = findViewById<ImageButton>(R.id.ImageProfilButton)
+        imageLogOutButton = findViewById<ImageButton>(R.id.ImageRestLogButton)
 
-        val imageLogOutButton = findViewById<ImageButton>(R.id.ImageProfilButton)
+        val imageLogOutButton = findViewById<ImageButton>(R.id.ImageRestLogButton)
 
         imageLogOutButton.setOnClickListener {
             signOut()
         }
 
-        val imageAccountView = findViewById<ImageView>(R.id.imageAccountView)
+        val imageAccountView = findViewById<ImageView>(R.id.imageRestView)
             imageAccountView.animate().apply {
 
                 duration = 1000
