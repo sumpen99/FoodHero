@@ -1,7 +1,7 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
 
     <TextView
@@ -30,4 +30,13 @@
         android:textSize="18sp"
         android:textStyle="normal" />
 
+    <ImageButton
+        android:id="@+id/deleteItemButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#05FFFFFF"
+        android:layout_marginStart="10dp"
+        app:srcCompat="@drawable/baseline_delete_24" />
+
 </LinearLayout>
+
