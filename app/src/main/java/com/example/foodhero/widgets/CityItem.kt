@@ -41,5 +41,4 @@ class CityItem(val city:String,
         val cityIsChecked: AppCompatImageView = this.findViewById(R.id.cityIsChecked)
         cityIsChecked.visibility = GONE
     }
-
 }

@@ -22,6 +22,7 @@ import com.example.foodhero.widgets.SalmbergsWidget
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.ktx.Firebase
@@ -102,36 +103,44 @@ class OrderActivity : AppCompatActivity() {
 
     }
 
-
     fun getUserShoppingCart() {
         db = FirebaseFirestore.getInstance()
         val mail = auth.currentUser?.email
-        db.collection("Users").document(mail!!).collection("ShoppingCart")
-            .get().addOnCompleteListener {
-                if(it.isSuccessful) {
-                    val docRef = db.collection(USER_COLLECTION).document(mail).collection("ShoppingCart")
-                    firestoreListener = docRef.addSnapshotListener { snapshot, e ->
-                        if (e != null) {
-                            Log.w(ContentValues.TAG, "Listen failed.", e)
-                            return@addSnapshotListener
-                        }
-                        if (snapshot != null && !snapshot.isEmpty) {
-                            for (doc in snapshot.documents){
-                                val purchasedItem = doc.toObject(PurchasedItem::class.java)
-                                purchasedItem?:continue
-                                val salmbergsItem = SalmbergsWidget(purchasedItem.foodName!!,purchasedItem.price!!,purchasedItem.itemId!!,this,null)
-                                shoppingCartLayout.addView(salmbergsItem,shoppingCartLayout.childCount)
-                                logMessage(doc.toString())
+        val docRef = db.collection(USER_COLLECTION).document(mail!!).collection("ShoppingCart")
+        firestoreListener = docRef.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Log.w(ContentValues.TAG, "Listen failed.", e)
+                return@addSnapshotListener
+            }
 
-                            }
+            snapshot?.documentChanges?.forEach { change ->
+                when (change.type) {
+                    DocumentChange.Type.ADDED -> {
+                        val purchasedItem = change.document.toObject(PurchasedItem::class.java)
+                        val salmbergsItem = SalmbergsWidget(
+                            purchasedItem.foodName!!,
+                            purchasedItem.price!!,
+                            purchasedItem.itemId!!,
+                            this,
+                            null
+                        )
+                        shoppingCartLayout.addView(salmbergsItem, shoppingCartLayout.childCount)
+                        logMessage(change.document.toString())
+                    }
 
-                        } else {
-                            Log.d(ContentValues.TAG, "Current data: null")
-                        }
+                    DocumentChange.Type.MODIFIED -> {
+                        // Handle modified document
+                    }
+
+                    DocumentChange.Type.REMOVED -> {
+                        // Handle removed document
                     }
                 }
             }
+        }
     }
+
+
     private fun setBottomOrderNavigationMenu(){
         bottomOrderNavMenu = binding.bottomOrderNavMenu
         bottomOrderNavMenu.setOnItemSelectedListener {it: MenuItem ->
