@@ -1,7 +1,9 @@
 package com.example.foodhero.database
 import com.example.foodhero.global.USER_COLLECTION
 import com.example.foodhero.struct.User
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GetTokenResult
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
@@ -53,6 +55,10 @@ class AuthRepo {
 
     fun signOut() {
         auth.signOut()
+    }
+
+    fun userHasAdminRole(): Task<GetTokenResult> {
+        return auth.currentUser!!.getIdToken(false)
     }
 
     fun isUserLoggedIn() : Boolean {

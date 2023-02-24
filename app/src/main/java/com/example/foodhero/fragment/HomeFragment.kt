@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 import java.lang.Integer.min
 
 
-class HomeFragment(intent: Intent) : BaseFragment() {
+class HomeFragment: BaseFragment() {
     private lateinit var recyclerViewRestaurant: RecyclerView
     private lateinit var recyclerViewMenu: RecyclerView
     private lateinit var restaurantAdapter: RestaurantAdapter

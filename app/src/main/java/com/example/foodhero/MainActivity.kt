@@ -1,4 +1,5 @@
 package com.example.foodhero
+import android.Manifest.permission.*
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -27,28 +28,18 @@ import com.example.foodhero.global.*
 import com.example.foodhero.struct.FoodHeroInfo
 import com.example.foodhero.struct.PurchasedItem
 import com.example.foodhero.widgets.MessageToUser
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.GetTokenResult
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.StorageReference
 import java.util.*
 import kotlin.collections.ArrayList
 
-//https://nominatim.openstreetmap.org/search?street=pilkington%20avenue&city=birmingham&format=json
-//https://nominatim.openstreetmap.org/search?street=pilkington avenue&city=birmingham&format=json
-//https://medium.com/@myohzx/firebase-security-rules-de964fb553cf
-/*
-*   street=<housenumber> <streetname>
-    city=<city>
-    county=<county>
-    state=<state>
-    country=<country>
-    postalcode=<postalcode>
-* */
 class MainActivity : AppCompatActivity() {
     private lateinit var firestoreViewModel: FirestoreViewModel
     private lateinit var onBackPressedCallback: OnBackPressedCallback
     private lateinit var permissionsList: ArrayList<String>
-    private var permissionDialogIsOpen:Boolean = false
     private lateinit var bottomNavMenu: BottomNavigationView
     private var foodHeroInfo = FoodHeroInfo()
     private var permissionsCount = 0
@@ -59,8 +50,9 @@ class MainActivity : AppCompatActivity() {
     private var currentFragment:FragmentInstance? = null
     private val intentFilter = IntentFilter()
     private var permissionsStr = arrayOf<String>(
-        android.Manifest.permission.ACCESS_FINE_LOCATION,
-        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+        ACCESS_FINE_LOCATION,
+        ACCESS_COARSE_LOCATION,
+        POST_NOTIFICATIONS
     )
     private var permissionsLauncher =
         registerForActivityResult<Array<String>, Map<String, Boolean>>(
@@ -68,45 +60,59 @@ class MainActivity : AppCompatActivity() {
             ActivityResultCallback<Map<String, Boolean>?> {
                 val list: ArrayList<Boolean> = ArrayList(it.values)
                 permissionsList = ArrayList()
+                val missingPermission = ArrayList<String>()
                 permissionsCount = 0
                 for (i in 0 until list.size) {
                     if (shouldShowRequestPermissionRationale(permissionsStr[i])) {
                         permissionsList.add(permissionsStr[i])
                     } else if(!hasPermission(this, permissionsStr[i])) {
+                        missingPermission.add(permissionsStr[i])
                         permissionsCount++
                     }
                 }
                 if (permissionsList.size > 0) {
                     askForPermissions(permissionsList)
-                } else if (permissionsCount > 0) {
-                    showPermissionDialog()
+                }else if (missingPermission.size > 0 &&
+                            (missingPermission.contains(ACCESS_FINE_LOCATION) ||
+                            missingPermission.contains(ACCESS_COARSE_LOCATION))) {
                     setCityOfChoice(getString(R.string.user_did_not_allow_geo))
-                    navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
+                    launchScreenBasedOnSecurityLevel()
                 }else{
                     shouldSetSharedPreference()
-                    navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
+                    launchScreenBasedOnSecurityLevel()
                 }
             })
 
-    override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState)
-        if(auth.isUserLoggedIn()){
-            setCloseAppCallback()
-            //logMessage("on create main")
-            setContentView(R.layout.activity_main)
-            setMessageToUser()
-            setViewModel()
-            setDataBinding()
-            setBottomNavigationMenu()
-            setOnBackNavigation()
-            loadListOfCitiesWhereFoodHeroExist()
-            launchPermissionRequest()
-            Toast.makeText(applicationContext, "Välkommen tillbaka ${auth.getEmail()}.", Toast.LENGTH_SHORT).show()
-        }
-        else{
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if(!auth.isUserLoggedIn()){
             moveToActivityAndFinish(Intent(this,LoginActivity::class.java))
         }
+        else{ launchPermissionRequest() }
+    }
 
+    private fun launchScreenBasedOnSecurityLevel(){
+        auth.userHasAdminRole().addOnSuccessListener(
+            OnSuccessListener<GetTokenResult> { result ->
+                val isAdmin: Any? = result.claims[CLAIMS_ROLE]
+                if(isAdmin != null && isAdmin == ADMIN_USER){
+                    moveToActivityAndFinish(Intent(this,RestAdminActivity::class.java))
+                }
+                else{ startMainApp() }
+            })
+    }
 
+    private fun startMainApp(){
+        setCloseAppCallback()
+        setContentView(R.layout.activity_main)
+        setMessageToUser()
+        setViewModel()
+        setDataBinding()
+        setBottomNavigationMenu()
+        setOnBackNavigation()
+        loadListOfCitiesWhereFoodHeroExist()
+        Toast.makeText(applicationContext, "Välkommen tillbaka ${auth.getEmail()}.", Toast.LENGTH_SHORT).show()
+        navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
     }
 
       /*
@@ -207,10 +213,10 @@ class MainActivity : AppCompatActivity() {
         if(newPermissionStr.isNotEmpty()) {
             permissionsLauncher.launch(newPermissionStr)
         }
-        else if(!permissionDialogIsOpen) {
+        /*else if(!permissionDialogIsOpen) {
             permissionDialogIsOpen = true
             showPermissionDialog()
-        }
+        }*/
     }
 
     private fun hasPermission(context: Context, permissionStr: String): Boolean {
@@ -246,14 +252,14 @@ class MainActivity : AppCompatActivity() {
         if(isSameFragment(fragment))return
         currentFragment = fragment
         when(fragment){
-            FragmentInstance.FRAGMENT_MAIN_HOME->applyTransaction(HomeFragment(intent))
+            FragmentInstance.FRAGMENT_MAIN_HOME->applyTransaction(HomeFragment())
             else -> {}
         }
     }
 
     private fun applyTransaction(frag: Fragment){
         supportFragmentManager.beginTransaction().apply {
-            add(R.id.homeLayout,frag).commit()
+            replace(R.id.homeLayout,frag).commit()
         }
     }
 
