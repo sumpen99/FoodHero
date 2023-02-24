@@ -38,10 +38,31 @@ class AdminActivity : AppCompatActivity() {
                 auth.signOut()
             }
             R.id.SubmitButton -> {
-                val nameField = findViewById<EditText>(R.id.EditMailText)
-                val locationField = findViewById<EditText>(R.id.EditNameText)
-                val descriptionField = findViewById<EditText>(R.id.EditPhoneText)
-                val restaurant = Restaurant(name = nameField.text.toString(), adress = locationField.text.toString(), description = descriptionField.text.toString())
+                val nameField = findViewById<EditText>(R.id.nameEditText)
+                val countryField = findViewById<EditText>(R.id.countryEditText)
+                val cityField = findViewById<EditText>(R.id.cityEditText)
+                val orgNumberField = findViewById<EditText>(R.id.orgNumberEditText)
+                val adressField = findViewById<EditText>(R.id.adressEditText)
+                val phonenumberField = findViewById<EditText>(R.id.phonenumberEditText)
+                val emailField = findViewById<EditText>(R.id.emailEditText)
+                val descriptionEditTextField = findViewById<EditText>(R.id.descriptionEditText)
+                val geohashField = findViewById<EditText>(R.id.geohashEditText)
+                val restaurantIdField = findViewById<EditText>(R.id.restaurantIdEditText)
+                val lonField = findViewById<EditText>(R.id.lonEditText)
+                val latField = findViewById<EditText>(R.id.latEditText)
+                //val cathegoriesDishesField = findViewById<EditText>(R.id.cathegoriesDishesEditText)
+                //val keyWordsField = findViewById<EditText>(R.id.keyWordsEditText)
+
+
+
+                val restaurant = Restaurant(name = nameField.text.toString(), country = countryField.text.toString(),
+                    city = cityField.text.toString(), orgNumber= orgNumberField.text.toString(),
+                    adress = adressField.text.toString(), phonenumber= phonenumberField.text.toString(),
+                    email = emailField.text.toString(), description= descriptionEditTextField.text.toString(),
+                    geohash = geohashField.text.toString(), restaurantId = restaurantIdField.text.toString(),
+                    lon = lonField.text.toString().toDouble(),lat = latField.text.toString().toDouble())
+
+
                 firestore.saveRestaurant(restaurant)
             }
         }
