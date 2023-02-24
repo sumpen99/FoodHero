@@ -158,3 +158,4 @@
         app:layout_constraintEnd_toStartOf="@+id/ImageRestLogButton"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/applogoblack" />
+</androidx.constraintlayout.widget.ConstraintLayout>
