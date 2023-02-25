@@ -6,16 +6,11 @@ import com.example.foodhero.struct.MenuItem
 import com.example.foodhero.struct.Restaurant
 import com.example.foodhero.struct.User
 import com.firebase.geofire.GeoFireUtils
-
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.tasks.Task
-
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.RemoteMessage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
@@ -23,23 +18,7 @@ import com.google.firebase.storage.ktx.storage
 class FirestoreRepository {
     private val firestoreDB = FirebaseFirestore.getInstance()
     private val firestoreStorage = Firebase.storage.reference
-    private val firestoreMessage = FirebaseMessaging.getInstance()
 
-    fun token(): Task<String> {
-        return firestoreMessage.token
-    }
-
-    fun refresh(){
-        //return firestoreDB.collection(RESTAURANT_OWNER_COLLECTION).document(restaurant.restaurantId!!).
-    }
-
-    fun subscribe(topic:String): Task<Void> {
-        return firestoreMessage.subscribeToTopic(topic)
-    }
-
-    fun send(msg: RemoteMessage){
-        firestoreMessage.send(msg)
-    }
 
     fun saveMenuItem(restaurantId:String,menuItem: MenuItem): Task<Void> {
         val documentReference = firestoreDB.collection(RESTAURANT_COLLECTION)

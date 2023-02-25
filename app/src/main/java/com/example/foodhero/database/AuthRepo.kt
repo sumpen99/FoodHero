@@ -57,7 +57,7 @@ class AuthRepo {
         auth.signOut()
     }
 
-    fun userHasAdminRole(): Task<GetTokenResult> {
+    fun userCustomClaims(): Task<GetTokenResult> {
         return auth.currentUser!!.getIdToken(false)
     }
 

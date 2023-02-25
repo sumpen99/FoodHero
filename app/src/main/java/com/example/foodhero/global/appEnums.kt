@@ -9,6 +9,11 @@ enum class FragmentInstance {
 
 }
 
+enum class MessageResponder{
+    RESTAURANT,
+    CUSTOMER
+}
+
 enum class ActivityInstance {
     ACTIVITY_FAVORITE,
     ACTIVITY_ORDER,

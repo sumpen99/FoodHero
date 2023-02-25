@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun launchScreenBasedOnSecurityLevel(){
-        auth.userHasAdminRole().addOnSuccessListener(
+        auth.userCustomClaims().addOnSuccessListener(
             OnSuccessListener<GetTokenResult> { result ->
                 val isAdmin: Any? = result.claims[CLAIMS_ROLE]
                 if(isAdmin != null && isAdmin == ADMIN_USER){

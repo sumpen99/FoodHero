@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.example.foodhero.adapter.RestaurantAdapter
 import com.example.foodhero.adapter.RestaurantMenuAdapter
 import com.example.foodhero.global.INFO_DOCUMENT_FOODHERO
-import com.example.foodhero.global.SENDER_ID
 import com.example.foodhero.global.ServerResult
 import com.example.foodhero.global.logMessage
 import com.example.foodhero.struct.*
@@ -16,68 +15,12 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.tasks.await
 
 class FirestoreViewModel {
     var serverDetails = ArrayList<ServerDetails>()
     var firebaseRepository = FirestoreRepository()
     var savedRestaurants : MutableLiveData<List<Restaurant>?> = MutableLiveData()
-    private var messageId = 0
-
-    suspend fun getRegistrationToken():String{
-        return try {
-            firebaseRepository.token().await()
-        }
-        catch (e: Exception) {
-            return ""
-        }
-    }
-
-    suspend fun subscribeToTopic(topic:String){
-        firebaseRepository.subscribe(topic)
-            .addOnCompleteListener { task ->
-                var msg = "Subscribed"
-                if (!task.isSuccessful) {
-                    msg = "Subscribe failed"
-                }
-                logMessage(msg)
-            }.await()
-    }
-
-    fun sendMessage(){
-        val msg = RemoteMessage.Builder("$SENDER_ID@fcm.googleapis.com")
-            .setMessageId(messageId.toString())
-            .addData("New Message","Hello From The Other Side")
-            .addData("My Action","Say Hey")
-            .build()
-        firebaseRepository.send(msg)
-        messageId+=1
-    }
-
-    fun refreshToken(token:String){
-        val updatedToken: MutableMap<String, String> = mutableMapOf(
-            "token" to token,
-        )
-        firebaseRepository.refresh()
-    }
-
-    /*
-    *
-    * fun runtimeEnableAutoInit() {
-        Firebase.messaging.isAutoInitEnabled = true
-    }
-
-    fun deviceGroupUpstream() {
-        val to = "a_unique_key" // the notification key
-        val msgId = AtomicInteger()
-        Firebase.messaging.send(remoteMessage(to) {
-            setMessageId(msgId.get().toString())
-            addData("hello", "world")
-        })
-    }
-    *
-    * */
 
     private fun clearServerDetails(){
         serverDetails.clear()
