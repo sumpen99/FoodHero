@@ -1,12 +1,11 @@
 package com.example.foodhero.messaging
-import android.annotation.SuppressLint
 import android.app.*
-import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.media.AudioAttributes
 import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -16,19 +15,17 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.android.volley.AuthFailureError
 import com.android.volley.Request.Method.POST
-import com.example.foodhero.global.SENDER_ID
-import com.google.firebase.messaging.FirebaseMessaging
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.example.foodhero.MainActivity
-import com.example.foodhero.R
 import com.example.foodhero.global.*
 import com.google.android.gms.tasks.Task
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import org.json.JSONObject
 import java.util.*
-
+//https://developer.android.com/develop/ui/views/notifications/build-notification
 class FirestoreMessaging: FirebaseMessagingService() {
      //When app is in foreground the onMessageReceived always calls.
      //When app is in background the onMessageReceived will be called
@@ -40,12 +37,13 @@ class FirestoreMessaging: FirebaseMessagingService() {
 
     companion object {
         private var messageId = 0
+        private var myToken = ""
         private lateinit var callbackOnTokenRefresh:((args:String)->Unit)
-        private lateinit var messageResponder:MessageResponder
+        private lateinit var callbackOnMessageRecieved:((args:RemoteMessage)->Unit)
         private var instance: FirestoreMessaging? = null
         private fun isCallbackOnTokenRefreshInitialized() = ::callbackOnTokenRefresh.isInitialized
+        private fun isCallbackOnMessageRecievedInitialized() = ::callbackOnMessageRecieved.isInitialized
 
-        @Synchronized
         fun getInstance(): FirestoreMessaging {
             if(instance == null) {
                 instance = FirestoreMessaging()
@@ -59,6 +57,10 @@ class FirestoreMessaging: FirebaseMessagingService() {
 
         fun setTokenRefreshCallback(callback:(args:String)->Unit){
             callbackOnTokenRefresh = callback
+        }
+
+        fun setMessagedRecievedCallback(callback:(args:RemoteMessage)->Unit){
+            callbackOnMessageRecieved = callback
         }
 
         fun refreshToken(){
@@ -75,6 +77,39 @@ class FirestoreMessaging: FirebaseMessagingService() {
                 callbackOnTokenRefresh(token)
             }
         }
+
+        fun messageReceived(remoteMessage: RemoteMessage){
+            if(isCallbackOnMessageRecievedInitialized()){
+                callbackOnMessageRecieved(remoteMessage)
+            }
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun setupChannels(notificationManager: NotificationManager){
+            val sound: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            val adminChannelName: CharSequence = "New notification"
+            val adminChannelDescription = "Device to device notification "
+
+            val adminChannel = NotificationChannel(
+                ADMIN_CHANNEL_ID,
+                adminChannelName,
+                NotificationManager.IMPORTANCE_HIGH
+            )
+
+            val attributes = AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .build()
+
+            adminChannel.description = adminChannelDescription
+            adminChannel.enableLights(true)
+            adminChannel.lightColor = Color.RED
+            adminChannel.enableVibration(true)
+            adminChannel.setSound(sound,attributes)
+
+            notificationManager.createNotificationChannel(adminChannel)
+        }
+
     }
 
     override fun onNewToken(token: String) {
@@ -86,10 +121,8 @@ class FirestoreMessaging: FirebaseMessagingService() {
     }
 
      override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        logMessage("From: ${remoteMessage.from}")
         if (remoteMessage.data.isNotEmpty()) {
-            logMessage("Message data payload: ${remoteMessage.data}")
-            handleNow(remoteMessage)
+            messageReceived(remoteMessage)
 
             //if (/* Check if data needs to be processed by long running job */ true) {
                 // For long-running tasks (10 seconds or more) use WorkManager.
@@ -106,72 +139,45 @@ class FirestoreMessaging: FirebaseMessagingService() {
         // message, here is where that should be initiated. See sendNotification method below.
     }
 
-    @SuppressLint("UnspecifiedImmutableFlag")
-    private fun handleNow(remoteMessage:RemoteMessage) {
-        val intent = Intent(this,MainActivity::class.java)
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val notificationID = Random().nextInt(3000);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            setupChannels(notificationManager);
-        }
-
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT or FLAG_IMMUTABLE)
-        val largeIcon = BitmapFactory.decodeResource(resources, R.drawable.applogowhite);
-        val notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-        val notificationBuilder = NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
-            .setSmallIcon(R.drawable.applogoblack)
-            .setLargeIcon(largeIcon)
-            .setContentTitle(remoteMessage.data.get("title"))
-            .setContentText(remoteMessage.data.get("message"))
-            .setAutoCancel(true)
-            .setSound(notificationSoundUri)
-            .setContentIntent(pendingIntent);
-
-        notificationBuilder.color = resources.getColor(R.color.background_medium_dark);
-        notificationManager.notify(notificationID, notificationBuilder.build());
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun setupChannels(notificationManager:NotificationManager?){
-        val adminChannelName: CharSequence = "New notification"
-        val adminChannelDescription = "Device to device notification "
-
-        val adminChannel = NotificationChannel(
-            ADMIN_CHANNEL_ID,
-            adminChannelName,
-            NotificationManager.IMPORTANCE_HIGH
-        )
-
-        adminChannel.description = adminChannelDescription
-        adminChannel.enableLights(true)
-        adminChannel.lightColor = Color.RED
-        adminChannel.enableVibration(true)
-
-        notificationManager?.createNotificationChannel(adminChannel)
-    }
-
-    fun sendNotificationToDevice(){
-        val tokenToSpecificDevice = "eClCIq20RhOQ4auNuXFwH7:APA91bElu0_Z57eUjLmSEEBcOvUr0ZIwrwoSGJBsdfGP3N1b1HJIjw0nfX3UXp6sHCH5ghXuUf7PIVEQ5LodIo6B9pLYLGMe9iwlkBCVI0ZomLgsk-aTMPATgMlElwturpKqd9yCcpIt"
-        NOTIFICATION_TITLE = "LETS TRY IT"
-        NOTIFICATION_MESSAGE = "IF SOMEONE SEES THIS, I GUESS IT WORKED"
+    fun buildJsonRespondBody(
+        tokenToSpecificDevice:String,):JSONObject?{
+        NOTIFICATION_TITLE = "Order Bekräftelse"
+        NOTIFICATION_MESSAGE = "Maten är på väg"
 
         val notification = JSONObject()
         val notifcationBody = JSONObject()
-        try {
-            notifcationBody.put("title", NOTIFICATION_TITLE);
-            notifcationBody.put("message", NOTIFICATION_MESSAGE);
-            notification.put("to", tokenToSpecificDevice);
-            notification.put("data", notifcationBody);
+        return try {
+            notifcationBody.put("title", NOTIFICATION_TITLE)
+            notifcationBody.put("message", NOTIFICATION_MESSAGE)
+            notification.put("to", tokenToSpecificDevice)
+            notification.put("data", notifcationBody)
         } catch (err:Exception) {
             logMessage(err.message.toString())
+            null
         }
-        sendNotificationJson(notification);
     }
 
-    fun sendNotificationToSubscribedDevices(){
+    fun buildJsonOrderBody(
+        tokenToRestaurant:String,
+        tokenToRespondTo:String,):JSONObject?{
+        NOTIFICATION_TITLE = "Order"
+        NOTIFICATION_MESSAGE = "Jag vill ha mat"
+
+        val notification = JSONObject()
+        val notifcationBody = JSONObject()
+        return try {
+            notifcationBody.put("title", NOTIFICATION_TITLE)
+            notifcationBody.put("message", NOTIFICATION_MESSAGE)
+            notifcationBody.put("token", tokenToRespondTo)
+            notification.put("to", tokenToRestaurant)
+            notification.put("data", notifcationBody)
+        } catch (err:Exception) {
+            logMessage(err.message.toString())
+            null
+        }
+    }
+
+    fun buildJsonTopicAndDevicesBody():JSONObject?{
         val tokenToSpecificDevice = "en56SlpXTAKOFY5VpgLpSy:APA91bF7e_13aCXnX1XQVEvsdB6kWDtILixh-9pDVzDK4e8afOwLfX_bqJycFELMOp4A1Ub61ZvRdeXOOCYw-V0sT2eDwegm4jYTQ5N36s-Tj0Tp_1UdcFY9znes1abOmYlPjXh2Sapm"
         TOPIC = "/$DELIVERY_TOPIC/${tokenToSpecificDevice}"; //topic must match with what the receiver subscribed to
         NOTIFICATION_TITLE = "LETS TRY IT"
@@ -179,18 +185,18 @@ class FirestoreMessaging: FirebaseMessagingService() {
 
         val notification = JSONObject()
         val notifcationBody = JSONObject()
-        try {
+        return try {
             notifcationBody.put("title", NOTIFICATION_TITLE);
             notifcationBody.put("message", NOTIFICATION_MESSAGE);
             notification.put("to", TOPIC);
             notification.put("data", notifcationBody);
         } catch (err:Exception) {
             logMessage(err.message.toString())
+            null
         }
-        sendNotificationJson(notification);
     }
 
-    private fun sendNotificationJson(notification:JSONObject){
+    fun sendJsonNotification(context:Context,notification:JSONObject){
         val jsonObjectRequest:JsonObjectRequest = object : JsonObjectRequest(
             POST,
             FCM_API,
@@ -209,8 +215,7 @@ class FirestoreMessaging: FirebaseMessagingService() {
                 return params
             }
         }
-        //if this doesnt work change back to activity
-        Singleton.getInstance(applicationContext)?.addToRequestQueue(jsonObjectRequest);
+        Singleton.getInstance(context)?.addToRequestQueue(jsonObjectRequest);
     }
 
     private fun scheduleJob() {
@@ -248,6 +253,63 @@ class FirestoreMessaging: FirebaseMessagingService() {
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
     }
+
+    /*
+    *
+    * /*
+        * val snoozeIntent = Intent(this, MyBroadcastReceiver::class.java).apply {
+        action = ACTION_SNOOZE
+        putExtra(EXTRA_NOTIFICATION_ID, 0)
+        }
+        val snoozePendingIntent: PendingIntent =
+        PendingIntent.getBroadcast(this, 0, snoozeIntent, 0)
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.notification_icon)
+            .setContentTitle("My notification")
+            .setContentText("Hello World!")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
+            .addAction(R.drawable.ic_snooze, getString(R.string.snooze),
+                    snoozePendingIntent)
+        * */
+    *
+    *
+    *
+    * @RequiresApi(Build.VERSION_CODES.O)
+    private fun replyToNotification(){
+        val KEY_TEXT_REPLY = "key_text_reply"
+        var replyLabel: String = resources.getString(R.string.reply_label)
+        var remoteInput: RemoteInput = RemoteInput.Builder(KEY_TEXT_REPLY).run {
+            setLabel(replyLabel)
+            build()
+        }
+
+        var replyPendingIntent: PendingIntent =
+            PendingIntent.getBroadcast(applicationContext,
+                conversation.getConversationId(),
+                getMessageReplyIntent(conversation.getConversationId()),
+                PendingIntent.FLAG_UPDATE_CURRENT)
+
+        var action: NotificationCompat.Action =
+            NotificationCompat.Action.Builder(R.drawable.ic_stat_ic_notification_foreground,
+                getString(R.string.reply_label), replyPendingIntent)
+                .addRemoteInput(remoteInput)
+                .build()
+
+        val newMessageNotification = Notification.Builder(applicationContext, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_message)
+            .setContentTitle(getString(R.string.title))
+            .setContentText(getString(R.string.content))
+            .addAction(action)
+            .build()
+
+            with(NotificationManagerCompat.from(this)) {
+                notificationManager.notify(notificationId, newMessageNotification)
+            }
+    }
+    *
+    * */
+
 
     /*fun token(): Task<String> {
         return firestoreMessage.token

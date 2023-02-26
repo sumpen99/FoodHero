@@ -8,11 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.Toast
-import com.example.foodhero.MainActivity
 import com.example.foodhero.R
 import com.example.foodhero.databinding.ActivityBuyBinding
 import com.example.foodhero.global.APP_ACTION_LOG_OUT
-import com.example.foodhero.global.moveToActivityAndFinish
 import com.example.foodhero.global.moveToActivityAndPutOnTop
 import com.example.foodhero.global.moveToActivityAndReOrder
 import com.google.android.material.bottomnavigation.BottomNavigationView

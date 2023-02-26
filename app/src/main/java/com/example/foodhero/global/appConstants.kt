@@ -15,8 +15,6 @@ const val packageName = "com.example.foodhero"
 const val appFileProvider = "com.example.foodhero.fileprovider"
 const val SEARCH_TIME_OUT = 1000
 
-
-
 /*
 *   ##########################################################################
 *                            PATH TO FIREBASE COLLECTION

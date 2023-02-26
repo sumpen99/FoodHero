@@ -16,4 +16,5 @@
     <color name="background_dark">#121212</color>
     <color name="background_moist_dark">#383434</color>
     <color name="background_medium_dark">#424242</color>
+    <color name="colorAccent">#FFA000</color>
 </resources>

@@ -66,6 +66,7 @@ class OrderActivity : AppCompatActivity() {
 
         getUserShoppingCart()
 
+
     }
 
     private fun setCloseAppCallback(){
@@ -125,7 +126,6 @@ class OrderActivity : AppCompatActivity() {
                             null
                         )
                         shoppingCartLayout.addView(salmbergsItem, shoppingCartLayout.childCount)
-                        logMessage(change.document.toString())
                     }
 
                     DocumentChange.Type.MODIFIED -> {
