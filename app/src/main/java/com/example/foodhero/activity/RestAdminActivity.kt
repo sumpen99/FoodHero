@@ -95,6 +95,7 @@ class RestAdminActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             FirestoreMessaging.setupChannels(notificationManager)
         }
+        logMessage(remoteMessage.data.get("orderDetails").toString())
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE)
         val largeIcon = BitmapFactory.decodeResource(resources, R.drawable.applogowhite)
@@ -109,7 +110,7 @@ class RestAdminActivity : AppCompatActivity() {
             .setContentIntent(pendingIntent)
         notificationBuilder.color = resources.getColor(R.color.background_medium_dark)
         notificationManager.notify(notificationID, notificationBuilder.build())
-        respondToOrder(remoteMessage.data.get("token"))
+        //respondToOrder(remoteMessage.data.get("token"))
     }
 
     private fun respondToOrder(respondToToken:String?){

@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
 //https://developer.android.com/develop/ui/views/notifications/build-notification
@@ -123,7 +124,6 @@ class FirestoreMessaging: FirebaseMessagingService() {
      override fun onMessageReceived(remoteMessage: RemoteMessage) {
         if (remoteMessage.data.isNotEmpty()) {
             messageReceived(remoteMessage)
-
             //if (/* Check if data needs to be processed by long running job */ true) {
                 // For long-running tasks (10 seconds or more) use WorkManager.
                 //scheduleJob()
@@ -140,7 +140,6 @@ class FirestoreMessaging: FirebaseMessagingService() {
         tokenToSpecificDevice:String,):JSONObject?{
         NOTIFICATION_TITLE = "Order Bekräftelse"
         NOTIFICATION_MESSAGE = "Maten är på väg"
-
         val notification = JSONObject()
         val notifcationBody = JSONObject()
         return try {
@@ -159,13 +158,20 @@ class FirestoreMessaging: FirebaseMessagingService() {
         tokenToRespondTo:String,):JSONObject?{
         NOTIFICATION_TITLE = "Order"
         NOTIFICATION_MESSAGE = "Jag vill ha mat"
-
+        val orderInfo: MutableMap<String, String> = mutableMapOf(
+            "namn" to "Fredrik Sundström",
+            "adress" to "Muraregatan 14A",
+            "stad" to "Karlstad",
+            "postkod" to "652 28",
+            "telefon" to "0703977634",
+            "token" to tokenToRespondTo
+            )
         val notification = JSONObject()
         val notifcationBody = JSONObject()
         return try {
             notifcationBody.put("title", NOTIFICATION_TITLE)
             notifcationBody.put("message", NOTIFICATION_MESSAGE)
-            notifcationBody.put("token", tokenToRespondTo)
+            notifcationBody.put("orderDetails", orderInfo)
             notification.put("to", tokenToRestaurant)
             notification.put("data", notifcationBody)
         } catch (err:Exception) {
