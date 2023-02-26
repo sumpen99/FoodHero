@@ -82,7 +82,7 @@ class RestAdminActivity : AppCompatActivity() {
         FirestoreMessaging.setMessagedRecievedCallback {
             handleMessageReceived(it)
         }
-        
+
         FirestoreMessaging.initFirebaseMessaging()
         FirestoreMessaging.refreshToken()
   }
