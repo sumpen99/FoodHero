@@ -64,6 +64,8 @@ obj/
 *.iws
 /out/
 
+app/src/main/java/com/example/foodhero/global/appEnv.kt
+
 # User-specific configurations
 .idea/
 .idea/caches/

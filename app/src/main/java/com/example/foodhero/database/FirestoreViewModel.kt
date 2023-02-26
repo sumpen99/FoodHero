@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.foodhero.adapter.RestaurantAdapter
 import com.example.foodhero.adapter.RestaurantMenuAdapter
 import com.example.foodhero.global.INFO_DOCUMENT_FOODHERO
+import com.example.foodhero.global.RESTAURANT_COLLECTION
 import com.example.foodhero.global.ServerResult
 import com.example.foodhero.global.logMessage
 import com.example.foodhero.struct.*
@@ -42,6 +43,13 @@ class FirestoreViewModel {
             }
         }
         //return serverDetails.isEmpty()
+    }
+
+    fun updateRestaurantNotificationReciever(token:String,restaurantId:String):Task<Void>{
+        val updates: MutableMap<String, Any> = mutableMapOf(
+            "sendNotificationTo" to token,
+        )
+        return firebaseRepository.getSavedRestaurants().document(restaurantId).update(updates)
     }
 
     fun saveUserToFirebase(user:User):Task<Void>{

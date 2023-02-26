@@ -15,15 +15,7 @@ const val packageName = "com.example.foodhero"
 const val appFileProvider = "com.example.foodhero.fileprovider"
 const val SEARCH_TIME_OUT = 1000
 
-const val FCM_API = "https://fcm.googleapis.com/fcm/send"
-const val CONTENT_TYPE = "application/json"
-const val NOTIFICATION_TAG = "NOTIFICATION TAG"
-const val ADMIN_CHANNEL_ID = "admin_channel"
-const val SENDER_ID = "362390610108"
-const val PROJECT_ID = "foodhero-88029"
-const val DELIVERY_TOPIC = "order"
-const val SERVER_KEY = "AAAAVGAp4Lw:APA91bGczWllhsuaMNKKK7xChR4NtvSMKs_MiHZDGiPaBhvGIPLIwtDCBye5vY7CFQZeQxF_Ik_-PbLstO6nY-E0SzuX2T8ex4Yk1NJJ7wc6Q_aTHkMPmE38qSpdQ7OxS6SqbbL0rsS5"
-const val FIREBASE_SERVER_KEY = "key=$SERVER_KEY"
+
 
 /*
 *   ##########################################################################

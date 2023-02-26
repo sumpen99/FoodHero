@@ -33,102 +33,56 @@ class FirestoreMessaging: FirebaseMessagingService() {
      //When app is in foreground the onMessageReceived always calls.
      //When app is in background the onMessageReceived will be called
      // when the payload only has the data property (it doesn't exist the notification property).
-    private val firestoreMessage = FirebaseMessaging.getInstance()
-    private lateinit var messageResponder:MessageResponder
+    private var firestoreMessage:FirebaseMessaging? = null
     var NOTIFICATION_TITLE: String? = null
     var NOTIFICATION_MESSAGE: String? = null
     var TOPIC: String? = null
-    private var messageId = 0
-    private fun isMessageResponderInitialized() = ::messageResponder.isInitialized
 
-    /*fun token(): Task<String> {
-        return firestoreMessage.token
-    }
+    companion object {
+        private var messageId = 0
+        private lateinit var callbackOnTokenRefresh:((args:String)->Unit)
+        private lateinit var messageResponder:MessageResponder
+        private var instance: FirestoreMessaging? = null
+        private fun isCallbackOnTokenRefreshInitialized() = ::callbackOnTokenRefresh.isInitialized
 
-    fun refresh(){
-        //return firestoreDB.collection(RESTAURANT_OWNER_COLLECTION).document(restaurant.restaurantId!!).
-    }
-
-    fun subscribe(topic:String): Task<Void> {
-        return firestoreMessage.subscribeToTopic(topic)
-    }
-
-    fun send(msg: RemoteMessage){
-        firestoreMessage.send(msg)
-
-
-        suspend fun getRegistrationToken():String{
-        return try {
-            firebaseRepository.token().await()
+        @Synchronized
+        fun getInstance(): FirestoreMessaging {
+            if(instance == null) {
+                instance = FirestoreMessaging()
+            }
+            return instance!!
         }
-        catch (e: Exception) {
-            return ""
-        }
-    }
 
-    suspend fun subscribeToTopic(topic:String){
-        firebaseRepository.subscribe(topic)
-            .addOnCompleteListener { task ->
-                var msg = "Subscribed"
-                if (!task.isSuccessful) {
-                    msg = "Subscribe failed"
+        fun initFirebaseMessaging(){
+            instance?.firestoreMessage = FirebaseMessaging.getInstance()
+        }
+
+        fun setTokenRefreshCallback(callback:(args:String)->Unit){
+            callbackOnTokenRefresh = callback
+        }
+
+        fun refreshToken(){
+            instance?.loadToken()?.addOnCompleteListener {
+                if(it.isSuccessful){
+                    val token = it.result
+                    onTokenRefresh(token)
                 }
-                logMessage(msg)
-            }.await()
-    }
+            }
+        }
 
-    fun sendMessage(){
-        val msg = RemoteMessage.Builder("$SENDER_ID@fcm.googleapis.com")
-            .setMessageId(messageId.toString())
-            .addData("New Message","Hello From The Other Side")
-            .addData("My Action","Say Hey")
-            .build()
-        firebaseRepository.send(msg)
-        messageId+=1
-    }
-
-    fun refreshToken(token:String){
-        val updatedToken: MutableMap<String, String> = mutableMapOf(
-            "token" to token,
-        )
-        firebaseRepository.refresh()
-    }
-
-    /*
-    *
-    * fun runtimeEnableAutoInit() {
-        Firebase.messaging.isAutoInitEnabled = true
-    }
-
-    fun deviceGroupUpstream() {
-        val to = "a_unique_key" // the notification key
-        val msgId = AtomicInteger()
-        Firebase.messaging.send(remoteMessage(to) {
-            setMessageId(msgId.get().toString())
-            addData("hello", "world")
-        })
-    }
-    *
-    * */
-    }*/
-
-    fun setNotificationResponder(msgResponder: MessageResponder){
-        messageResponder = msgResponder
-    }
-
-    private fun isRestaurantOwner():Boolean{
-        return (isMessageResponderInitialized() && messageResponder == MessageResponder.RESTAURANT)
+        fun onTokenRefresh(token:String){
+            if(isCallbackOnTokenRefreshInitialized()){
+                callbackOnTokenRefresh(token)
+            }
+        }
     }
 
     override fun onNewToken(token: String) {
-        if(isRestaurantOwner()){
-            logMessage("Refreshed token: $token")
-            sendRegistrationToServer(token)
-        }
+        onTokenRefresh(token)
     }
 
-    fun loadToken():Task<String>{
-        return firestoreMessage.token
+    private fun loadToken():Task<String>{
+        return firestoreMessage!!.token
     }
 
      override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -199,13 +153,8 @@ class FirestoreMessaging: FirebaseMessagingService() {
         notificationManager?.createNotificationChannel(adminChannel)
     }
 
-    private fun sendRegistrationToServer(token: String?) {
-
-        logMessage("sendRegistrationTokenToServer($token)")
-    }
-
     fun sendNotificationToDevice(){
-        val tokenToSpecificDevice = "en56SlpXTAKOFY5VpgLpSy:APA91bF7e_13aCXnX1XQVEvsdB6kWDtILixh-9pDVzDK4e8afOwLfX_bqJycFELMOp4A1Ub61ZvRdeXOOCYw-V0sT2eDwegm4jYTQ5N36s-Tj0Tp_1UdcFY9znes1abOmYlPjXh2Sapm"
+        val tokenToSpecificDevice = "eClCIq20RhOQ4auNuXFwH7:APA91bElu0_Z57eUjLmSEEBcOvUr0ZIwrwoSGJBsdfGP3N1b1HJIjw0nfX3UXp6sHCH5ghXuUf7PIVEQ5LodIo6B9pLYLGMe9iwlkBCVI0ZomLgsk-aTMPATgMlElwturpKqd9yCcpIt"
         NOTIFICATION_TITLE = "LETS TRY IT"
         NOTIFICATION_MESSAGE = "IF SOMEONE SEES THIS, I GUESS IT WORKED"
 
@@ -299,6 +248,77 @@ class FirestoreMessaging: FirebaseMessagingService() {
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
     }
+
+    /*fun token(): Task<String> {
+        return firestoreMessage.token
+    }
+
+    fun refresh(){
+        //return firestoreDB.collection(RESTAURANT_OWNER_COLLECTION).document(restaurant.restaurantId!!).
+    }
+
+    fun subscribe(topic:String): Task<Void> {
+        return firestoreMessage.subscribeToTopic(topic)
+    }
+
+    fun send(msg: RemoteMessage){
+        firestoreMessage.send(msg)
+
+
+        suspend fun getRegistrationToken():String{
+        return try {
+            firebaseRepository.token().await()
+        }
+        catch (e: Exception) {
+            return ""
+        }
+    }
+
+    suspend fun subscribeToTopic(topic:String){
+        firebaseRepository.subscribe(topic)
+            .addOnCompleteListener { task ->
+                var msg = "Subscribed"
+                if (!task.isSuccessful) {
+                    msg = "Subscribe failed"
+                }
+                logMessage(msg)
+            }.await()
+    }
+
+    fun sendMessage(){
+        val msg = RemoteMessage.Builder("$SENDER_ID@fcm.googleapis.com")
+            .setMessageId(messageId.toString())
+            .addData("New Message","Hello From The Other Side")
+            .addData("My Action","Say Hey")
+            .build()
+        firebaseRepository.send(msg)
+        messageId+=1
+    }
+
+    fun refreshToken(token:String){
+        val updatedToken: MutableMap<String, String> = mutableMapOf(
+            "token" to token,
+        )
+        firebaseRepository.refresh()
+    }
+
+    /*
+    *
+    * fun runtimeEnableAutoInit() {
+        Firebase.messaging.isAutoInitEnabled = true
+    }
+
+    fun deviceGroupUpstream() {
+        val to = "a_unique_key" // the notification key
+        val msgId = AtomicInteger()
+        Firebase.messaging.send(remoteMessage(to) {
+            setMessageId(msgId.get().toString())
+            addData("hello", "world")
+        })
+    }
+    *
+    * */
+    }*/
 
     internal class MyWorker(appContext: Context, workerParams: WorkerParameters) : Worker(appContext, workerParams) {
         override fun doWork(): Result {

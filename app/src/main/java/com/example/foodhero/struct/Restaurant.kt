@@ -15,6 +15,7 @@ class Restaurant(
     val keyWords:ArrayList<String>? = null,
     val description:String?=null,
     val geohash:String?=null,
+    val sendNotificationTo:String?=null,
     val lat:Double?=null,
     val lon:Double?=null,
     val userRating:Double?=null,
@@ -68,6 +69,7 @@ class Restaurant(
                 "KeyWords: " + keyWords.toString() + "\n" +
                 "Description: $description\n" +
                 "GeoHash: $geohash\n" +
+                "SendNotificationTo: $sendNotificationTo\n" +
                 "Lat: $lat\n" +
                 "Lon: $lon\n" +
                 "UserRating: $userRating\n" +

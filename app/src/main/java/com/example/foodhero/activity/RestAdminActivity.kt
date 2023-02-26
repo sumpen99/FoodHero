@@ -30,6 +30,7 @@ class RestAdminActivity : AppCompatActivity() {
     private var _binding: ActivityRestAdminBinding? = null
     private val binding get() = _binding!!
     private val auth = AuthRepo()
+    private var myRestaurants: String = ""
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,32 +41,29 @@ class RestAdminActivity : AppCompatActivity() {
         imageRestLogButton = binding.ImageRestLogButton
         imageRestLogButton.setOnClickListener {
         }
-        setMessageService()
         loadMyRestaurants()
-    }
-
-    private fun setMessageService(){
-        firestoreMessaging = FirestoreMessaging()
-        firestoreMessaging.setNotificationResponder(MessageResponder.RESTAURANT)
     }
 
     private fun loadMyRestaurants(){
         auth.userCustomClaims().addOnSuccessListener(
             OnSuccessListener<GetTokenResult> { result ->
-                val myRestaurants: Any? = result.claims[CLAIMS_RESTAURANTIDS]
-                if(myRestaurants != null){
-                    logMessage(myRestaurants.toString())
+                val value = result.claims[CLAIMS_RESTAURANTIDS]
+                if(value != null && value is String){
+                    myRestaurants = value
+                    initMessageService()
                 }
             })
     }
 
-    private fun updateRestaurantNotificationResponder(){
-        firestoreMessaging.loadToken().addOnCompleteListener {
-            if(it.isSuccessful){
-                val token = it.result
-
-            }
+    private fun initMessageService(){
+        firestoreMessaging = FirestoreMessaging.getInstance()
+        firestoreViewModel = FirestoreViewModel()
+        FirestoreMessaging.setTokenRefreshCallback{token->String
+            firestoreViewModel.
+            updateRestaurantNotificationReciever(token,myRestaurants)
         }
+        FirestoreMessaging.initFirebaseMessaging()
+        FirestoreMessaging.refreshToken()
     }
 
     private fun setBottomOrderNavigationMenu(){
