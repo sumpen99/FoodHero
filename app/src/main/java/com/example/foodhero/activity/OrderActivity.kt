@@ -150,9 +150,6 @@ class OrderActivity : AppCompatActivity() {
             if (Child is SalmbergsWidget){
                 sum += Child.price
             }
-
-
-
         }
         return sum
     }

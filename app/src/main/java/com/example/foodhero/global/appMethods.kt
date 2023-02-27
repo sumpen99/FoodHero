@@ -26,6 +26,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.example.foodhero.R
@@ -96,7 +97,7 @@ fun Activity.retrieveBooleanFromSharedPreference(tag:String,default:Boolean?=nul
 *   ##########################################################################
 *
 * */
-fun Activity.downloadImageFromStorage(storeRef: StorageReference, imageView: ImageView){
+fun Fragment.downloadImageFromStorage(storeRef: StorageReference, imageView: ImageView){
     val factory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()
     GlideApp.with(this)
         .load(storeRef)

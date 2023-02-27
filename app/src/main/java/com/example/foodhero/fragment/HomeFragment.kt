@@ -1,6 +1,5 @@
 package com.example.foodhero.fragment
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.view.View.GONE
@@ -20,35 +19,50 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodhero.MainActivity
 import com.example.foodhero.R
-import com.example.foodhero.activity.OrderActivity
 import com.example.foodhero.adapter.RestaurantAdapter
 import com.example.foodhero.adapter.RestaurantMenuAdapter
+import com.example.foodhero.database.FirestoreViewModel
 import com.example.foodhero.databinding.FragmentHomeBinding
 import com.example.foodhero.global.*
 import com.example.foodhero.struct.CathegoryCounter
+import com.example.foodhero.struct.FoodHeroInfo
 import com.example.foodhero.struct.Restaurant
 import com.example.foodhero.widgets.CathegoryItem
 import com.example.foodhero.widgets.CityItem
 import com.example.foodhero.widgets.SearchItem
+import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.launch
 import java.lang.Integer.min
 
 
-class HomeFragment(intent: Intent) : BaseFragment() {
+class HomeFragment : BaseFragment() {
+    private lateinit var firestoreViewModel: FirestoreViewModel
     private lateinit var recyclerViewRestaurant: RecyclerView
     private lateinit var recyclerViewMenu: RecyclerView
     private lateinit var restaurantAdapter: RestaurantAdapter
     private lateinit var restaurantMenuAdapter: RestaurantMenuAdapter
     private val totalCathegoryCounter = CathegoryCounter()
     private val listOfKeywords = ArrayList<String>()
+    private var foodHeroInfo = FoodHeroInfo()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //logMessage("on create home")
         setRecyclerView()
+        setViewModel()
         setEventListener(view)
+        loadListOfCitiesWhereFoodHeroExist()
         loadRestaurants()
         setUserLocationText()
    }
+
+    /*
+    *   ##########################################################################
+    *               FIRESTOREVIEWMODEL
+    *   ##########################################################################
+    */
+
+    private fun setViewModel(){
+        firestoreViewModel = FirestoreViewModel()
+    }
 
     /*
     *   ##########################################################################
@@ -242,7 +256,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
             //openBottomSheetPosition()
         }
 
-        val listOfCitys = getMainActivity().getCitiesWhereFoodHeroExist()
+        val listOfCitys = getCitiesWhereFoodHeroExist()
         listOfCitys.cities?:return
         for(city:String in listOfCitys.cities!!){
             val selected = city == citySelected
@@ -273,7 +287,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         return binding as FragmentHomeBinding
     }
 
-    fun getMainActivity():MainActivity{
+    private fun getMainActivity():MainActivity{
         return requireActivity() as MainActivity
     }
 
@@ -305,11 +319,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
 
     private fun searchForRestaurantByKeyWord(keyWord:String){
         bottomSheetDialog.dismiss()
-        getMainActivity().loadRestaurantsByKeyWord(totalCathegoryCounter.listOfIds,keyWord,restaurantAdapter)
-    }
-
-    private fun loadRestaurants(){
-        getMainActivity().loadRestaurants(restaurantAdapter)
+        loadRestaurantsByKeyWord(totalCathegoryCounter.listOfIds,keyWord,restaurantAdapter)
     }
 
     private fun sameRestaurantAsBefore(newRestaurantId:String):Boolean{
@@ -349,7 +359,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
 
     private fun sortRestaurantsByCat(ids:List<String>){
         clearRestaurantAdapter()
-        getMainActivity().loadRestaurantsByCathegory(ids,restaurantAdapter)
+        loadRestaurantsByCathegory(ids,restaurantAdapter)
     }
 
     fun showRestaurant(restaurant: Restaurant){
@@ -369,8 +379,8 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     }
 
     private fun populateBottomSheetWithRestaurant(restaurant:Restaurant){
-        getMainActivity().downloadImageFromStorage(
-            getMainActivity().getRestaurantLoggoRef(restaurant.loggoDownloadUrl),
+        downloadImageFromStorage(
+            getRestaurantLoggoRef(restaurant.loggoDownloadUrl),
             bottomSheetDialog.findViewById<AppCompatImageView>(R.id.restImage))
 
         bottomSheetDialog.findViewById<TextView>(R.id.restName).text = restaurant.name
@@ -380,15 +390,13 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         bottomSheetDialog.findViewById<TextView>(R.id.restDeliveryTime).text = restaurant.getDeliveryTime()
 
         bottomSheetDialog.show()
-        getMainActivity().loadRestaurantMenu(restaurant.restaurantId!!,restaurantMenuAdapter)
+        loadRestaurantMenu(restaurant.restaurantId!!,restaurantMenuAdapter)
     }
 
     fun putSelectedFoodInCart(menuItem:com.example.foodhero.struct.MenuItem){
         Toast.makeText(requireContext(), "Nu är din mat i varukorgen!"+getString(R.string.tumme), Toast.LENGTH_LONG).show()
 
         getMainActivity().putFoodItemIntoCart(menuItem)
-        //messageToUser.setPosBtnText(getString(R.string.tumme))
-       // TACK! :)
 
     }
 
@@ -399,12 +407,62 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         messageToUser.setPosBtnText("OK")
     }
 
-
     /*
     *   ##########################################################################
-    *               ON RESUME ON PAUSE ON STOP
+    *               FIRESTORE VIEWMODEL REPOSITORY
     *   ##########################################################################
     */
+
+
+    fun getRestaurantLoggoRef(downloadUrl:String?): StorageReference {
+        return firestoreViewModel.firebaseRepository.getRestaurantLoggoReference(downloadUrl)
+    }
+
+    fun getRestaurantMenuItemLoggoRef(downloadUrl:String?): StorageReference {
+        return firestoreViewModel.firebaseRepository.getMenuItemLoggoReference(downloadUrl)
+    }
+
+    private fun getCitiesWhereFoodHeroExist(): FoodHeroInfo {
+        return foodHeroInfo
+    }
+
+    private fun loadRestaurants(){
+        val cityOfChoice = getMainActivity().getCityOfChoice()
+        if (cityOfChoice == getString(R.string.user_allowed_geo)) {
+            val userLocation = getCenterOfStockholm()
+            val radiusKm = 20.0
+            firestoreViewModel.getRestaurantsGeo(userLocation, radiusKm, restaurantAdapter)
+        } else if (getMainActivity().isACorrectCity(cityOfChoice)) {
+            loadRestaurantsByCity(cityOfChoice, restaurantAdapter)
+        }
+    }
+
+    private fun loadRestaurantMenu(restaurantId:String,restaurantMenuAdapter: RestaurantMenuAdapter){
+        firestoreViewModel.getMenuItems(restaurantId,restaurantMenuAdapter)
+
+    }
+
+    private fun loadRestaurantsByCity(city:String,restaurantAdapter: RestaurantAdapter){
+        firestoreViewModel.getRestaurantsByCity(city,restaurantAdapter)
+    }
+
+    private fun loadRestaurantsByKeyWord(idList:ArrayList<String>,keyWord:String,restaurantAdapter: RestaurantAdapter){
+        firestoreViewModel.getRestaurantsByKeyWord(idList,keyWord,restaurantAdapter)
+    }
+
+    private fun loadRestaurantsByCathegory(ids:List<String>,restaurantAdapter: RestaurantAdapter){
+        firestoreViewModel.getRestaurantsByIds(ids,restaurantAdapter)
+    }
+
+    private fun loadListOfCitiesWhereFoodHeroExist(){
+        firestoreViewModel.getCitiesWhereFoodHeroExist(foodHeroInfo)
+    }
+
+    /*
+   *   ##########################################################################
+   *               ON RESUME ON PAUSE ON STOP
+   *   ##########################################################################
+   */
 
     /*override fun onResume(){
         logMessage("on resume fragment resume")
@@ -422,7 +480,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     }
 
     override fun onDestroy(){
+        super.onDestroy()
         logMessage("on destroy fragment home")
-        super.onStop()
     }*/
 }

@@ -87,7 +87,7 @@ class RestaurantAdapter(private val fragment: HomeFragment):RecyclerView.Adapter
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(restaurantList.isEmpty()){return}
         val itemsViewModel = restaurantList[position]
-        fragment.getMainActivity().downloadImageFromStorage(fragment.getMainActivity().getRestaurantLoggoRef(itemsViewModel.loggoDownloadUrl),holder.loggoImageView)
+        fragment.downloadImageFromStorage(fragment.getRestaurantLoggoRef(itemsViewModel.loggoDownloadUrl),holder.loggoImageView)
         holder.nameTextView.text = itemsViewModel.name
         holder.categoryTextView.text = itemsViewModel.getCategoriesString()
         // holder.deliveryTypeImageView set image

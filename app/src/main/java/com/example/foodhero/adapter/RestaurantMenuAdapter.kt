@@ -6,14 +6,11 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodhero.R
 import com.example.foodhero.fragment.HomeFragment
 import com.example.foodhero.global.downloadImageFromStorage
 import com.example.foodhero.struct.MenuItem
-import com.example.foodhero.struct.Restaurant
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class RestaurantMenuAdapter(
     private val fragment: HomeFragment):
@@ -66,7 +63,7 @@ class RestaurantMenuAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(menuList.isEmpty()){return}
         val itemsViewModel = menuList[position]
-        fragment.getMainActivity().downloadImageFromStorage(fragment.getMainActivity().getRestaurantMenuItemLoggoRef(itemsViewModel.loggoDownloadUrl),holder.loggoImageView)
+        fragment.downloadImageFromStorage(fragment.getRestaurantMenuItemLoggoRef(itemsViewModel.loggoDownloadUrl),holder.loggoImageView)
         holder.nameTextView.text = itemsViewModel.name
         holder.ingredientsTextView.text = itemsViewModel.getIngredients()
         holder.priceTextView.text = itemsViewModel.getCurrentPrice()
