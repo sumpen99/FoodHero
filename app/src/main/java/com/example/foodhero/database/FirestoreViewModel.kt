@@ -183,6 +183,7 @@ class FirestoreViewModel {
         geoMiddle: GeoLocation,
         radiusKm:Double,
         restaurantAdapter:RestaurantAdapter){
+        //logMessage("1")
         val radiusInM = radiusKm*1000
         val bounds = GeoFireUtils.getGeoHashQueryBounds(geoMiddle,radiusInM)
         val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
@@ -192,7 +193,9 @@ class FirestoreViewModel {
                 .startAt(b.startHash)
                 .endAt(b.endHash)
             tasks.add(q.get())
+            //logMessage("2")
         }
+        //logMessage("3")
         Tasks.whenAllComplete(tasks).addOnCompleteListener{
             for (task in tasks) {
                 val snap = task.result
@@ -209,8 +212,10 @@ class FirestoreViewModel {
                     }
                 }
             }
+            //logMessage("5")
             restaurantAdapter.loadAllCathegories()
         }
+        //logMessage("4")
     }
 
     fun getRestaurantsByIds(ids:List<String>,restaurantAdapter:RestaurantAdapter){

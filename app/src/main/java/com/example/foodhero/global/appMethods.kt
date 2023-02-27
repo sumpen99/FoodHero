@@ -382,8 +382,8 @@ fun partitionWordList(wordList: Array<AutoWord?>, low: Int, high: Int):Int {
     var i = low - 1
     var j = high + 1
     while (true) {
-        while (++i < high && wordList[i]!!.edits < pivot);
-        while (--j > low && wordList[j]!!.edits > pivot);
+        while (++i < high && wordList[i]!!.edits < pivot)
+        while (--j > low && wordList[j]!!.edits > pivot)
         if (i < j) {
             swapAutoWord(wordList[i]!!, wordList[j]!!)
         } else {

@@ -65,7 +65,7 @@ class FirestoreMessaging: FirebaseMessagingService() {
         }
 
         fun refreshToken(){
-            instance?.loadToken()?.addOnCompleteListener {
+            loadToken().addOnCompleteListener{
                 if(it.isSuccessful){
                     val token = it.result
                     onTokenRefresh(token)
@@ -84,6 +84,19 @@ class FirestoreMessaging: FirebaseMessagingService() {
                 callbackOnMessageRecieved(remoteMessage)
             }
         }
+
+        fun subscribeToTopic(): Task<Void> {
+            return instance!!.firestoreMessage!!.subscribeToTopic(DELIVERY_TOPIC)
+        }
+
+        private fun deleteToken(){
+            instance!!.firestoreMessage!!.deleteToken()
+        }
+
+        private fun loadToken():Task<String>{
+            return instance!!.firestoreMessage!!.token
+        }
+
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun setupChannels(notificationManager: NotificationManager){
@@ -117,10 +130,6 @@ class FirestoreMessaging: FirebaseMessagingService() {
         onTokenRefresh(token)
     }
 
-    private fun loadToken():Task<String>{
-        return firestoreMessage!!.token
-    }
-
      override fun onMessageReceived(remoteMessage: RemoteMessage) {
         if (remoteMessage.data.isNotEmpty()) {
             messageReceived(remoteMessage)
@@ -136,8 +145,7 @@ class FirestoreMessaging: FirebaseMessagingService() {
         }
  }
 
-    fun buildJsonRespondBody(
-        tokenToSpecificDevice:String,):JSONObject?{
+    fun buildJsonRespondBody(tokenToSpecificDevice:String,):JSONObject?{
         NOTIFICATION_TITLE = "Order Bekräftelse"
         NOTIFICATION_MESSAGE = "Maten är på väg"
         val notification = JSONObject()
