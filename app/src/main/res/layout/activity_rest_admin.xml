@@ -70,7 +70,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/baseline_store_2" />
+        app:srcCompat="@drawable/baseline_admin_panel_settings_1" />
 
     <TextView
         android:id="@+id/textMailView"
@@ -158,4 +158,20 @@
         app:layout_constraintEnd_toStartOf="@+id/ImageRestLogButton"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/applogoblack" />
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomRestNavMenu"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        app:backgroundTint="#C4000000"
+        app:itemHorizontalTranslationEnabled="false"
+        app:itemIconTint="@drawable/bottom_navigation_selector"
+        app:itemTextColor="@color/white"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/botton_restnav_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>

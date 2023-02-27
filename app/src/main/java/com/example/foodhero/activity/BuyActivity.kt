@@ -7,7 +7,9 @@ import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import com.example.foodhero.MainActivity
 import com.example.foodhero.R
 import com.example.foodhero.databinding.ActivityBuyBinding
@@ -25,9 +27,10 @@ class BuyActivity : AppCompatActivity() {
     private val binding get() = _binding!!
     lateinit var imageBuyButton: ImageButton
     lateinit var imageProfileButton : ImageButton
+    lateinit var textPriceView : TextView
     private val intentFilter = IntentFilter()
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint("MissingInflatedId", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_buy)
@@ -35,6 +38,9 @@ class BuyActivity : AppCompatActivity() {
         setContentView(binding.root)
         setCloseAppCallback()
         // setBottomBuyNavigationMenu()
+
+        textPriceView = findViewById(R.id.textPriceView)
+        textPriceView.text = intent.getDoubleExtra("Summan",0.0).toString()+"kr"
 
         imageBackOrderButton = findViewById<ImageButton>(R.id.imageBackOrderButton)
         imageBackOrderButton.setOnClickListener {

@@ -11,7 +11,8 @@ import com.example.foodhero.global.format
 
 class SalmbergsWidget(
     name:String,
-    price:Double,
+
+    val price:Double,
     id:String,
     // val callbackUnCheck:(args:String)->Unit,
     context: Context?,

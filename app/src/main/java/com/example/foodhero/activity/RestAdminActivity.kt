@@ -46,6 +46,7 @@ class RestAdminActivity : AppCompatActivity() {
         bottomRestNavMenu.setOnItemSelectedListener {it: MenuItem ->
             when(it.itemId){
                 // R.id.navigateHome->navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
+                R.id.navigateSearch->moveToActivityAndReOrder(Intent(this, FavoriteActivity::class.java))
 
             }
             true
