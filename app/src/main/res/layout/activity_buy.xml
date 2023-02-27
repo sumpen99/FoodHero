@@ -53,7 +53,7 @@ app:srcCompat="@drawable/baseline_arrow_back_24" />
         app:srcCompat="@drawable/layout_rounded_background_snow" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textPriceView"
         android:layout_width="247dp"
         android:layout_height="102dp"
         android:layout_marginStart="82dp"
@@ -109,7 +109,7 @@ app:srcCompat="@drawable/baseline_arrow_back_24" />
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textPriceView"
         app:layout_constraintVertical_bias="0.163"
         app:srcCompat="@drawable/layout_rounded_background_blue" />
 

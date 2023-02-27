@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat.registerReceiver
+import androidx.core.view.children
 import androidx.core.widget.doOnTextChanged
 import com.example.foodhero.MainActivity
 import com.example.foodhero.R
@@ -26,6 +27,7 @@ import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.ktx.Firebase
+import org.checkerframework.checker.units.qual.m
 import java.util.UUID
 
 class OrderActivity : AppCompatActivity() {
@@ -39,7 +41,7 @@ class OrderActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     lateinit var db: FirebaseFirestore
     lateinit var shoppingCartLayout: LinearLayout
-
+    var sum = 0
 
     var currentText = ""
 
@@ -56,6 +58,8 @@ class OrderActivity : AppCompatActivity() {
         setCloseAppCallback()
 
         shoppingCartLayout = binding.shoppingCartLayout
+
+
 
 
 
@@ -134,19 +138,36 @@ class OrderActivity : AppCompatActivity() {
 
                     DocumentChange.Type.REMOVED -> {
                         // Handle removed document
+
                     }
                 }
             }
         }
     }
+    fun totalSum():Double{
+        var sum = 0.0
+        for(Child in shoppingCartLayout.children){
+            if (Child is SalmbergsWidget){
+                sum += Child.price
+            }
 
+
+
+        }
+        return sum
+    }
 
     private fun setBottomOrderNavigationMenu(){
         bottomOrderNavMenu = binding.bottomOrderNavMenu
         bottomOrderNavMenu.setOnItemSelectedListener {it: MenuItem ->
             when(it.itemId){
                 // R.id.navigateHome->navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
-                R.id.navigateProfile->moveToActivityAndReOrder(Intent(this,BuyActivity::class.java))
+                R.id.navigateProfile->{
+                    val intent = Intent(this,BuyActivity::class.java)
+                    intent.putExtra("Summan",totalSum())
+                    moveToActivityAndReOrder(intent)
+                }
+
                 R.id.navigateSearch->moveToActivityAndReOrder(Intent(this, FavoriteActivity::class.java))
 
             }
@@ -162,5 +183,7 @@ class OrderActivity : AppCompatActivity() {
         closeListener()
         super.onDestroy()
     }
+
+
 
 }
