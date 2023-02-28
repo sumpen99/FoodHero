@@ -30,8 +30,7 @@ import com.google.firebase.ktx.Firebase
 
 
 lateinit var auth: FirebaseAuth
-lateinit var db: FirebaseFirestore
-private var firestoreListener: ListenerRegistration?=null
+
 
 @SuppressLint("ViewConstructor")
 class SalmbergsWidget(

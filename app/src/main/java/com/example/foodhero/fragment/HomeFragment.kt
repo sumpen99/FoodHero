@@ -394,8 +394,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     }
 
     fun showSomeLoveBack(menuItem:com.example.foodhero.struct.MenuItem){
-        messageToUser.setPosBtnText(getString(R.string.heart))
-        updateMessageDialog("Bra jobbat Fredrik!")
+        updateMessageDialog("Nu ligger den i dina favoriter!")
 
         showMessage()
         messageToUser.setPosBtnText("OK")
