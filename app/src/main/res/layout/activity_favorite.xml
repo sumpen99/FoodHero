@@ -8,7 +8,7 @@
     tools:context=".activity.FavoriteActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomOrderNavMenu"
+        android:id="@+id/bottomFavoritNavMenu"
         android:layout_width="match_parent"
         android:layout_height="65dp"
         app:backgroundTint="@color/transparent"
@@ -44,5 +44,27 @@
         app:layout_constraintStart_toEndOf="@+id/imageBackTwoButton"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/applogowhite" />
+
+    <ScrollView
+        android:id="@+id/ScrollView"
+        android:layout_width="409dp"
+        android:layout_height="595dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomOrderNavMenu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4">
+
+        <LinearLayout
+            android:id="@+id/favoritLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
