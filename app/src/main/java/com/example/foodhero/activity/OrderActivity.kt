@@ -1,6 +1,7 @@
 package com.example.foodhero.activity
 import android.annotation.SuppressLint
 import android.content.*
+import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +20,7 @@ import com.example.foodhero.databinding.ActivityOrderBinding
 import com.example.foodhero.global.*
 import com.example.foodhero.struct.PurchasedItem
 import com.example.foodhero.struct.User
+import com.example.foodhero.widgets.AlexWidget
 import com.example.foodhero.widgets.SalmbergsWidget
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -68,6 +70,7 @@ class OrderActivity : AppCompatActivity() {
             goBackTwo()
         }
 
+
         getUserShoppingCart()
 
     }
@@ -106,11 +109,35 @@ class OrderActivity : AppCompatActivity() {
         //moveToActivity(intent)
 
     }
+    fun deleteItemFromShoppingCart(widget: Any?) {
+        if (widget is SalmbergsWidget){
+            val mail = auth.currentUser?.email
+            val docRef = db.collection(USER_COLLECTION)
+                .document(mail!!)
+                .collection("ShoppingCart")
+                .document(widget.id)
+
+            docRef.delete()
+                .addOnSuccessListener {
+                    shoppingCartLayout.removeView(widget)
+                }
+                .addOnFailureListener { e ->
+                    Log.w(TAG, "Error deleting document", e)
+                }
+        }
+
+    }
+
+
+
+
 
     fun getUserShoppingCart() {
         db = FirebaseFirestore.getInstance()
         val mail = auth.currentUser?.email
-        val docRef = db.collection(USER_COLLECTION).document(mail!!).collection("ShoppingCart")
+        val docRef = db.collection(USER_COLLECTION)
+            .document(mail!!)
+            .collection("ShoppingCart")
         firestoreListener = docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w(ContentValues.TAG, "Listen failed.", e)
@@ -125,6 +152,7 @@ class OrderActivity : AppCompatActivity() {
                             purchasedItem.foodName!!,
                             purchasedItem.price!!,
                             purchasedItem.itemId!!,
+                            ::deleteItemFromShoppingCart,
                             this,
                             null
                         )
@@ -144,6 +172,8 @@ class OrderActivity : AppCompatActivity() {
             }
         }
     }
+
+
     fun totalSum():Double{
         var sum = 0.0
         for(Child in shoppingCartLayout.children){
@@ -156,6 +186,7 @@ class OrderActivity : AppCompatActivity() {
         }
         return sum
     }
+
 
     private fun setBottomOrderNavigationMenu(){
         bottomOrderNavMenu = binding.bottomOrderNavMenu

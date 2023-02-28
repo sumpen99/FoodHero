@@ -15,7 +15,9 @@ import com.example.foodhero.R
 import com.example.foodhero.databinding.ActivityFavoriteBinding
 import com.example.foodhero.databinding.ActivityOrderBinding
 import com.example.foodhero.global.*
+import com.example.foodhero.struct.FavoriteItem
 import com.example.foodhero.struct.PurchasedItem
+import com.example.foodhero.widgets.AlexWidget
 import com.example.foodhero.widgets.SalmbergsWidget
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -29,16 +31,16 @@ import com.google.firebase.ktx.Firebase
 class FavoriteActivity : AppCompatActivity() {
 
     lateinit var auth: FirebaseAuth
-    lateinit var imageBackTwoButton : ImageButton
+    lateinit var imageBackTwoButton: ImageButton
     private val intentFilter = IntentFilter()
     private lateinit var onBackPressedCallback: OnBackPressedCallback
     private val binding get() = _binding!!
     private var _binding: ActivityFavoriteBinding? = null
-    private var firestoreListener: ListenerRegistration?=null
+    private var firestoreListener: ListenerRegistration? = null
     lateinit var favoritLayout: LinearLayout
     lateinit var db: FirebaseFirestore
-    lateinit var bottomFavoritNavMenu : BottomNavigationView
-
+    lateinit var bottomFavoritNavMenu: BottomNavigationView
+    var currentText = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,8 +52,8 @@ class FavoriteActivity : AppCompatActivity() {
         setContentView(binding.root)
         auth = Firebase.auth
         // find the TextViews in the layout
-      //  favoriteDishesTextView = findViewById(R.id.favorite_dishes_textview)
-       // lastOrdersTextView = findViewById(R.id.last_orders_textview)
+        //  favoriteDishesTextView = findViewById(R.id.favorite_dishes_textview)
+        // lastOrdersTextView = findViewById(R.id.last_orders_textview)
 
         // retrieve the user's favorite dishes and last orders from the database
         //retrieveFavoriteDishes()
@@ -76,18 +78,20 @@ class FavoriteActivity : AppCompatActivity() {
 
     }
 
-    private fun setOnBackNavigation(){
+    private fun setOnBackNavigation() {
         onBackPressedCallback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed(){navigateOnBackPressed()}
+            override fun handleOnBackPressed() {
+                navigateOnBackPressed()
+            }
         }
-        onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
-    private fun navigateOnBackPressed(){
+    private fun navigateOnBackPressed() {
         moveToActivityAndReOrder(Intent(this, MainActivity::class.java))
     }
 
-    private fun setCloseAppCallback(){
+    private fun setCloseAppCallback() {
         intentFilter.addAction(APP_ACTION_LOG_OUT)
         registerReceiver(object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
@@ -96,13 +100,30 @@ class FavoriteActivity : AppCompatActivity() {
         }, intentFilter)
     }
 
-    fun favoritPressed(){
+    fun favoritPressed() {
         // När nav knappen "navigateSearch" är tryckt ska den gå til getUserFavorit som hämtar de favoriter
         //man har.
         //setBottomOrderNavigationMenu().navigateSearch.isPressed
-      //  ->
-     //   getUserFavorit()
+        //  ->
+        //   getUserFavorit()
+    }
 
+    fun deleteItemFromFavorites(widget: Any?) {
+        if (widget is AlexWidget) {
+            val mail = auth.currentUser?.email
+            val docRef = db.collection(USER_COLLECTION)
+                .document(mail!!)
+                .collection("Favorites")
+                .document(widget.id)
+
+            docRef.delete()
+                .addOnSuccessListener {
+                    favoritLayout.removeView(widget)
+                }
+                .addOnFailureListener { e ->
+                    Log.w(ContentValues.TAG, "Error deleting document", e)
+                }
+        }
 
     }
 
@@ -111,7 +132,7 @@ class FavoriteActivity : AppCompatActivity() {
         val mail = auth.currentUser?.email
         //Behövs en ny specifik collection för "Favorties" istället för "shoppingCart" .
 
-        val docRef = db.collection(USER_COLLECTION).document(mail!!).collection("ShoppingCart")
+        val docRef = db.collection(USER_COLLECTION).document(mail!!).collection("Favorites")
         firestoreListener = docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w(ContentValues.TAG, "Listen failed.", e)
@@ -121,16 +142,17 @@ class FavoriteActivity : AppCompatActivity() {
             snapshot?.documentChanges?.forEach { change ->
                 when (change.type) {
                     DocumentChange.Type.ADDED -> {
-                        val purchasedItem = change.document.toObject(PurchasedItem::class.java)
-                        val salmbergsItem = SalmbergsWidget(
-                            purchasedItem.foodName!!,
-                            purchasedItem.price!!,
-                            purchasedItem.itemId!!,
+                        val favoriteItem = change.document.toObject(FavoriteItem::class.java)
+                        val alexItem = AlexWidget(
+                            favoriteItem.foodName!!,
+                            favoriteItem.restaurantName!!,
+                            favoriteItem.itemId!!,
+                            ::deleteItemFromFavorites,
                             this,
                             null
                         )
 
-                        favoritLayout.addView(salmbergsItem, favoritLayout.childCount)
+                        favoritLayout.addView(alexItem, favoritLayout.childCount)
                         logMessage(change.document.toString())
                     }
 
@@ -144,22 +166,15 @@ class FavoriteActivity : AppCompatActivity() {
                     }
                 }
             }
-
-
-
-
         }
-
-
-
-
     }
-    private fun setBottomOrderNavigationMenu(){
+
+    private fun setBottomOrderNavigationMenu() {
         bottomFavoritNavMenu = binding.bottomFavoritNavMenu
-        bottomFavoritNavMenu.setOnItemSelectedListener {it: MenuItem ->
-            when(it.itemId){
+        bottomFavoritNavMenu.setOnItemSelectedListener { it: MenuItem ->
+            when (it.itemId) {
                 // R.id.navigateHome->navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
-                R.id.navigateSearch->{
+                R.id.navigateSearch -> {
                     moveToActivityAndPutOnTop(Intent(this, FavoriteActivity::class.java))
 
                 }
@@ -169,56 +184,44 @@ class FavoriteActivity : AppCompatActivity() {
             }
             true
         }
-
     }
-
-    }
-
+}
 
 
+/* private fun retrieveFavoriteDishes() {
+     // make a database query to retrieve the user's favorite dishes
+     val mail = auth.currentUser?.email
 
+     db.collection(USER_COLLECTION)
+         .document(mail!!)
+         .collection("ShoppingCart")
+         .get()
+         .addOnSuccessListener { documents ->
 
+             val favoriteDishes = documents.map { it.getString("foodName") ?: "" }
+             //favoriteDishesTextView.text = favoriteDishes.joinToString("\n")
+         }
+         .addOnFailureListener { e ->
+             Log.w("FavoriteActivity", "Error retrieving favorite dishes", e)
+         }
+ }
 
+ private fun retrieveLastOrders() {
+     // make a database query to retrieve the user's last orders
+     val mail = auth.currentUser?.email
 
-
-
-
-
-
-   /* private fun retrieveFavoriteDishes() {
-        // make a database query to retrieve the user's favorite dishes
-        val mail = auth.currentUser?.email
-
-        db.collection(USER_COLLECTION)
-            .document(mail!!)
-            .collection("ShoppingCart")
-            .get()
-            .addOnSuccessListener { documents ->
-
-                val favoriteDishes = documents.map { it.getString("foodName") ?: "" }
-                //favoriteDishesTextView.text = favoriteDishes.joinToString("\n")
-            }
-            .addOnFailureListener { e ->
-                Log.w("FavoriteActivity", "Error retrieving favorite dishes", e)
-            }
-    }
-
-    private fun retrieveLastOrders() {
-        // make a database query to retrieve the user's last orders
-        val mail = auth.currentUser?.email
-
-        db.collection(USER_COLLECTION)
-            .document(mail!!)
-            .collection("ShoppingCart")
-            .orderBy("date", com.google.firebase.firestore.Query.Direction.DESCENDING)
-            .limit(5)
-            .get()
-            .addOnSuccessListener { documents ->
-                val lastOrders = documents.map { it.getString("description") ?: "" }
-               // lastOrdersTextView.text = lastOrders.joinToString("\n")
-            }
-            .addOnFailureListener { e ->
-                Log.w("FavoriteActivity", "Error retrieving last orders", e)
-            }
-    }
-    }*/
+     db.collection(USER_COLLECTION)
+         .document(mail!!)
+         .collection("ShoppingCart")
+         .orderBy("date", com.google.firebase.firestore.Query.Direction.DESCENDING)
+         .limit(5)
+         .get()
+         .addOnSuccessListener { documents ->
+             val lastOrders = documents.map { it.getString("description") ?: "" }
+            // lastOrdersTextView.text = lastOrders.joinToString("\n")
+         }
+         .addOnFailureListener { e ->
+             Log.w("FavoriteActivity", "Error retrieving last orders", e)
+         }
+ }
+ }*/

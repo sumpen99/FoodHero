@@ -24,8 +24,10 @@ import com.example.foodhero.database.FirestoreViewModel
 import com.example.foodhero.databinding.ActivityMainBinding
 import com.example.foodhero.fragment.HomeFragment
 import com.example.foodhero.global.*
+import com.example.foodhero.struct.FavoriteItem
 import com.example.foodhero.struct.FoodHeroInfo
 import com.example.foodhero.struct.PurchasedItem
+import com.example.foodhero.struct.Restaurant
 import com.example.foodhero.widgets.MessageToUser
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
@@ -105,8 +107,6 @@ class MainActivity : AppCompatActivity() {
         else{
             moveToActivityAndFinish(Intent(this,LoginActivity::class.java))
         }
-
-
     }
 
       /*
@@ -378,17 +378,21 @@ class MainActivity : AppCompatActivity() {
             db.collection("Users").document(user).collection("ShoppingCart").document(id)
                 .set(purchasedItem)
             logMessage(user)
-
-
-
-            //Först ska menuItem samlas i varukorgen
-            //Plocka ut menuItem och lägg i någon lista i Favorite klassen när man kör denna funktion.
-            //Denna funktionen körs när man klickar på köpknappen och man är inloggad.
-
         }
-
     }
 
+    fun putItemInFavorites(FavoriteItem: com.example.foodhero.struct.MenuItem,restaurantName: String){
+        if(!userNeedToSignUp()){
+            val id = UUID.randomUUID().toString()
+            val foodName = FavoriteItem.name
+            val favoriteItem = FavoriteItem(id,foodName,restaurantName)
+            val user = auth.getEmail()
+            val db = FirebaseFirestore.getInstance()
+            db.collection("Users").document(user).collection("Favorites").document(id)
+                .set(favoriteItem)
+            logMessage(user)
+        }
+    }
 
     /*
     *   ##########################################################################

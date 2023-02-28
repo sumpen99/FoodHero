@@ -1,58 +1,39 @@
 package com.example.foodhero.widgets
 
 import android.annotation.SuppressLint
-import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
-import android.system.Os.remove
 import android.util.AttributeSet
-import android.util.Log
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.view.isVisible
 import com.example.foodhero.R
-import com.example.foodhero.activity.BuyActivity
-//import com.example.foodhero.activity.db
-import com.example.foodhero.global.USER_COLLECTION
 import com.example.foodhero.global.format
-import com.example.foodhero.global.logMessage
-import com.example.foodhero.struct.PurchasedItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.ktx.Firebase
 
 
-
-lateinit var auth: FirebaseAuth
-lateinit var db: FirebaseFirestore
-private var firestoreListener: ListenerRegistration?=null
-
 @SuppressLint("ViewConstructor")
-class SalmbergsWidget(
+class AlexWidget(
     name:String,
-
-    val price:Double,
+    restaurantName:String,
     val id:String,
     val callbackDelete:(args:Any?)->Unit,
     context: Context?,
     attrs: AttributeSet?): LinearLayout(context,attrs) {
 
     init{
-        LinearLayout.inflate(context, R.layout.salmberg_layout,this)
+        LinearLayout.inflate(context, R.layout.alex_layout,this)
         val nameTextView: TextView = this.findViewById(R.id.nameTextView)
-        val priceTextView: TextView = this.findViewById(R.id.priceTextView)
+        val restaurantTextView: TextView = this.findViewById(R.id.restaurantTextView)
         val deleteButton: ImageButton = this.findViewById(R.id.deleteItemButton)
 
         nameTextView.text = name
-        priceTextView.text = price.format(2) + "Kr"
+        restaurantTextView.text = restaurantName
 
-        auth = Firebase.auth
+       auth = Firebase.auth
 
         deleteButton.setOnClickListener {
             callbackDelete(this)
@@ -60,9 +41,3 @@ class SalmbergsWidget(
         }
     }
 }
-
-
-
-
-
-
