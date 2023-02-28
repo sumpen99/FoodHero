@@ -141,7 +141,7 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
-
+//
     private fun setViewModel(){
         firestoreViewModel = FirestoreViewModel()
     }
