@@ -1,28 +1,14 @@
 package com.example.foodhero.widgets
-
 import android.annotation.SuppressLint
-import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
-import android.system.Os.remove
 import android.util.AttributeSet
-import android.util.Log
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.view.isVisible
 import com.example.foodhero.R
-import com.example.foodhero.activity.BuyActivity
-//import com.example.foodhero.activity.db
-import com.example.foodhero.global.USER_COLLECTION
 import com.example.foodhero.global.format
-import com.example.foodhero.global.logMessage
-import com.example.foodhero.struct.PurchasedItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.ktx.Firebase
@@ -59,9 +45,3 @@ class SalmbergsWidget(
         }
     }
 }
-
-
-
-
-
-

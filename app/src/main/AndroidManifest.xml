@@ -44,6 +44,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:persistableMode="persistAcrossReboots"
             android:theme="@style/Theme.FoodHero"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>

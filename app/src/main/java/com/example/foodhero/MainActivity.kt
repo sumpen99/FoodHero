@@ -17,48 +17,29 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.foodhero.activity.*
-import com.example.foodhero.adapter.RestaurantAdapter
-import com.example.foodhero.adapter.RestaurantMenuAdapter
 import com.example.foodhero.database.AuthRepo
-import com.example.foodhero.database.FirestoreViewModel
 import com.example.foodhero.databinding.ActivityMainBinding
 import com.example.foodhero.fragment.HomeFragment
 import com.example.foodhero.global.*
 import com.example.foodhero.struct.FavoriteItem
-import com.example.foodhero.struct.FoodHeroInfo
 import com.example.foodhero.struct.PurchasedItem
-import com.example.foodhero.struct.Restaurant
 import com.example.foodhero.widgets.MessageToUser
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.GetTokenResult
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.StorageReference
 import java.util.*
 import kotlin.collections.ArrayList
 
-//https://nominatim.openstreetmap.org/search?street=pilkington%20avenue&city=birmingham&format=json
-//https://nominatim.openstreetmap.org/search?street=pilkington avenue&city=birmingham&format=json
-//https://medium.com/@myohzx/firebase-security-rules-de964fb553cf
-/*
-*   street=<housenumber> <streetname>
-    city=<city>
-    county=<county>
-    state=<state>
-    country=<country>
-    postalcode=<postalcode>
-* */
 class MainActivity : AppCompatActivity() {
-    private lateinit var firestoreViewModel: FirestoreViewModel
     private lateinit var onBackPressedCallback: OnBackPressedCallback
     private lateinit var permissionsList: ArrayList<String>
-    private var permissionDialogIsOpen:Boolean = false
     private lateinit var bottomNavMenu: BottomNavigationView
-    private var foodHeroInfo = FoodHeroInfo()
     private var permissionsCount = 0
     private var informUserToSignIn:MessageToUser? = null
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
     private val auth = AuthRepo()
-    private var currentFragment:FragmentInstance? = null
     private val intentFilter = IntentFilter()
     private var permissionsStr = arrayOf<String>(
         android.Manifest.permission.ACCESS_FINE_LOCATION,
@@ -81,35 +62,52 @@ class MainActivity : AppCompatActivity() {
                 if (permissionsList.size > 0) {
                     askForPermissions(permissionsList)
                 } else if (permissionsCount > 0) {
-                    showPermissionDialog()
                     setCityOfChoice(getString(R.string.user_did_not_allow_geo))
-                    navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
+                    launchScreenBasedOnSecurityLevel()
                 }else{
                     shouldSetSharedPreference()
-                    navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
+                    launchScreenBasedOnSecurityLevel()
                 }
             })
 
-    override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState)
-        if(auth.isUserLoggedIn()){
-            setCloseAppCallback()
-            //logMessage("on create main")
-            setContentView(R.layout.activity_main)
-            setMessageToUser()
-            setViewModel()
-            setDataBinding()
-            setBottomNavigationMenu()
-            setOnBackNavigation()
-            loadListOfCitiesWhereFoodHeroExist()
-            launchPermissionRequest()
-            Toast.makeText(applicationContext, "Välkommen tillbaka ${auth.getEmail()}.", Toast.LENGTH_SHORT).show()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if(!auth.isUserLoggedIn()){
+            moveToActivityAndFinish(Intent(this,LoginActivity::class.java))
         }
         else{
-            moveToActivityAndFinish(Intent(this,LoginActivity::class.java))
+            if(savedInstanceState!=null){
+                clearAllFragments()
+            }
+            launchPermissionRequest()
         }
     }
 
-      /*
+    private fun launchScreenBasedOnSecurityLevel(){
+        auth.userCustomClaims().addOnSuccessListener(
+            OnSuccessListener<GetTokenResult> { result ->
+                val isAdmin: Any? = result.claims[CLAIMS_ROLE]
+                if(isAdmin != null && isAdmin == ADMIN_USER){
+                    moveToActivityAndFinish(Intent(this,RestAdminActivity::class.java))
+                }
+                else{
+                    startMainApp()
+                }
+            })
+    }
+
+    private fun startMainApp(){
+        setContentView(R.layout.activity_main)
+        setCloseAppCallback()
+        setMessageToUser()
+        setDataBinding()
+        setBottomNavigationMenu()
+        setOnBackNavigation()
+        Toast.makeText(applicationContext, "Välkommen tillbaka ${auth.getEmail()}.", Toast.LENGTH_SHORT).show()
+        navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
+    }
+
+    /*
     *   ##########################################################################
     *               SET BINDING AND OTHER STUFF
     *   ##########################################################################
@@ -141,17 +139,13 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
-//
-    private fun setViewModel(){
-        firestoreViewModel = FirestoreViewModel()
-    }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setBottomNavigationMenu(){
         bottomNavMenu = binding.bottomNavigationView
         bottomNavMenu.setOnItemSelectedListener {it: MenuItem ->
             when(it.itemId){
-                R.id.navigateHome->(FragmentInstance.FRAGMENT_MAIN_HOME)
+                R.id.navigateHome->{}
                 R.id.navigateFavorite->navigateOnlyIfUserIsAllowed(ActivityInstance.ACTIVITY_FAVORITE)
                 R.id.navigateCart->navigateOnlyIfUserIsAllowed(ActivityInstance.ACTIVITY_ORDER)
                 R.id.navigateProfile->navigateOnlyIfUserIsAllowed(ActivityInstance.ACTIVITY_PROFILE)
@@ -207,10 +201,7 @@ class MainActivity : AppCompatActivity() {
         if(newPermissionStr.isNotEmpty()) {
             permissionsLauncher.launch(newPermissionStr)
         }
-        else if(!permissionDialogIsOpen) {
-            permissionDialogIsOpen = true
-            showPermissionDialog()
-        }
+
     }
 
     private fun hasPermission(context: Context, permissionStr: String): Boolean {
@@ -231,7 +222,7 @@ class MainActivity : AppCompatActivity() {
         }
         onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
     }
-    
+
     private fun navigateOnBackPressed(){
         logMessage(supportFragmentManager.fragments.toString())
     }
@@ -243,37 +234,21 @@ class MainActivity : AppCompatActivity() {
     */
 
     private fun navigateToFragment(fragment: FragmentInstance){
-        if(isSameFragment(fragment))return
-        currentFragment = fragment
         when(fragment){
-            FragmentInstance.FRAGMENT_MAIN_HOME->applyTransaction(HomeFragment(intent))
+            FragmentInstance.FRAGMENT_MAIN_HOME->applyTransaction(HomeFragment())
             else -> {}
         }
     }
 
     private fun applyTransaction(frag: Fragment){
         supportFragmentManager.beginTransaction().apply {
-            add(R.id.homeLayout,frag).commit()
+            replace(R.id.homeLayout,frag).commitNow()
         }
     }
 
-    private fun isSameFragment(fragmentInstance:FragmentInstance):Boolean{
-        currentFragment?:return false
-        return currentFragment == fragmentInstance
-    }
-
-    /*
-    *   ##########################################################################
-    *               NAVIGATE BASED ON CURRENT USER STATUS
-    *   ##########################################################################
-    */
-
-    private fun navigateOnResume(){
-        if(!auth.isUserLoggedIn()){
-            moveToActivityAndFinish(Intent(this,LoginActivity::class.java))
-        }
-        else{
-            navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
+    private fun clearAllFragments(){
+        for (fragment in supportFragmentManager.fragments) {
+            supportFragmentManager.beginTransaction().remove(fragment).commitNow()
         }
     }
 
@@ -304,61 +279,10 @@ class MainActivity : AppCompatActivity() {
         setCityOfChoice(getString(R.string.user_allowed_geo))
     }
 
-    private fun isACorrectCity(city:String):Boolean{
+    fun isACorrectCity(city:String):Boolean{
         return  city.isNotEmpty() &&
                 city != getString(R.string.user_allowed_geo) &&
                 city != getString(R.string.user_did_not_allow_geo)
-    }
-
-    /*
-    *   ##########################################################################
-    *               COLLECT RESTAURANTS & MENU
-    *   ##########################################################################
-    */
-
-    fun getRestaurantLoggoRef(downloadUrl:String?): StorageReference {
-        return firestoreViewModel.firebaseRepository.getRestaurantLoggoReference(downloadUrl)
-    }
-
-    fun getRestaurantMenuItemLoggoRef(downloadUrl:String?): StorageReference {
-        return firestoreViewModel.firebaseRepository.getMenuItemLoggoReference(downloadUrl)
-    }
-
-    fun getCitiesWhereFoodHeroExist():FoodHeroInfo{
-        return foodHeroInfo
-    }
-
-    fun loadRestaurants(restaurantAdapter:RestaurantAdapter){
-        val cityOfChoice = getCityOfChoice()
-        if(cityOfChoice == getString(R.string.user_allowed_geo)){
-            val userLocation = getCenterOfStockholm()
-            val radiusKm = 20.0
-            firestoreViewModel.getRestaurantsGeo(userLocation,radiusKm,restaurantAdapter)
-        }
-        else if(isACorrectCity(cityOfChoice)){
-            loadRestaurantsByCity(cityOfChoice,restaurantAdapter)
-        }
-    }
-
-    fun loadRestaurantMenu(restaurantId:String,restaurantMenuAdapter: RestaurantMenuAdapter){
-        firestoreViewModel.getMenuItems(restaurantId,restaurantMenuAdapter)
-
-    }
-
-    private fun loadRestaurantsByCity(city:String,restaurantAdapter: RestaurantAdapter){
-        firestoreViewModel.getRestaurantsByCity(city,restaurantAdapter)
-    }
-
-    fun loadRestaurantsByKeyWord(idList:ArrayList<String>,keyWord:String,restaurantAdapter: RestaurantAdapter){
-        firestoreViewModel.getRestaurantsByKeyWord(idList,keyWord,restaurantAdapter)
-    }
-
-    fun loadRestaurantsByCathegory(ids:List<String>,restaurantAdapter: RestaurantAdapter){
-        firestoreViewModel.getRestaurantsByIds(ids,restaurantAdapter)
-    }
-
-    private fun loadListOfCitiesWhereFoodHeroExist(){
-        firestoreViewModel.getCitiesWhereFoodHeroExist(foodHeroInfo)
     }
 
     /*

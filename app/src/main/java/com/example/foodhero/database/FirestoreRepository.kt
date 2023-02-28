@@ -11,6 +11,7 @@ import com.firebase.geofire.GeoLocation
 import com.google.android.gms.tasks.Task
 
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
 import com.google.firebase.ktx.Firebase
@@ -44,10 +45,8 @@ class FirestoreRepository {
             .set(restaurant)
     }
 
-    fun saveUser(user: User): Task<Void> {
-        return firestoreDB.collection(USER_COLLECTION)
-            .document(user.email!!)
-            .set(user)
+    fun saveUser(user: User): DocumentReference {
+        return firestoreDB.collection(USER_COLLECTION).document(user.email!!)
     }
 
     fun saveRestaurantLoggo(imageUri: Uri, downloadUrl:String): UploadTask {

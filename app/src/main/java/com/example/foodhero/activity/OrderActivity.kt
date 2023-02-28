@@ -6,21 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat.registerReceiver
 import androidx.core.view.children
-import androidx.core.widget.doOnTextChanged
 import com.example.foodhero.MainActivity
 import com.example.foodhero.R
 import com.example.foodhero.databinding.ActivityOrderBinding
 import com.example.foodhero.global.*
 import com.example.foodhero.struct.PurchasedItem
-import com.example.foodhero.struct.User
-import com.example.foodhero.widgets.AlexWidget
 import com.example.foodhero.widgets.SalmbergsWidget
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -29,8 +23,6 @@ import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.ktx.Firebase
-import org.checkerframework.checker.units.qual.m
-import java.util.UUID
 
 class OrderActivity : AppCompatActivity() {
     private lateinit var onBackPressedCallback: OnBackPressedCallback
@@ -180,10 +172,7 @@ class OrderActivity : AppCompatActivity() {
             if (Child is SalmbergsWidget){
                 sum += Child.price
             }
-
-
-
-        }
+       }
         return sum
     }
 

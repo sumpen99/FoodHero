@@ -11,6 +11,7 @@ class Restaurant(
     val adress:String?=null,
     val phonenumber:String?=null,
     val email:String?=null,
+    val sendNotificationTo:String?=null,
     val cathegoriesDishes:ArrayList<String>? = null,
     val keyWords:ArrayList<String>? = null,
     val description:String?=null,
@@ -63,6 +64,7 @@ class Restaurant(
                 "Orgnum: $orgNumber\n" +
                 "Address: $adress\n" +
                 "PhoneNumber: $phonenumber\n" +
+                "sendNotificationTo: $sendNotificationTo\n" +
                 "Email: $email\n" +
                 "Categories: " + cathegoriesDishes.toString() + "\n" +
                 "KeyWords: " + keyWords.toString() + "\n" +

@@ -45,7 +45,7 @@ class FirestoreViewModel {
     }
 
     fun saveUserToFirebase(user:User):Task<Void>{
-        return firebaseRepository.saveUser(user)
+        return firebaseRepository.saveUser(user).set(user)
     }
 
     private suspend fun saveRestaurantInfo(pos:Int,restaurant:Restaurant){
