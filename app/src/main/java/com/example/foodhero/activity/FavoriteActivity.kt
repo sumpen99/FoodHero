@@ -19,25 +19,26 @@ import com.example.foodhero.struct.PurchasedItem
 import com.example.foodhero.widgets.SalmbergsWidget
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-@SuppressLint("StaticFieldLeak")
-lateinit var imageBackTwoButton : ImageButton
-private val intentFilter = IntentFilter()
-private lateinit var onBackPressedCallback: OnBackPressedCallback
-private val binding get() = _binding!!
-private var _binding: ActivityFavoriteBinding? = null
-lateinit var auth: FirebaseAuth
-private var firestoreListener: ListenerRegistration?=null
-lateinit var favoritLayout: LinearLayout
-lateinit var db: FirebaseFirestore
-lateinit var bottomFavoritNavMenu : BottomNavigationView
+import com.google.firebase.ktx.Firebase
 
 
 class FavoriteActivity : AppCompatActivity() {
 
+    lateinit var auth: FirebaseAuth
+    lateinit var imageBackTwoButton : ImageButton
     private val intentFilter = IntentFilter()
+    private lateinit var onBackPressedCallback: OnBackPressedCallback
+    private val binding get() = _binding!!
+    private var _binding: ActivityFavoriteBinding? = null
+    private var firestoreListener: ListenerRegistration?=null
+    lateinit var favoritLayout: LinearLayout
+    lateinit var db: FirebaseFirestore
+    lateinit var bottomFavoritNavMenu : BottomNavigationView
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +48,7 @@ class FavoriteActivity : AppCompatActivity() {
         setOnBackNavigation()
         _binding = ActivityFavoriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        auth = Firebase.auth
         // find the TextViews in the layout
       //  favoriteDishesTextView = findViewById(R.id.favorite_dishes_textview)
        // lastOrdersTextView = findViewById(R.id.last_orders_textview)
@@ -96,37 +98,19 @@ class FavoriteActivity : AppCompatActivity() {
 
     fun favoritPressed(){
         // När nav knappen "navigateSearch" är tryckt ska den gå til getUserFavorit som hämtar de favoriter
-        //man har
-        setBottomOrderNavigationMenu()
-        getUserFavorit()
+        //man har.
+        //setBottomOrderNavigationMenu().navigateSearch.isPressed
+      //  ->
+     //   getUserFavorit()
 
 
     }
-
-
-
-    } private fun setBottomOrderNavigationMenu(){
-    bottomFavoritNavMenu = binding.bottomFavoritNavMenu
-    bottomFavoritNavMenu.setOnItemSelectedListener {it: MenuItem ->
-        when(it.itemId){
-            // R.id.navigateHome->navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
-            R.id.navigateSearch->{
-                val intent = Intent(this,FavoriteActivity::class.java)
-                moveToActivityAndPutOnTop(intent)
-            }
-
-            //R.id.navigateSearch->(Intent(this, FavoriteActivity::class.java))
-
-        }
-        true
-    }
-}
-
 
     fun getUserFavorit() {
         db = FirebaseFirestore.getInstance()
         val mail = auth.currentUser?.email
-        //Behövs en ny specifik collection för "Favorties" .
+        //Behövs en ny specifik collection för "Favorties" istället för "shoppingCart" .
+
         val docRef = db.collection(USER_COLLECTION).document(mail!!).collection("ShoppingCart")
         firestoreListener = docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
@@ -145,6 +129,7 @@ class FavoriteActivity : AppCompatActivity() {
                             this,
                             null
                         )
+
                         favoritLayout.addView(salmbergsItem, favoritLayout.childCount)
                         logMessage(change.document.toString())
                     }
@@ -169,6 +154,29 @@ class FavoriteActivity : AppCompatActivity() {
 
 
     }
+    private fun setBottomOrderNavigationMenu(){
+        bottomFavoritNavMenu = binding.bottomFavoritNavMenu
+        bottomFavoritNavMenu.setOnItemSelectedListener {it: MenuItem ->
+            when(it.itemId){
+                // R.id.navigateHome->navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
+                R.id.navigateSearch->{
+                    moveToActivityAndPutOnTop(Intent(this, FavoriteActivity::class.java))
+
+                }
+
+                //R.id.navigateSearch->(Intent(this, FavoriteActivity::class.java))
+
+            }
+            true
+        }
+
+    }
+
+    }
+
+
+
+
 
 
 
