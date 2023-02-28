@@ -1,6 +1,4 @@
 package com.example.foodhero.activity
-
-import android.annotation.SuppressLint
 import android.content.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,17 +6,13 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import com.example.foodhero.MainActivity
 import com.example.foodhero.R
 import com.example.foodhero.databinding.ActivityFavoriteBinding
-import com.example.foodhero.databinding.ActivityOrderBinding
 import com.example.foodhero.global.*
 import com.example.foodhero.struct.FavoriteItem
-import com.example.foodhero.struct.PurchasedItem
 import com.example.foodhero.widgets.AlexWidget
-import com.example.foodhero.widgets.SalmbergsWidget
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -151,11 +145,9 @@ class FavoriteActivity : AppCompatActivity() {
                             this,
                             null
                         )
-
                         favoritLayout.addView(alexItem, favoritLayout.childCount)
                         logMessage(change.document.toString())
                     }
-
                     DocumentChange.Type.MODIFIED -> {
                         // Handle modified document
                     }
@@ -176,11 +168,8 @@ class FavoriteActivity : AppCompatActivity() {
                 // R.id.navigateHome->navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
                 R.id.navigateSearch -> {
                     moveToActivityAndPutOnTop(Intent(this, FavoriteActivity::class.java))
-
                 }
-
                 //R.id.navigateSearch->(Intent(this, FavoriteActivity::class.java))
-
             }
             true
         }

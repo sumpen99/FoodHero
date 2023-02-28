@@ -31,6 +31,8 @@ const val MENU_COLLECTION = "Menu"
 const val DRINK_COLLECTION = "DrinkList"
 const val MENU_ITEM_COLLECTION = "MenuItems"
 const val USER_COLLECTION = "Users"
+const val ADMIN_USER = "admin"
+const val CLAIMS_ROLE = "role"
 
 /*
 *   ##########################################################################

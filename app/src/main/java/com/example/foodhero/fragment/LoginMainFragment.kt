@@ -15,9 +15,8 @@ import com.example.foodhero.databinding.FragmentLoginmainBinding
 import com.example.foodhero.global.DialogInstance
 import com.example.foodhero.global.FragmentInstance
 import com.example.foodhero.global.moveToActivityAndFinish
-import javax.security.auth.login.LoginException
 
-class LoginMainFragment(intent: Intent) : BaseFragment() {
+class LoginMainFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setEventListener(view)

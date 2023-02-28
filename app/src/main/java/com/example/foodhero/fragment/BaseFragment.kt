@@ -24,7 +24,6 @@ abstract class BaseFragment: Fragment(), IFragment {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View {
-        if(baseView!=null){return baseView!!}
         setFragmentBinding(inflater,container)
         setFragmentView()
         setInfoToUser()
@@ -102,4 +101,8 @@ abstract class BaseFragment: Fragment(), IFragment {
     override fun onStop(){
         super.onStop()
     }*/
+    override fun onDestroy(){
+        super.onDestroy()
+        _binding = null
+    }
 }

@@ -1,5 +1,4 @@
 package com.example.foodhero.widgets
-
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
@@ -7,11 +6,7 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.foodhero.R
-import com.example.foodhero.global.format
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.ktx.Firebase
 
 
@@ -33,7 +28,7 @@ class AlexWidget(
         nameTextView.text = name
         restaurantTextView.text = restaurantName
 
-       auth = Firebase.auth
+        val auth = Firebase.auth
 
         deleteButton.setOnClickListener {
             callbackDelete(this)

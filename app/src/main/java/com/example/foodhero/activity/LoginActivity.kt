@@ -93,7 +93,7 @@ class LoginActivity: AppCompatActivity() {
 
    fun navigateToFragment(fragment: FragmentInstance){
         when(fragment){
-            FragmentInstance.FRAGMENT_LOGIN_HOME->applyTransaction(LoginMainFragment(intent))
+            FragmentInstance.FRAGMENT_LOGIN_HOME->applyTransaction(LoginMainFragment())
             FragmentInstance.FRAGMENT_LOGIN_USER->applyTransaction(LoginUserFragment())
             FragmentInstance.FRAGMENT_SIGN_UP->applyTransaction(SignUpFragment())
             else -> {}
@@ -138,8 +138,8 @@ class LoginActivity: AppCompatActivity() {
             Firebase.auth.createUserWithEmailAndPassword(user.email!!,password)
                 .addOnCompleteListener(this) { task ->
                     if(task.isSuccessful){
-                        firestoreViewModel.saveUserToFirebase(user).addOnCompleteListener{task->
-                            if(task.isSuccessful){navigateOnLogin()}
+                        firestoreViewModel.saveUserToFirebase(user).addOnCompleteListener{t->
+                            if(t.isSuccessful){navigateOnLogin()}
                             else{showMessage("UnExpected Error",Toast.LENGTH_SHORT)}
                         }
                     }
@@ -153,8 +153,8 @@ class LoginActivity: AppCompatActivity() {
             Firebase.auth.currentUser!!.linkWithCredential(credential)
                 .addOnCompleteListener(this){ task ->
                     if(task.isSuccessful){
-                        firestoreViewModel.saveUserToFirebase(user).addOnCompleteListener{task->
-                            if(task.isSuccessful){
+                        firestoreViewModel.saveUserToFirebase(user).addOnCompleteListener{t->
+                            if(t.isSuccessful){
                                 showMessage("Konto Skapat",Toast.LENGTH_SHORT)
                                 finish()
                             }
