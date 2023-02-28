@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -28,7 +29,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.GetTokenResult
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
     private lateinit var onBackPressedCallback: OnBackPressedCallback
@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
     private val auth = AuthRepo()
-    private var doFragmentInit = false
     private val intentFilter = IntentFilter()
     private var permissionsStr = arrayOf<String>(
         android.Manifest.permission.ACCESS_FINE_LOCATION,
@@ -77,13 +76,10 @@ class MainActivity : AppCompatActivity() {
             moveToActivityAndFinish(Intent(this,LoginActivity::class.java))
         }
         else{
-            if(savedInstanceState == null){
-                launchPermissionRequest()
+            if(savedInstanceState!=null){
+                clearAllFragments()
             }
-            else{
-                doFragmentInit = false
-                launchScreenBasedOnSecurityLevel()
-            }
+            launchPermissionRequest()
         }
     }
 
@@ -101,16 +97,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startMainApp(){
-        setCloseAppCallback()
         setContentView(R.layout.activity_main)
+        setCloseAppCallback()
         setMessageToUser()
         setDataBinding()
         setBottomNavigationMenu()
         setOnBackNavigation()
         Toast.makeText(applicationContext, "Välkommen tillbaka ${auth.getEmail()}.", Toast.LENGTH_SHORT).show()
-        if(doFragmentInit){
-            navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
-        }
+        navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
     }
 
     /*
@@ -247,8 +241,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun applyTransaction(frag: Fragment){
+        logMessage(supportFragmentManager.fragments.size.toString())
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.homeLayout,frag).commit()
+            replace(R.id.homeLayout,frag).commitNow()
+        }
+        logMessage(supportFragmentManager.fragments.size.toString())
+    }
+
+    private fun clearAllFragments(){
+        for (fragment in supportFragmentManager.fragments) {
+            supportFragmentManager.beginTransaction().remove(fragment).commitNow()
         }
     }
 
@@ -315,7 +317,7 @@ class MainActivity : AppCompatActivity() {
     *               ON RESUME ON PAUSE ON STOP
     *   ##########################################################################
     */
-    /*override fun onResume(){
+    override fun onResume(){
         super.onResume()
         logMessage("on resume main")
     }
@@ -332,8 +334,16 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        //clearAllFragments()
+        //supportFragmentManager.putFragment(outState, "HomeFragment", supportFragmentManager.fragments[0])
+        //logMessage("on save instantestate")
+    }
+
     override fun onDestroy(){
+        //clearAllFragments()
         super.onDestroy()
         logMessage("on destroy main")
-    }*/
+    }
 }

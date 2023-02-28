@@ -10,6 +10,7 @@ import androidx.viewbinding.ViewBinding
 import com.example.foodhero.R
 import com.example.foodhero.global.DialogInstance
 import com.example.foodhero.global.FragmentInstance
+import com.example.foodhero.global.logMessage
 import com.example.foodhero.interfaces.IFragment
 import com.example.foodhero.widgets.BottomSheetDialog
 import com.example.foodhero.widgets.MessageToUser
@@ -24,7 +25,7 @@ abstract class BaseFragment: Fragment(), IFragment {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View {
-        //if(baseView!=null){return baseView!!}
+        //if(baseView!=null){ return baseView!!}
         setFragmentBinding(inflater,container)
         setFragmentView()
         setInfoToUser()

@@ -1,5 +1,4 @@
 package com.example.foodhero.activity
-
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -9,23 +8,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
-import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import com.example.foodhero.MainActivity
 import com.example.foodhero.R
 import com.example.foodhero.global.APP_ACTION_LOG_OUT
-import com.example.foodhero.global.moveToActivityAndFinish
-import com.example.foodhero.global.moveToActivityAndPutOnTop
 import com.example.foodhero.global.moveToActivityAndReOrder
 import com.google.firebase.firestore.FirebaseFirestore
 
-
-//private lateinit var favoriteDishesTextView: TextView
-//private lateinit var lastOrdersTextView: TextView
-@SuppressLint("StaticFieldLeak")
-val db = FirebaseFirestore.getInstance()
-
 class FavoriteActivity : AppCompatActivity() {
+    val db = FirebaseFirestore.getInstance()
     lateinit var imageBackTwoButton : ImageButton
     private val intentFilter = IntentFilter()
     private lateinit var onBackPressedCallback: OnBackPressedCallback
@@ -105,4 +96,4 @@ class FavoriteActivity : AppCompatActivity() {
                 Log.w("FavoriteActivity", "Error retrieving last orders", e)
             }
     }
-    }
+}
