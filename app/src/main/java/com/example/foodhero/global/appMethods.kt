@@ -407,3 +407,5 @@ fun swapAutoWord(w1: AutoWord, w2: AutoWord) {
 *
 * */
 fun templateFunctionAny(parameter:Any?):Unit{}
+
+fun templateFunctionAny(parameter:String):Unit{}

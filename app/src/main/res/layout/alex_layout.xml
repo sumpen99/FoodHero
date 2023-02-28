@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@color/transparent"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/user_allowed_position"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/restaurantTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@color/transparent"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/user_allowed_position"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="normal" />
+    
+
+
+    <ImageButton
+        android:id="@+id/deleteItemButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#05FFFFFF"
+        android:layout_marginStart="10dp"
+        app:srcCompat="@drawable/baseline_delete_24" />
+
+</LinearLayout>

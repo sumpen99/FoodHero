@@ -41,6 +41,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     private lateinit var restaurantMenuAdapter: RestaurantMenuAdapter
     private val totalCathegoryCounter = CathegoryCounter()
     private val listOfKeywords = ArrayList<String>()
+    private var currentRestaurant = ""
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //logMessage("on create home")
@@ -369,6 +370,7 @@ class HomeFragment(intent: Intent) : BaseFragment() {
     }
 
     private fun populateBottomSheetWithRestaurant(restaurant:Restaurant){
+        currentRestaurant = restaurant.name!!
         getMainActivity().downloadImageFromStorage(
             getMainActivity().getRestaurantLoggoRef(restaurant.loggoDownloadUrl),
             bottomSheetDialog.findViewById<AppCompatImageView>(R.id.restImage))
@@ -389,14 +391,17 @@ class HomeFragment(intent: Intent) : BaseFragment() {
         getMainActivity().putFoodItemIntoCart(menuItem)
         //messageToUser.setPosBtnText(getString(R.string.tumme))
        // TACK! :)
-
     }
 
     fun showSomeLoveBack(menuItem:com.example.foodhero.struct.MenuItem){
         messageToUser.setPosBtnText(getString(R.string.heart))
         updateMessageDialog("Bra jobbat Fredrik!")
+
         showMessage()
         messageToUser.setPosBtnText("OK")
+        getMainActivity().putItemInFavorites(menuItem,currentRestaurant)
+
+
     }
 
 
