@@ -30,6 +30,7 @@ import com.example.foodhero.struct.Restaurant
 import com.example.foodhero.widgets.CathegoryItem
 import com.example.foodhero.widgets.CityItem
 import com.example.foodhero.widgets.SearchItem
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.launch
 import java.lang.Integer.min
@@ -474,6 +475,10 @@ class HomeFragment : BaseFragment() {
 
     private fun loadListOfCitiesWhereFoodHeroExist(){
         firestoreViewModel.getCitiesWhereFoodHeroExist(foodHeroInfo)
+    }
+
+    fun checkIfUserLikesIt(email:String,menuItemID:String):DocumentReference{
+        return firestoreViewModel.firebaseRepository.getUserFavoriteCollection(email).document(menuItemID)
     }
 
 

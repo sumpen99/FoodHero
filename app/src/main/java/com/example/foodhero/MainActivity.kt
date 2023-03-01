@@ -336,12 +336,6 @@ class MainActivity : AppCompatActivity() {
                 .document(userEmail)
                 .collection("Favorites")
                 .document(id)
-            val docRefMenuItemLikes = db
-                .collection(RESTAURANT_COLLECTION)
-                .document(restaurantId)
-                .collection(MENU_COLLECTION)
-                .document(id)
-
             docRefFoodItem.get().addOnCompleteListener {
                 var message = "Oväntat fel uppstod"
                 if(it.isSuccessful){
@@ -350,7 +344,6 @@ class MainActivity : AppCompatActivity() {
                     }
                     else{
                         docRefFoodItem.set(favoriteItem)
-                        docRefMenuItemLikes.update("userComments",FieldValue.arrayUnion(userEmail))
                         message = "Nu ligger den i dina favoriter!"
                     }
 

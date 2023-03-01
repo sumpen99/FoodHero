@@ -110,10 +110,6 @@ class FavoriteActivity : AppCompatActivity() {
                 .document(mail!!)
                 .collection("Favorites")
                 .document(widget.id)
-            val docRefLike = db.collection(RESTAURANT_COLLECTION)
-                .document(widget.restaurantId)
-                .collection(MENU_COLLECTION)
-                .document(widget.id)
 
             docRefFavorite.delete()
                 .addOnSuccessListener {
@@ -122,7 +118,6 @@ class FavoriteActivity : AppCompatActivity() {
                 .addOnFailureListener { e ->
                     Log.w(ContentValues.TAG, "Error deleting document", e)
                 }
-            docRefLike.update("userComments", FieldValue.arrayRemove(mail))
         }
 
     }
