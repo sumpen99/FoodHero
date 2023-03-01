@@ -17,6 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.ktx.Firebase
@@ -105,18 +106,23 @@ class FavoriteActivity : AppCompatActivity() {
     fun deleteItemFromFavorites(widget: Any?) {
         if (widget is AlexWidget) {
             val mail = auth.currentUser?.email
-            val docRef = db.collection(USER_COLLECTION)
+            val docRefFavorite = db.collection(USER_COLLECTION)
                 .document(mail!!)
                 .collection("Favorites")
                 .document(widget.id)
+            val docRefLike = db.collection(RESTAURANT_COLLECTION)
+                .document(widget.restaurantId)
+                .collection(MENU_COLLECTION)
+                .document(widget.id)
 
-            docRef.delete()
+            docRefFavorite.delete()
                 .addOnSuccessListener {
                     favoritLayout.removeView(widget)
                 }
                 .addOnFailureListener { e ->
                     Log.w(ContentValues.TAG, "Error deleting document", e)
                 }
+            docRefLike.update("userComments", FieldValue.arrayRemove(mail))
         }
 
     }
@@ -140,13 +146,14 @@ class FavoriteActivity : AppCompatActivity() {
                         val alexItem = AlexWidget(
                             favoriteItem.foodName!!,
                             favoriteItem.restaurantName!!,
+                            favoriteItem.restaurantId!!,
                             favoriteItem.itemId!!,
                             ::deleteItemFromFavorites,
                             this,
                             null
                         )
                         favoritLayout.addView(alexItem, favoritLayout.childCount)
-                        logMessage(change.document.toString())
+                        //logMessage(change.document.toString())
                     }
                     DocumentChange.Type.MODIFIED -> {
                         // Handle modified document
@@ -167,7 +174,7 @@ class FavoriteActivity : AppCompatActivity() {
             when (it.itemId) {
                 // R.id.navigateHome->navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
                 R.id.navigateSearch -> {
-                    moveToActivityAndPutOnTop(Intent(this, MainActivity::class.java))
+                    moveToActivityAndReOrder(Intent(this, MainActivity::class.java))
                 }
                 //R.id.navigateSearch->(Intent(this, FavoriteActivity::class.java))
             }

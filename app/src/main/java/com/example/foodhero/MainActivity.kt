@@ -27,6 +27,7 @@ import com.example.foodhero.widgets.MessageToUser
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.GetTokenResult
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 import kotlin.collections.ArrayList
@@ -145,13 +146,20 @@ class MainActivity : AppCompatActivity() {
         bottomNavMenu = binding.bottomNavigationView
         bottomNavMenu.setOnItemSelectedListener {it: MenuItem ->
             when(it.itemId){
-                R.id.navigateHome->{}
+                R.id.navigateHome->{
+                    val frag = getHomeFragment()
+                    frag?.resetRecyclerViewScrollPosition()
+                }
                 R.id.navigateFavorite->navigateOnlyIfUserIsAllowed(ActivityInstance.ACTIVITY_FAVORITE)
                 R.id.navigateCart->navigateOnlyIfUserIsAllowed(ActivityInstance.ACTIVITY_ORDER)
                 R.id.navigateProfile->navigateOnlyIfUserIsAllowed(ActivityInstance.ACTIVITY_PROFILE)
             }
             true
         }
+    }
+
+    fun getCurrentUserMail():String{
+        return auth.getEmailKeyWord()
     }
 
     private fun userNeedToSignUp():Boolean{
@@ -252,6 +260,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun getHomeFragment():HomeFragment?{
+        for(frag:Fragment in supportFragmentManager.fragments){
+            if(frag is HomeFragment){
+                return frag
+            }
+        }
+        return null
+    }
+
     /*
     *   ##########################################################################
     *               SHARED PREFERENCE
@@ -301,20 +318,45 @@ class MainActivity : AppCompatActivity() {
             val db = FirebaseFirestore.getInstance()
             db.collection("Users").document(user).collection("ShoppingCart").document(id)
                 .set(purchasedItem)
-            logMessage(user)
+            //logMessage(user)
         }
     }
 
-    fun putItemInFavorites(FavoriteItem: com.example.foodhero.struct.MenuItem,restaurantName: String){
+    fun putItemInFavorites(FavoriteItem: com.example.foodhero.struct.MenuItem,
+                           restaurantName: String,
+                           restaurantId: String){
         if(!userNeedToSignUp()){
-            val id = UUID.randomUUID().toString()
+            val id = FavoriteItem.menuItemId!!
             val foodName = FavoriteItem.name
-            val favoriteItem = FavoriteItem(id,foodName,restaurantName)
-            val user = auth.getEmail()
+            val favoriteItem = FavoriteItem(id,foodName,restaurantName,restaurantId)
+            val userEmail = auth.getEmail()
             val db = FirebaseFirestore.getInstance()
-            db.collection("Users").document(user).collection("Favorites").document(id)
-                .set(favoriteItem)
-            logMessage(user)
+            val docRefFoodItem = db
+                .collection("Users")
+                .document(userEmail)
+                .collection("Favorites")
+                .document(id)
+            val docRefMenuItemLikes = db
+                .collection(RESTAURANT_COLLECTION)
+                .document(restaurantId)
+                .collection(MENU_COLLECTION)
+                .document(id)
+
+            docRefFoodItem.get().addOnCompleteListener {
+                var message = "Oväntat fel uppstod"
+                if(it.isSuccessful){
+                    if(it.result.exists()){
+                        message = "Maträtten finns redan bland favoriter"
+                    }
+                    else{
+                        docRefFoodItem.set(favoriteItem)
+                        docRefMenuItemLikes.update("userComments",FieldValue.arrayUnion(userEmail))
+                        message = "Nu ligger den i dina favoriter!"
+                    }
+
+                }
+                Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -323,14 +365,13 @@ class MainActivity : AppCompatActivity() {
     *               ON RESUME ON PAUSE ON STOP
     *   ##########################################################################
     */
-    /*override fun onResume(){
+    override fun onResume(){
         super.onResume()
-        logMessage("on resume main")
-        //navigateOnResume()
-
+        val frag = getHomeFragment()
+        frag?.resetBottomSheet()
     }
 
-    override fun onPause(){
+    /*override fun onPause(){
         super.onPause()
         logMessage("on pause main")
 

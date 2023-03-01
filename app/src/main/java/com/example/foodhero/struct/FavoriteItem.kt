@@ -4,8 +4,7 @@ class FavoriteItem (
     val itemId: String? =null,
     val foodName: String? = null,
     val restaurantName: String? = null,
-
-
+    val restaurantId: String? = null,
     ) : java.io.Serializable {
 
     override fun toString(): String {
