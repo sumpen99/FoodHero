@@ -167,7 +167,7 @@ class FavoriteActivity : AppCompatActivity() {
             when (it.itemId) {
                 // R.id.navigateHome->navigateToFragment(FragmentInstance.FRAGMENT_MAIN_HOME)
                 R.id.navigateSearch -> {
-                    moveToActivityAndPutOnTop(Intent(this, FavoriteActivity::class.java))
+                    moveToActivityAndPutOnTop(Intent(this, MainActivity::class.java))
                 }
                 //R.id.navigateSearch->(Intent(this, FavoriteActivity::class.java))
             }

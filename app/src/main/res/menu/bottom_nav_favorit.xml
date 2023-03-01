@@ -3,16 +3,12 @@
 
 
 
-    <item
-        android:id="@+id/navigateProfile"
-        android:icon="@drawable/baseline_auto_awesome_motion_24"
-        android:title="Senaste beställningar"
-        />
+
     <item
         android:id="@+id/navigateSearch"
-        android:title="Favoriter"
+        android:title="Hem"
         android:fontFamily="sans-serif"
-        android:icon="@drawable/baseline_favorite_24"
+        android:icon="@drawable/baseline_home_24"
         />
 
 </menu>
