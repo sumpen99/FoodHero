@@ -86,4 +86,8 @@ class AuthRepo {
 
         return email
     }
+
+    fun getEmailKeyWord():String{
+        return auth.currentUser?.email ?: ""
+    }
 }

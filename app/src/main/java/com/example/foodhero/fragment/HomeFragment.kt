@@ -44,7 +44,6 @@ class HomeFragment : BaseFragment() {
     private val totalCathegoryCounter = CathegoryCounter()
     private val listOfKeywords = ArrayList<String>()
     private var foodHeroInfo = FoodHeroInfo()
-    private var currentRestaurant = ""
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
@@ -86,6 +85,12 @@ class HomeFragment : BaseFragment() {
         restaurantAdapter = RestaurantAdapter(this)
         recyclerViewRestaurant.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewRestaurant.adapter = restaurantAdapter
+    }
+
+    fun resetRecyclerViewScrollPosition(){
+        //val childY = recyclerViewRestaurant.y + recyclerViewRestaurant.getChildAt(0).y
+        val nestedScrollView = getHomeBinding().nestedScrollView
+        nestedScrollView.smoothScrollTo(0,0)
     }
 
     /*
@@ -140,7 +145,7 @@ class HomeFragment : BaseFragment() {
         val showInfoBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.showInfoBtn)
         recyclerViewMenu = bottomSheetDialog.findViewById<RecyclerView>(R.id.menuItemsRecyclerview)
 
-        restaurantMenuAdapter = RestaurantMenuAdapter(this)
+        restaurantMenuAdapter = RestaurantMenuAdapter(getMainActivity().getCurrentUserMail(),this)
         recyclerViewMenu.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewMenu.adapter = restaurantMenuAdapter
 
@@ -320,7 +325,7 @@ class HomeFragment : BaseFragment() {
 
     private fun searchForRestaurantByKeyWord(keyWord:String){
         bottomSheetDialog.dismiss()
-        loadRestaurantsByKeyWord(totalCathegoryCounter.listOfIds,keyWord,restaurantAdapter)
+        loadRestaurantsByKeyWord(totalCathegoryCounter.listOfIds,keyWord)
     }
 
     private fun sameRestaurantAsBefore(newRestaurantId:String):Boolean{
@@ -360,7 +365,7 @@ class HomeFragment : BaseFragment() {
 
     private fun sortRestaurantsByCat(ids:List<String>){
         clearRestaurantAdapter()
-        loadRestaurantsByCathegory(ids,restaurantAdapter)
+        loadRestaurantsByCathegory(ids)
     }
 
     fun showRestaurant(restaurant: Restaurant){
@@ -375,12 +380,12 @@ class HomeFragment : BaseFragment() {
             setBottomSheetDialog(R.layout.bottom_sheet_restaurant, MATCH_PARENT,DialogInstance.BOTTOM_SHEET_RESTAURANT)
             setBottomSheetRestaurantEvent()
         }
+        bottomSheetDialog.lastName = restaurant.name!!
         bottomSheetDialog.lastId = restaurant.restaurantId
         populateBottomSheetWithRestaurant(restaurant)
     }
 
     private fun populateBottomSheetWithRestaurant(restaurant:Restaurant){
-        currentRestaurant = restaurant.name!!
         downloadImageFromStorage(
             getRestaurantLoggoRef(restaurant.loggoDownloadUrl),
             bottomSheetDialog.findViewById<AppCompatImageView>(R.id.restImage))
@@ -392,7 +397,7 @@ class HomeFragment : BaseFragment() {
         bottomSheetDialog.findViewById<TextView>(R.id.restDeliveryTime).text = restaurant.getDeliveryTime()
 
         bottomSheetDialog.show()
-        loadRestaurantMenu(restaurant.restaurantId!!,restaurantMenuAdapter)
+        loadRestaurantMenu(restaurant.restaurantId!!)
     }
 
     fun putSelectedFoodInCart(menuItem:com.example.foodhero.struct.MenuItem){
@@ -404,10 +409,12 @@ class HomeFragment : BaseFragment() {
     }
 
     fun showSomeLoveBack(menuItem:com.example.foodhero.struct.MenuItem){
-        updateMessageDialog("Nu ligger den i dina favoriter!")
-        showMessage()
-        messageToUser.setPosBtnText("OK")
-        getMainActivity().putItemInFavorites(menuItem,currentRestaurant)
+        getMainActivity().putItemInFavorites(
+            menuItem,
+            bottomSheetDialog.lastName,
+            bottomSheetDialog.lastId)
+        //updateMessageDialog("Nu ligger den i dina favoriter!")
+        //showMessage()
     }
 
     /*
@@ -436,24 +443,24 @@ class HomeFragment : BaseFragment() {
             val radiusKm = 20.0
             firestoreViewModel.getRestaurantsGeo(userLocation, radiusKm, restaurantAdapter)
         } else if (getMainActivity().isACorrectCity(cityOfChoice)) {
-            loadRestaurantsByCity(cityOfChoice, restaurantAdapter)
+            loadRestaurantsByCity(cityOfChoice)
         }
     }
 
-    private fun loadRestaurantMenu(restaurantId:String,restaurantMenuAdapter: RestaurantMenuAdapter){
+    private fun loadRestaurantMenu(restaurantId:String){
         firestoreViewModel.getMenuItems(restaurantId,restaurantMenuAdapter)
 
     }
 
-    private fun loadRestaurantsByCity(city:String,restaurantAdapter: RestaurantAdapter){
+    private fun loadRestaurantsByCity(city:String){
         firestoreViewModel.getRestaurantsByCity(city,restaurantAdapter)
     }
 
-    private fun loadRestaurantsByKeyWord(idList:ArrayList<String>,keyWord:String,restaurantAdapter: RestaurantAdapter){
+    private fun loadRestaurantsByKeyWord(idList:ArrayList<String>,keyWord:String){
         firestoreViewModel.getRestaurantsByKeyWord(idList,keyWord,restaurantAdapter)
     }
 
-    private fun loadRestaurantsByCathegory(ids:List<String>,restaurantAdapter: RestaurantAdapter){
+    private fun loadRestaurantsByCathegory(ids:List<String>){
         firestoreViewModel.getRestaurantsByIds(ids,restaurantAdapter)
     }
 

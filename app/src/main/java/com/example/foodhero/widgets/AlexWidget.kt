@@ -14,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 class AlexWidget(
     name:String,
     restaurantName:String,
+    val restaurantId:String,
     val id:String,
     val callbackDelete:(args:Any?)->Unit,
     context: Context?,
