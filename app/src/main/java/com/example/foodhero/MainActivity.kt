@@ -369,7 +369,6 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         val frag = getHomeFragment()
         frag?.resetBottomSheet()
-        logMessage("resume")
     }
 
     /*override fun onPause(){
