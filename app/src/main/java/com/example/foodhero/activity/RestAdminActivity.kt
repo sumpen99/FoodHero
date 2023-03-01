@@ -19,7 +19,7 @@ class RestAdminActivity : AppCompatActivity() {
     lateinit var EditRestNameText : EditText
     lateinit var EditRestAdressText : EditText
     lateinit var EditRestCityText : EditText
-    lateinit var imageRestLogButton : ImageButton
+   // lateinit var imageRestLogButton : ImageButton
     lateinit var bottomRestNavMenu : BottomNavigationView
     // private val binding get() = _binding!!
 
@@ -34,9 +34,9 @@ class RestAdminActivity : AppCompatActivity() {
 
 
         //  imageRestLogButton = findViewById(R.id.imageRestLogButton)
-        imageRestLogButton.setOnClickListener {
+      //  imageRestLogButton.setOnClickListener {
 
-        }
+       // }
 
 
     }
