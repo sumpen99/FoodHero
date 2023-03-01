@@ -334,6 +334,14 @@ class HomeFragment : BaseFragment() {
                 bottomSheetDialog.dialogInstance == DialogInstance.BOTTOM_SHEET_RESTAURANT
     }
 
+    fun resetBottomSheet(){
+        if(isBottomSheetInitialized()){
+            if(!bottomSheetDialog.isShowing){
+                bottomSheetDialog.dialogInstance = DialogInstance.BOTTOM_SHEET_INIT
+            }
+        }
+    }
+
     fun addCathegorysToView(listOfCat:MutableMap<String,CathegoryCounter>){
         viewLifecycleOwner.lifecycleScope.launch{
             val catContainer = getHomeBinding().restaurantCatContainerLayout

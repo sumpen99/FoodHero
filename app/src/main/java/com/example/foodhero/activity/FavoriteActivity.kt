@@ -130,7 +130,6 @@ class FavoriteActivity : AppCompatActivity() {
     fun getUserFavorit() {
         db = FirebaseFirestore.getInstance()
         val mail = auth.currentUser?.email
-        logMessage(mail!!)
         //Behövs en ny specifik collection för "Favorties" istället för "shoppingCart" .
 
         val docRef = db.collection(USER_COLLECTION).document(mail!!).collection("Favorites")

@@ -147,11 +147,8 @@ class MainActivity : AppCompatActivity() {
         bottomNavMenu.setOnItemSelectedListener {it: MenuItem ->
             when(it.itemId){
                 R.id.navigateHome->{
-                    for(frag:Fragment in supportFragmentManager.fragments){
-                        if(frag is HomeFragment){
-                            frag.resetRecyclerViewScrollPosition()
-                        }
-                    }
+                    val frag = getHomeFragment()
+                    frag?.resetRecyclerViewScrollPosition()
                 }
                 R.id.navigateFavorite->navigateOnlyIfUserIsAllowed(ActivityInstance.ACTIVITY_FAVORITE)
                 R.id.navigateCart->navigateOnlyIfUserIsAllowed(ActivityInstance.ACTIVITY_ORDER)
@@ -263,6 +260,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun getHomeFragment():HomeFragment?{
+        for(frag:Fragment in supportFragmentManager.fragments){
+            if(frag is HomeFragment){
+                return frag
+            }
+        }
+        return null
+    }
+
     /*
     *   ##########################################################################
     *               SHARED PREFERENCE
@@ -359,14 +365,14 @@ class MainActivity : AppCompatActivity() {
     *               ON RESUME ON PAUSE ON STOP
     *   ##########################################################################
     */
-    /*override fun onResume(){
+    override fun onResume(){
         super.onResume()
-        logMessage("on resume main")
-        //navigateOnResume()
-
+        val frag = getHomeFragment()
+        frag?.resetBottomSheet()
+        logMessage("resume")
     }
 
-    override fun onPause(){
+    /*override fun onPause(){
         super.onPause()
         logMessage("on pause main")
 
