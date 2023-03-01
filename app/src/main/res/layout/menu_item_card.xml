@@ -72,6 +72,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="#05FFFFFF"
                     android:layout_marginEnd="10dp"
+                    android:alpha="0.5"
                     app:srcCompat="@drawable/baseline_favorite_24" />
             </LinearLayout>
         </LinearLayout>

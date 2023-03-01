@@ -49,6 +49,10 @@ class FirestoreRepository {
         return firestoreDB.collection(USER_COLLECTION).document(user.email!!)
     }
 
+    fun getUserFavoriteCollection(email:String): CollectionReference{
+        return firestoreDB.collection(USER_COLLECTION).document(email).collection(FAVORITE_COLLECTION)
+    }
+
     fun saveRestaurantLoggo(imageUri: Uri, downloadUrl:String): UploadTask {
         val path = "$RESTAURANT_LOGGO_PATH${downloadUrl}"
         val storageRef = firestoreStorage.child(path)

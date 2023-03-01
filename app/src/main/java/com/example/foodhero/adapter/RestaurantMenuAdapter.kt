@@ -67,11 +67,18 @@ class RestaurantMenuAdapter(
 
         val itemsViewModel = menuList[position]
         fragment.downloadImageFromStorage(fragment.getRestaurantMenuItemLoggoRef(itemsViewModel.loggoDownloadUrl),holder.loggoImageView)
+        if(userEmail!=""){
+            fragment.checkIfUserLikesIt(userEmail,menuList[position].menuItemId!!).get().addOnCompleteListener {
+                if(it.isSuccessful && it.result.exists()){
+                    holder.imageYouHeartMeButton.alpha = 1.0f
+                }
+            }
+        }
         holder.nameTextView.text = itemsViewModel.name
         holder.ingredientsTextView.text = itemsViewModel.getIngredients()
         holder.priceTextView.text = itemsViewModel.getCurrentPrice()
 
-        holder.imageYouHeartMeButton.alpha = if(menuList[position].userComments?.contains(userEmail) == true)1.0f else 0.5f
+        //holder.imageYouHeartMeButton.alpha = if(menuList[position].userComments?.contains(userEmail) == true)1.0f else 0.5f
 
     }
 
