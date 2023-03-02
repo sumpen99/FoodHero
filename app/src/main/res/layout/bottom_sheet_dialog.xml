@@ -16,16 +16,6 @@
         android:scaleType="centerCrop"
         android:src="@drawable/applogoblack" />
 
-    <ImageButton
-        android:id="@+id/navigateAdmin"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentTop="false"
-        android:background="@drawable/baseline_admin_panel_settings_24"
-        android:scaleType="centerCrop"
-        android:title="Admin" />
-
     <TextView
         android:id="@+id/textviewWelcome"
         android:layout_width="wrap_content"

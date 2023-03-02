@@ -1,5 +1,9 @@
 package com.example.foodhero.activity
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -9,15 +13,18 @@ import android.widget.ImageButton
 import com.example.foodhero.R
 import com.example.foodhero.database.AuthRepo
 import com.example.foodhero.database.FirestoreRepository
+import com.example.foodhero.global.APP_ACTION_LOG_OUT
 import com.example.foodhero.struct.Restaurant
 
 class AdminActivity : AppCompatActivity() {
     private val auth = AuthRepo()
-    private val firestore = FirestoreRepository();
+    private val intentFilter = IntentFilter()
+    private val firestore = FirestoreRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin)
+        setCloseAppCallback()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -29,13 +36,22 @@ class AdminActivity : AppCompatActivity() {
         submitButton.setOnClickListener(clickListener)
     }
 
+    private fun setCloseAppCallback(){
+        intentFilter.addAction(APP_ACTION_LOG_OUT)
+        registerReceiver(object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                finish()
+            }
+        }, intentFilter)
+    }
+
     private val clickListener: View.OnClickListener = View.OnClickListener { view ->
         when (view.id) {
             R.id.BackButtonImage -> {
                 finish()
             }
             R.id.ImageProfilButton -> {
-                auth.signOut()
+                //auth.signOut()
             }
             R.id.SubmitButton -> {
                 val nameField = findViewById<EditText>(R.id.nameEditText)

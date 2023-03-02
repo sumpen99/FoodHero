@@ -27,7 +27,6 @@ import com.example.foodhero.widgets.MessageToUser
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.GetTokenResult
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 import kotlin.collections.ArrayList

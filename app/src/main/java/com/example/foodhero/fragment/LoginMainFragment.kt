@@ -77,7 +77,6 @@ class LoginMainFragment : BaseFragment() {
         val userLogInBtn = bottomSheetDialog.findViewById<LinearLayoutCompat>(R.id.userLoginLayout)
         val userSignUpBtn = bottomSheetDialog.findViewById<LinearLayoutCompat>(R.id.userSignUpLayout)
         val userEnterAsGuestBtn = bottomSheetDialog.findViewById<LinearLayoutCompat>(R.id.enterAsGuestLayout)
-        val adminLoginBtn = bottomSheetDialog.findViewById<ImageButton>(R.id.navigateAdmin)
 
         userEnterAsGuestBtn.setOnClickListener{
             bottomSheetDialog.dismiss()
@@ -93,12 +92,6 @@ class LoginMainFragment : BaseFragment() {
         userSignUpBtn.setOnClickListener {
             bottomSheetDialog.dismiss()
             getLoginActivity().navigateToFragment(FragmentInstance.FRAGMENT_SIGN_UP)
-        }
-
-        adminLoginBtn.setOnClickListener{
-            bottomSheetDialog.dismiss()
-            getLoginActivity().moveToActivityAndFinish(Intent(getLoginActivity(),AdminActivity::class.java))
-
         }
 
     }
