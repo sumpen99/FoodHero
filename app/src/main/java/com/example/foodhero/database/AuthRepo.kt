@@ -1,5 +1,6 @@
 package com.example.foodhero.database
 import com.example.foodhero.global.USER_COLLECTION
+import com.example.foodhero.global.logMessage
 import com.example.foodhero.struct.User
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -83,7 +84,6 @@ class AuthRepo {
         if (email.isEmpty()) {
             return "Gäst"
         }
-
         return email
     }
 

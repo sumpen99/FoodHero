@@ -14,7 +14,6 @@ import com.example.foodhero.struct.MenuItem
 
 
 class RestaurantMenuAdapter(
-    private val userEmail:String,
     private val fragment: HomeFragment):
     RecyclerView.Adapter<RestaurantMenuAdapter.ViewHolder>() {
 
@@ -64,15 +63,18 @@ class RestaurantMenuAdapter(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(menuList.isEmpty()){return}
-
+        var userEmail = ""
         val itemsViewModel = menuList[position]
         fragment.downloadImageFromStorage(fragment.getRestaurantMenuItemLoggoRef(itemsViewModel.loggoDownloadUrl),holder.loggoImageView)
-        if(userEmail!=""){
+        if(fragment.getCurrentUserEmail().also{userEmail = it } != ""){
             fragment.checkIfUserLikesIt(userEmail,menuList[position].menuItemId!!).get().addOnCompleteListener {
                 if(it.isSuccessful && it.result.exists()){
                     holder.imageYouHeartMeButton.alpha = 1.0f
                 }
             }
+        }
+        else{
+            holder.imageYouHeartMeButton.isEnabled = false
         }
         holder.nameTextView.text = itemsViewModel.name
         holder.ingredientsTextView.text = itemsViewModel.getIngredients()
@@ -99,10 +101,9 @@ class RestaurantMenuAdapter(
                 putItemInBasket(bindingAdapterPosition)
             }
             imageYouHeartMeButton.setOnClickListener{
-                if(userEmail != "" && imageYouHeartMeButton.alpha != 1.0f){
+                if(imageYouHeartMeButton.alpha != 1.0f){
                     showUserSomeLove(bindingAdapterPosition)
                     imageYouHeartMeButton.alpha = 1.0f
-
                 }
             }
         }

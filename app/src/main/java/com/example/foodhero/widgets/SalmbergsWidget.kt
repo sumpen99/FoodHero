@@ -7,15 +7,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.foodhero.R
 import com.example.foodhero.global.format
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.ktx.Firebase
-
-
-
-lateinit var auth: FirebaseAuth
 
 
 @SuppressLint("ViewConstructor")
@@ -37,11 +28,8 @@ class SalmbergsWidget(
         nameTextView.text = name
         priceTextView.text = price.format(2) + "Kr"
 
-        auth = Firebase.auth
-
         deleteButton.setOnClickListener {
             callbackDelete(this)
-
         }
     }
 }

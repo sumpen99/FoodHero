@@ -18,46 +18,15 @@
         android:layout_marginBottom="4dp"
         android:backgroundTint="#F7070707"
         android:ems="10"
-        android:hint="...."
+        android:textColor="@color/background_medium_dark"
+        android:textColorHint="@color/background_medium_dark"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/textRestAdressView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.439"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textMailView" />
 
-    <EditText
-        android:id="@+id/EditRestAdressText"
-        android:layout_width="216dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginEnd="80dp"
-        android:layout_marginBottom="4dp"
-        android:backgroundTint="#F5020202"
-        android:ems="10"
-        android:hint="...."
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/textRestCityView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.439"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textRestAdressView" />
 
-    <EditText
-        android:id="@+id/EditRestCityText"
-        android:layout_width="216dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="80dp"
-        android:backgroundTint="#FC0E0E0E"
-        android:ems="10"
-        android:hint="...."
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.457"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textRestCityView" />
 
     <ImageView
         android:id="@+id/imageRestView"
@@ -80,47 +49,13 @@
         android:layout_marginEnd="188dp"
         android:layout_marginBottom="5dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Namn på restaurangen :"
+        android:text="Välkommen"
         android:textColor="#050505"
         app:layout_constraintBottom_toTopOf="@+id/EditRestNameText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageRestView" />
-
-    <TextView
-        android:id="@+id/textRestCityView"
-        android:layout_width="159dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="200dp"
-        android:layout_marginBottom="2dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Stad :"
-        android:textColor="#050505"
-        app:layout_constraintBottom_toTopOf="@+id/EditRestCityText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EditRestAdressText" />
-
-    <TextView
-        android:id="@+id/textRestAdressView"
-        android:layout_width="159dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="212dp"
-        android:layout_marginBottom="2dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Adress :"
-        android:textColor="#0B0A0A"
-        app:layout_constraintBottom_toTopOf="@+id/EditRestAdressText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EditRestNameText" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -146,8 +81,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_logout_2" />
 
-
-
     <ImageView
         android:id="@+id/imageRestLogoView"
         android:layout_width="59dp"
@@ -159,19 +92,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/applogoblack" />
 
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomRestNavMenu"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        app:backgroundTint="#C4000000"
         app:itemHorizontalTranslationEnabled="false"
         app:itemIconTint="@drawable/bottom_navigation_selector"
-        app:itemTextColor="@color/white"
+        app:itemTextColor="@drawable/bottom_navigation_selector"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/botton_restnav_menu" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

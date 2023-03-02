@@ -146,7 +146,7 @@ class HomeFragment : BaseFragment() {
         val showInfoBtn = bottomSheetDialog.findViewById<AppCompatImageButton>(R.id.showInfoBtn)
         recyclerViewMenu = bottomSheetDialog.findViewById<RecyclerView>(R.id.menuItemsRecyclerview)
 
-        restaurantMenuAdapter = RestaurantMenuAdapter(getMainActivity().getCurrentUserMail(),this)
+        restaurantMenuAdapter = RestaurantMenuAdapter(this)
         recyclerViewMenu.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewMenu.adapter = restaurantMenuAdapter
 
@@ -479,6 +479,10 @@ class HomeFragment : BaseFragment() {
 
     fun checkIfUserLikesIt(email:String,menuItemID:String):DocumentReference{
         return firestoreViewModel.firebaseRepository.getUserFavoriteCollection(email).document(menuItemID)
+    }
+
+    fun getCurrentUserEmail():String{
+        return getMainActivity().getCurrentUserMail()
     }
 
 

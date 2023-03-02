@@ -17,7 +17,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.ktx.Firebase
@@ -175,6 +174,15 @@ class FavoriteActivity : AppCompatActivity() {
             }
             true
         }
+    }
+
+    fun closeListener(){
+        if(firestoreListener!=null)firestoreListener!!.remove()
+    }
+
+    override fun onDestroy(){
+        closeListener()
+        super.onDestroy()
     }
 }
 
